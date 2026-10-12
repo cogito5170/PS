@@ -1,0 +1,11 @@
+---
+key: zeitung-en
+kind: news
+title: Norvik labour market (English translation, synthetic example)
+publisher: Beispiel Zeitung
+published: 2024-02-10
+language: en
+translation_of: zeitung-de
+synthetic: true
+---
+The unemployment rate in Norvik was 1.6 percent in 2023. The programme can reduce costs.

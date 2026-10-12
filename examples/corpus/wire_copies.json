@@ -1,0 +1,11 @@
+{"documents": [
+ {"key": "wire-copy-1", "kind": "news", "title": "Lumora sales climb", "publisher": "Example Daily", "published": "2024-01-15",
+  "url": "https://daily.example.com/lumora", "reproduces": "wire", "synthetic": true,
+  "text": "Sales of Lumora rose from 2.0 million to 2.6 million packs in 2023, a 40% increase. The Lumora plant in Norvik employs 1,200 workers."},
+ {"key": "wire-copy-2", "kind": "news", "title": "Lumora's sales surge", "publisher": "Example Times", "published": "2024-01-16",
+  "url": "https://times.example.com/lumora", "synthetic": true,
+  "text": "Sales of Lumora rose from 2.0 million to 2.6 million packs in 2023, a 40% increase, the wire reported. The Lumora plant in Norvik employs 1,200 workers."},
+ {"key": "wire-correction", "kind": "news", "title": "Correction: Lumora plant workforce", "publisher": "Example Wire Service",
+  "published": "2024-01-17", "url": "https://wire.example.org/lumora-correction", "corrects": "wire", "synthetic": true,
+  "text": "Correction: The Lumora plant in Norvik employs 900 workers."}
+]}

@@ -1,0 +1,1756 @@
+{
+  "dataset": "heldout",
+  "version": "1",
+  "cases": [
+    {
+      "id": "H01",
+      "category": "genuine_contradiction",
+      "description": "Two independent sources give incompatible main-span lengths for the same bridge with no difference in time or definition.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "Varnholt Bridge turns 35",
+          "author": "Petra Lindqvist",
+          "publisher": "Example Herald",
+          "published": "2022-06-14",
+          "url": "https://news.example.org/varnholt-bridge-35",
+          "language": "en",
+          "text": "The Varnholt Bridge across the Lessing River opened to traffic in 1987. Its main span measures 412 metres between the two towers. The bridge carries about 31,000 vehicles on an average weekday.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "Major Structures Inventory 2023",
+          "publisher": "Lessing Valley Infrastructure Office",
+          "published": "2023-02-01",
+          "url": "https://infra.example.com/inventory-2023",
+          "language": "en",
+          "text": "The Varnholt Bridge is a cable-stayed crossing completed in 1987. The main span between the towers is 388 metres long. Inspections in 2022 found no structural defects in the stay cables.",
+          "basis": "observational",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "measures 412 metres",
+            "subject": "Varnholt Bridge main span",
+            "predicate": "measures",
+            "object": "412 metres",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "is 388 metres long",
+            "subject": "Varnholt Bridge main span",
+            "predicate": "is long",
+            "object": "388 metres",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "NUMERICAL_INCONSISTENCY",
+            "affected": [
+              "measures 412 metres",
+              "is 388 metres long"
+            ],
+            "red": true
+          }
+        ],
+        "relations": [
+          {
+            "type": "CONTRADICTS",
+            "between": [
+              "measures 412 metres",
+              "is 388 metres long"
+            ]
+          }
+        ],
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H02",
+      "category": "scope_difference",
+      "description": "A drug reduces migraine days in adults but not in children; the populations are stated explicitly, so this is not a contradiction.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "paper",
+          "title": "Fenoral for migraine prevention in adults: a randomised controlled trial",
+          "author": "Henrik Aaberg",
+          "publisher": "Example Journal of Neurology",
+          "published": "2021-09-03",
+          "url": "https://journals.example.org/ejn/fenoral-adults",
+          "language": "en",
+          "text": "In a randomised trial of 340 adults aged 18 to 65, daily fenoral reduced monthly migraine days by 2.1 compared with placebo. The reduction was statistically significant after twelve weeks. Mild nausea was the most common side effect.",
+          "basis": "experimental",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "paper",
+          "title": "Fenoral in paediatric migraine: a randomised trial",
+          "author": "Clara Mendonca",
+          "publisher": "Example Paediatrics Review",
+          "published": "2023-01-19",
+          "url": "https://journals.example.org/epr/fenoral-children",
+          "language": "en",
+          "text": "A separate randomised trial enrolled 180 children aged 6 to 12 with frequent migraine. In children, fenoral produced no significant reduction in monthly migraine days compared with placebo. The authors note that paediatric dosing was lower than in adult studies.",
+          "basis": "experimental",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "reduced monthly migraine days by 2.1",
+            "subject": "fenoral in adults",
+            "predicate": "reduces",
+            "object": "monthly migraine days by 2.1",
+            "polarity": "positive",
+            "claim_type": "causal"
+          },
+          {
+            "sentence": "produced no significant reduction",
+            "subject": "fenoral in children",
+            "predicate": "reduces",
+            "object": "monthly migraine days",
+            "polarity": "negative",
+            "claim_type": "causal"
+          }
+        ],
+        "relations": [
+          {
+            "type": "DIFFERS_IN_SCOPE",
+            "between": [
+              "reduced monthly migraine days by 2.1",
+              "produced no significant reduction"
+            ]
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY",
+          "CATEGORICAL_CONFLICT"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H03",
+      "category": "numerical_error",
+      "description": "A budget article states a percentage increase that does not match its own figures (40 to 46 million is 15 percent, not 20 percent).",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "Halvorsen council passes 2024 budget",
+          "author": "Mikkel Strand",
+          "publisher": "Halvorsen Example Post",
+          "published": "2024-01-17",
+          "url": "https://news.example.com/halvorsen-budget-2024",
+          "language": "en",
+          "text": "The city of Halvorsen approved its 2024 budget on Tuesday. Spending on schools rose from 40 million euros to 46 million euros, an increase of 20 percent. Road maintenance received 12 million euros, the same as in the previous year. The council said the additional school spending was funded by higher property tax receipts.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "an increase of 20 percent",
+            "subject": "Halvorsen school spending",
+            "predicate": "rose from 40 million euros to",
+            "object": "46 million euros (20 percent)",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          },
+          {
+            "sentence": "Road maintenance received 12 million euros",
+            "subject": "Halvorsen road maintenance",
+            "predicate": "received",
+            "object": "12 million euros",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "ARITHMETIC_ERROR",
+            "affected": [
+              "an increase of 20 percent"
+            ],
+            "red": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "H04",
+      "category": "misleading_quotation",
+      "description": "A blog quotes a study author with the negation removed, reversing the finding.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "Clothiazine and wild bees: a two-season field study",
+          "author": "Ines Calder",
+          "publisher": "Selby Valley Agricultural Research Station",
+          "published": "2022-11-02",
+          "url": "https://research.example.org/clothiazine-field-study",
+          "language": "en",
+          "text": "The two-season field study monitored wild bees on 24 farms in the Selby Valley. In the summary, lead author Ines Calder wrote \"We did not find that clothiazine reduces wild bee numbers at field-realistic doses.\" Doses above the label rate were not tested.",
+          "basis": "experimental",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "blog",
+          "title": "The pesticide our bees cannot survive",
+          "author": "Greenhedge Collective",
+          "published": "2022-11-20",
+          "url": "https://greenhedge.example.com/clothiazine",
+          "language": "en",
+          "text": "A new field study has bad news for pollinators. Its lead author, Ines Calder, wrote \"We found that clothiazine reduces wild bee numbers at field-realistic doses.\" Farmers in the valley should stop using it immediately.",
+          "cites": [
+            "a"
+          ],
+          "basis": "secondary",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "MISLEADING_QUOTATION",
+            "affected": [
+              "We found that clothiazine reduces"
+            ],
+            "red": true
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "should stop using it immediately",
+            "status": "OUT_OF_SCOPE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "H05",
+      "category": "unsupported_causal",
+      "description": "An observational comparison of schools with confounders is used to conclude that tablets cause better reading.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "Digital Devices and Literacy: 2022 Review",
+          "publisher": "Coastal Districts Education Trust",
+          "published": "2023-04-12",
+          "url": "https://edtrust.example.org/devices-literacy-2022",
+          "language": "en",
+          "text": "The trust compared reading scores in 48 primary schools during the 2022 school year. Schools that gave every pupil a tablet scored on average 8 points higher on the reading assessment than schools that did not. The tablet schools were also located in wealthier districts and had smaller classes. These results show that providing tablets improves children's reading.",
+          "basis": "observational",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "scored on average 8 points higher",
+            "subject": "schools giving every pupil a tablet",
+            "predicate": "scored higher than",
+            "object": "schools without tablets on reading assessment",
+            "polarity": "positive",
+            "claim_type": "correlational"
+          },
+          {
+            "sentence": "providing tablets improves children's reading",
+            "subject": "providing tablets",
+            "predicate": "improves",
+            "object": "children's reading",
+            "polarity": "positive",
+            "claim_type": "causal"
+          }
+        ],
+        "issues": [
+          {
+            "category": "UNSUPPORTED_CAUSAL_CLAIM",
+            "affected": [
+              "providing tablets improves children's reading"
+            ],
+            "red": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "H06",
+      "category": "dependent_sources",
+      "description": "A transfer fee reported by a wire service is reworded by two outlets; three mentions are one source.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "Rovere sign Dransky",
+          "publisher": "Example Sports Wire",
+          "published": "2024-07-08",
+          "url": "https://wire.example.org/rovere-dransky",
+          "language": "en",
+          "text": "Rovere Athletic has signed forward Emil Dransky from Kestrel United for a fee of 48 million euros. The 24-year-old agreed a five-year contract on Monday. Dransky scored 19 league goals last season.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "Dransky completes move to Rovere",
+          "publisher": "Daily Example Sport",
+          "published": "2024-07-08",
+          "url": "https://sport.example.com/dransky-rovere",
+          "language": "en",
+          "text": "Kestrel United forward Emil Dransky has joined Rovere Athletic for a reported 48 million euros. The 24-year-old signed a five-year deal on Monday, the wire service reported. He netted 19 league goals in the previous campaign.",
+          "reproduces": "a",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "blog",
+          "title": "Dransky is ours!",
+          "author": "RovereFaithful",
+          "published": "2024-07-09",
+          "url": "https://roverefans.example.com/dransky",
+          "language": "en",
+          "text": "Big news for Rovere fans: the club paid 48 million euros to bring Emil Dransky over from Kestrel. Dransky, 24, is tied down on a five-year contract. Last season he hit 19 goals in the league.",
+          "reproduces": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "for a fee of 48 million euros",
+            "subject": "Rovere Athletic",
+            "predicate": "signed",
+            "object": "Emil Dransky for 48 million euros",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "DEPENDENT_CORROBORATION",
+            "affected": [
+              "for a fee of 48 million euros",
+              "for a reported 48 million euros",
+              "paid 48 million euros"
+            ],
+            "red": false
+          }
+        ],
+        "relations": [
+          {
+            "type": "DERIVED_FROM",
+            "between": [
+              "for a reported 48 million euros",
+              "for a fee of 48 million euros"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "for a fee of 48 million euros",
+            "status": "INSUFFICIENT_EVIDENCE"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY",
+          "CATEGORICAL_CONFLICT"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a",
+            "b",
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H07",
+      "category": "translation_error",
+      "description": "An English translation of a German report turns a 60 percent decline into a 16 percent decline.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "Feldhamster-Monitoring Ostheide 2023",
+          "publisher": "Naturschutzstelle Ostheide",
+          "published": "2023-10-05",
+          "url": "https://natur.example.org/feldhamster-2023",
+          "language": "de",
+          "text": "Die Zahl der Feldhamster im Landkreis Ostheide ist seit 2010 um 60 Prozent gesunken. Die Ursache ist vor allem der Verlust von Ackerrandstreifen. Ein Schutzprogramm soll im nächsten Jahr beginnen.",
+          "basis": "observational",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "web",
+          "title": "Common hamster monitoring Ostheide 2023 (English translation)",
+          "publisher": "Example Wildlife Digest",
+          "published": "2023-10-20",
+          "url": "https://wildlife.example.com/ostheide-hamster-en",
+          "language": "en",
+          "text": "The number of common hamsters in the district of Ostheide has fallen by 16 percent since 2010. The main cause is the loss of field margins. A protection programme is due to start next year.",
+          "translation_of": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "loss of field margins",
+            "subject": "loss of field margins",
+            "predicate": "causes decline of",
+            "object": "common hamsters in Ostheide",
+            "polarity": "positive",
+            "claim_type": "causal"
+          }
+        ],
+        "issues": [
+          {
+            "category": "TRANSLATION_DISCREPANCY",
+            "affected": [
+              "fallen by 16 percent since 2010",
+              "um 60 Prozent gesunken"
+            ],
+            "red": true
+          }
+        ],
+        "independent_groups": [
+          [
+            "a",
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H08",
+      "category": "low_reputation_correct",
+      "description": "An anecdotal blog claim about cracked viaduct piers is confirmed by the rail authority's inspection report.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "blog",
+          "title": "What is going on at Kelda?",
+          "author": "trainspotter_jo",
+          "published": "2024-03-10",
+          "url": "https://railnotes.example.com/kelda-closure",
+          "language": "en",
+          "text": "The Kelda Viaduct has been shut to trains since early March. According to a maintenance worker I spoke to, inspectors found cracks in two of the support piers. Nobody from the rail company has explained the closure publicly yet.",
+          "basis": "anecdotal",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "Kelda Viaduct Inspection Summary",
+          "publisher": "Northern Example Rail Authority",
+          "published": "2024-04-02",
+          "url": "https://rail.example.org/reports/kelda-2024",
+          "language": "en",
+          "text": "The Kelda Viaduct was closed to rail traffic on 3 March 2024 following a routine inspection. Inspectors identified fatigue cracks in piers 4 and 7 of the structure. Repair work is scheduled to finish in August 2024.",
+          "basis": "observational",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "found cracks in two of the support piers",
+            "subject": "inspectors",
+            "predicate": "found",
+            "object": "cracks in two support piers of Kelda Viaduct",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "identified fatigue cracks in piers 4 and 7",
+            "subject": "inspectors",
+            "predicate": "identified",
+            "object": "fatigue cracks in piers 4 and 7",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "relations": [
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "identified fatigue cracks in piers 4 and 7",
+              "found cracks in two of the support piers"
+            ]
+          },
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "closed to rail traffic on 3 March 2024",
+              "shut to trains since early March"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "found cracks in two of the support piers",
+            "status": "SUPPORTED"
+          },
+          {
+            "sentence": "shut to trains since early March",
+            "status": "SUPPORTED"
+          }
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H09",
+      "category": "high_reputation_incorrect",
+      "description": "A textbook repeats an effect size from a retracted trial that a larger independent trial does not reproduce.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "paper",
+          "title": "Veltrazine and verbal memory in older adults",
+          "author": "Gregor Paskin",
+          "publisher": "Example Journal of Gerontology",
+          "published": "2016-05-11",
+          "url": "https://journals.example.org/ejg/veltrazine-2016",
+          "language": "en",
+          "text": "In a trial of 120 adults over 65, daily supplementation with veltrazine improved scores on a word-recall test by 30 percent compared with placebo. The authors recommend larger trials to confirm the effect.",
+          "basis": "experimental",
+          "retracted": true,
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "textbook",
+          "title": "Clinical Pharmacology of Ageing, 3rd edition",
+          "author": "Ruth Halloway",
+          "publisher": "Example Academic Press",
+          "published": "2019-08-01",
+          "url": "https://press.example.com/clinical-pharmacology-ageing",
+          "language": "en",
+          "text": "Veltrazine supplements improve memory in older adults by about 30 percent. This effect has made veltrazine one of the most discussed agents for age-related memory decline.",
+          "cites": [
+            "a"
+          ],
+          "basis": "review",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "paper",
+          "title": "A large preregistered trial of veltrazine for memory",
+          "author": "Anika Søndergaard",
+          "publisher": "Example Medical Journal",
+          "published": "2021-03-22",
+          "url": "https://journals.example.org/emj/veltrazine-trial",
+          "language": "en",
+          "text": "A preregistered trial of 860 adults aged 65 to 80 found no difference in word-recall scores between veltrazine and placebo after six months. The mean difference was 0.4 percent and was not statistically significant.",
+          "basis": "experimental",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "improve memory in older adults",
+            "subject": "veltrazine supplements",
+            "predicate": "improve",
+            "object": "memory in older adults by about 30 percent",
+            "polarity": "positive",
+            "claim_type": "causal"
+          },
+          {
+            "sentence": "found no difference in word-recall scores",
+            "subject": "veltrazine",
+            "predicate": "affects",
+            "object": "word-recall scores",
+            "polarity": "negative",
+            "claim_type": "causal"
+          }
+        ],
+        "issues": [
+          {
+            "category": "RETRACTED_SOURCE_DEPENDENCY",
+            "affected": [
+              "improve memory in older adults"
+            ],
+            "red": true
+          },
+          {
+            "category": "CATEGORICAL_CONFLICT",
+            "affected": [
+              "improve memory in older adults",
+              "found no difference in word-recall scores"
+            ],
+            "red": true
+          }
+        ],
+        "relations": [
+          {
+            "type": "CONTRADICTS",
+            "between": [
+              "improve memory in older adults",
+              "found no difference in word-recall scores"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "improved scores on a word-recall test",
+            "status": "RETRACTED"
+          },
+          {
+            "sentence": "improve memory in older adults",
+            "status": "CONTRADICTED"
+          }
+        ],
+        "independent_groups": [
+          [
+            "a",
+            "b"
+          ],
+          [
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H10",
+      "category": "ambiguous",
+      "description": "A sentence uses 'it' where either the committee or the regulator could have rejected the proposal.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "Marina plan back to the drawing board",
+          "author": "Oona Brekke",
+          "publisher": "Example Coast Gazette",
+          "published": "2023-09-29",
+          "url": "https://news.example.org/marina-plan",
+          "language": "en",
+          "text": "Members of the Harbour Planning Committee met officials from the Coastal Regulator on Thursday. The committee met with the regulator after it rejected the marina proposal. A revised proposal is expected in the spring.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "AMBIGUOUS_PROPOSITION",
+            "affected": [
+              "after it rejected the marina proposal"
+            ],
+            "red": false
+          }
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "H11",
+      "category": "no_issue",
+      "description": "A lab measurement of the speed of sound agrees with the textbook value within its stated uncertainty.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "textbook",
+          "title": "Foundations of Physics",
+          "author": "Lorenz Ekberg",
+          "publisher": "Example University Press",
+          "published": "2018-01-15",
+          "url": "https://press.example.org/foundations-physics",
+          "language": "en",
+          "text": "In dry air at 20 °C, sound travels at approximately 343 metres per second. The speed of sound in air increases with temperature.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "Lab 4: Resonance tube measurement",
+          "author": "Physics Lab Group 7",
+          "publisher": "Example Community College",
+          "published": "2024-02-20",
+          "url": "https://lab.example.org/group7/lab4",
+          "language": "en",
+          "text": "Our group measured the speed of sound in dry air at 20 °C using a resonance tube. The measured value was 342 ± 3 metres per second. This result is consistent with the accepted reference value.",
+          "basis": "experimental",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "sound travels at approximately 343 metres",
+            "subject": "speed of sound in dry air at 20 °C",
+            "predicate": "is approximately",
+            "object": "343 metres per second",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "measured value was 342 ± 3",
+            "subject": "measured speed of sound at 20 °C",
+            "predicate": "was",
+            "object": "342 ± 3 metres per second",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "relations": [
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "measured value was 342 ± 3",
+              "sound travels at approximately 343 metres"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "sound travels at approximately 343 metres",
+            "status": "SUPPORTED"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY",
+          "CATEGORICAL_CONFLICT",
+          "ARITHMETIC_ERROR"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H12",
+      "category": "genuine_contradiction",
+      "description": "Two sources name different towns as the place where the same treaty was signed in the same year.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "textbook",
+          "title": "A Short History of the Northern Duchies",
+          "author": "Edmund Farrow",
+          "publisher": "Example Historical Society Press",
+          "published": "2015-03-01",
+          "url": "https://history.example.org/northern-duchies",
+          "language": "en",
+          "text": "The Treaty of Kessmark ended the war between the duchies of Aldren and Voss. The treaty was signed in the harbour town of Orlavy in 1712. It transferred three border districts to Voss.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "paper",
+          "title": "Where was the Treaty of Kessmark signed?",
+          "author": "Marta Vilhelmsen",
+          "publisher": "Example Review of Early Modern History",
+          "published": "2020-10-10",
+          "url": "https://journals.example.com/eremh/kessmark",
+          "language": "en",
+          "text": "Archival letters show that the Treaty of Kessmark was signed in the inland town of Brennick in 1712. Under its terms, three border districts passed to Voss. The delegations never travelled to the coast during the negotiations.",
+          "basis": "observational",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "harbour town of Orlavy",
+            "subject": "Treaty of Kessmark",
+            "predicate": "was signed in",
+            "object": "Orlavy in 1712",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "inland town of Brennick",
+            "subject": "Treaty of Kessmark",
+            "predicate": "was signed in",
+            "object": "Brennick in 1712",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "CATEGORICAL_CONFLICT",
+            "affected": [
+              "harbour town of Orlavy",
+              "inland town of Brennick"
+            ],
+            "red": true
+          }
+        ],
+        "relations": [
+          {
+            "type": "CONTRADICTS",
+            "between": [
+              "harbour town of Orlavy",
+              "inland town of Brennick"
+            ]
+          },
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "three border districts passed to Voss",
+              "transferred three border districts"
+            ]
+          }
+        ],
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H13",
+      "category": "scope_difference",
+      "description": "Two unemployment figures for the same country refer to different years.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "Marovia Labour Market Review 2019",
+          "publisher": "Marovian Institute for Economic Studies",
+          "published": "2020-03-15",
+          "url": "https://econ.example.org/marovia-labour-2019",
+          "language": "en",
+          "text": "Marovia's unemployment rate stood at 4.2 percent in 2019, the lowest level in a decade. Employment growth was strongest in construction and logistics. Youth unemployment remained above 10 percent.",
+          "basis": "dataset",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "Marovia jobless rate climbs",
+          "author": "Leandro Viana",
+          "publisher": "Example Business Daily",
+          "published": "2022-02-10",
+          "url": "https://business.example.com/marovia-jobless",
+          "language": "en",
+          "text": "Marovia's unemployment rate was 6.8 percent in 2021, according to the national statistics office. Two large textile plants in the country closed in 2020. Economists expect the rate to fall slightly in 2022.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "stood at 4.2 percent in 2019",
+            "subject": "Marovia unemployment rate",
+            "predicate": "was",
+            "object": "4.2 percent in 2019",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          },
+          {
+            "sentence": "was 6.8 percent in 2021",
+            "subject": "Marovia unemployment rate",
+            "predicate": "was",
+            "object": "6.8 percent in 2021",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          },
+          {
+            "sentence": "expect the rate to fall slightly",
+            "subject": "Marovia unemployment rate",
+            "predicate": "will fall",
+            "object": "slightly in 2022",
+            "polarity": "positive",
+            "claim_type": "prediction"
+          }
+        ],
+        "relations": [
+          {
+            "type": "DIFFERS_IN_SCOPE",
+            "between": [
+              "stood at 4.2 percent in 2019",
+              "was 6.8 percent in 2021"
+            ]
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY",
+          "TEMPORAL_DISAGREEMENT"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H14",
+      "category": "numerical_error",
+      "description": "Three turbines of 3.5 MW each are said to total 12 MW instead of 10.5 MW.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "Tarrow Ridge Wind Farm: Project Summary",
+          "publisher": "Example Renewables Cooperative",
+          "published": "2022-07-01",
+          "url": "https://energy.example.com/tarrow-ridge",
+          "language": "en",
+          "text": "The Tarrow Ridge wind farm consists of three turbines. Each turbine has a rated capacity of 3.5 megawatts, giving the farm a total capacity of 12 megawatts. The turbines were commissioned in the spring of 2022. Average annual output is expected to cover the needs of about 6,000 homes.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "consists of three turbines",
+            "subject": "Tarrow Ridge wind farm",
+            "predicate": "consists of",
+            "object": "three turbines",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "total capacity of 12 megawatts",
+            "subject": "Tarrow Ridge wind farm",
+            "predicate": "has total capacity",
+            "object": "12 megawatts",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "ARITHMETIC_ERROR",
+            "affected": [
+              "total capacity of 12 megawatts"
+            ],
+            "red": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "H15",
+      "category": "misleading_quotation",
+      "description": "A news article quotes a trial leader with '20 percent' severe reactions where the original statement said 'fewer than 2 percent'.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "NV-7 phase 2 briefing transcript",
+          "publisher": "Northfield Vaccine Research Unit",
+          "published": "2024-05-06",
+          "url": "https://vaccines.example.org/nv7-briefing",
+          "language": "en",
+          "text": "The phase 2 trial of the nasal vaccine NV-7 enrolled 1,200 adults. At the briefing, trial leader Tomas Reyer said \"Fewer than 2 percent of participants reported severe reactions after the first dose.\" Full results will be submitted for peer review later this year.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "Safety worries over nasal vaccine",
+          "author": "Gina Holm",
+          "publisher": "Example Evening News",
+          "published": "2024-05-08",
+          "url": "https://news.example.com/nasal-vaccine-safety",
+          "language": "en",
+          "text": "A nasal vaccine trial has raised safety concerns. Trial leader Tomas Reyer said \"20 percent of participants reported severe reactions after the first dose.\" Several clinics have postponed enrolment in follow-up studies.",
+          "cites": [
+            "a"
+          ],
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "MISLEADING_QUOTATION",
+            "affected": [
+              "20 percent of participants reported"
+            ],
+            "red": true
+          }
+        ],
+        "relations": [
+          {
+            "type": "CONTRADICTS",
+            "between": [
+              "20 percent of participants reported",
+              "Fewer than 2 percent of participants"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "H16",
+      "category": "unsupported_causal",
+      "description": "A blog over-generalises a hedged result in trained male cyclists to everyone and drops the hedge.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "paper",
+          "title": "Dietary nitrate and 10-km time-trial performance",
+          "author": "Jonas Brekkan",
+          "publisher": "Example Journal of Sports Science",
+          "published": "2022-04-04",
+          "url": "https://journals.example.org/ejss/beetroot",
+          "language": "en",
+          "text": "Twenty-two trained male cyclists completed two 10-kilometre time trials in a crossover design. After drinking beetroot juice, their times were on average 1.5 percent faster than after a placebo drink. The authors conclude that beetroot juice may modestly improve performance in trained male cyclists. Effects in women, older adults and recreational athletes were not studied.",
+          "basis": "experimental",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "blog",
+          "title": "Beetroot: the endurance miracle",
+          "author": "VitalRoots Shop",
+          "published": "2022-05-01",
+          "url": "https://vitalroots.example.com/blog/beetroot",
+          "language": "en",
+          "text": "Science has spoken on beetroot juice. A new trial proves that beetroot juice boosts endurance for everyone, from teenagers to retirees. Our shop now sells it in one-litre bottles.",
+          "cites": [
+            "a"
+          ],
+          "basis": "secondary",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "may modestly improve performance",
+            "subject": "beetroot juice",
+            "predicate": "may improve",
+            "object": "performance in trained male cyclists",
+            "polarity": "positive",
+            "claim_type": "hypothesis"
+          },
+          {
+            "sentence": "boosts endurance for everyone",
+            "subject": "beetroot juice",
+            "predicate": "boosts",
+            "object": "endurance for everyone",
+            "polarity": "positive",
+            "claim_type": "causal"
+          }
+        ],
+        "issues": [
+          {
+            "category": "INVALID_INFERENCE",
+            "affected": [
+              "boosts endurance for everyone"
+            ],
+            "red": false
+          }
+        ],
+        "relations": [
+          {
+            "type": "DERIVED_FROM",
+            "between": [
+              "boosts endurance for everyone",
+              "may modestly improve performance"
+            ]
+          }
+        ],
+        "independent_groups": [
+          [
+            "a",
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H17",
+      "category": "dependent_sources",
+      "description": "Two news items rewrite a university press release; only a separate trial is independent corroboration.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "Daily walks lower blood pressure in older adults",
+          "publisher": "Westmarch University Press Office",
+          "published": "2023-06-12",
+          "url": "https://westmarch.example.org/news/walking-trial",
+          "language": "en",
+          "text": "A twelve-week trial at Westmarch University found that a daily 20-minute brisk walk lowered systolic blood pressure by an average of 5 mmHg. The trial enrolled 300 adults aged 60 to 75 with mild hypertension. Participants in the control group kept their usual routine.",
+          "basis": "experimental",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "A daily walk keeps blood pressure down",
+          "author": "Freya Lund",
+          "publisher": "Example Health News",
+          "published": "2023-06-13",
+          "url": "https://health.example.com/walking-bp",
+          "language": "en",
+          "text": "Brisk walking for 20 minutes a day cut systolic blood pressure by about 5 mmHg, according to a Westmarch University trial. The study followed 300 adults aged 60 to 75 who had mild hypertension for twelve weeks.",
+          "reproduces": "a",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "news",
+          "title": "Walking against hypertension",
+          "author": "Sam Okafor",
+          "publisher": "Example Morning Paper",
+          "published": "2023-06-14",
+          "url": "https://morning.example.org/walking-hypertension",
+          "language": "en",
+          "text": "Older adults who walked briskly for 20 minutes daily saw their systolic pressure fall by 5 mmHg, Westmarch University announced. Three hundred people with mild hypertension took part.",
+          "reproduces": "a",
+          "synthetic": true
+        },
+        {
+          "key": "d",
+          "kind": "paper",
+          "title": "Brisk walking as first-line therapy for mild hypertension",
+          "author": "Ilse Draver",
+          "publisher": "Example Journal of Cardiology",
+          "published": "2021-11-30",
+          "url": "https://journals.example.org/ejc/walking-hypertension",
+          "language": "en",
+          "text": "In a separate randomised trial of 210 adults aged 55 to 70 with mild hypertension, a daily brisk walk of 20 to 30 minutes reduced systolic blood pressure by 4 to 6 mmHg after ten weeks. The trial was conducted at a clinic in Harrowgate and had no connection to the Westmarch study.",
+          "basis": "experimental",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "lowered systolic blood pressure",
+            "subject": "daily 20-minute brisk walk",
+            "predicate": "lowers",
+            "object": "systolic blood pressure by 5 mmHg",
+            "polarity": "positive",
+            "claim_type": "causal"
+          },
+          {
+            "sentence": "reduced systolic blood pressure by 4 to 6 mmHg",
+            "subject": "daily brisk walk of 20 to 30 minutes",
+            "predicate": "reduces",
+            "object": "systolic blood pressure by 4 to 6 mmHg",
+            "polarity": "positive",
+            "claim_type": "causal"
+          }
+        ],
+        "issues": [
+          {
+            "category": "DEPENDENT_CORROBORATION",
+            "affected": [
+              "according to a Westmarch University trial",
+              "Westmarch University announced"
+            ],
+            "red": false
+          }
+        ],
+        "relations": [
+          {
+            "type": "DERIVED_FROM",
+            "between": [
+              "according to a Westmarch University trial",
+              "lowered systolic blood pressure"
+            ]
+          },
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "reduced systolic blood pressure by 4 to 6 mmHg",
+              "lowered systolic blood pressure"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "lowered systolic blood pressure",
+            "status": "SUPPORTED"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a",
+            "b",
+            "c"
+          ],
+          [
+            "d"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H18",
+      "category": "translation_error",
+      "description": "A French 'peut' (may) in a tenancy law is translated as 'must', turning a right into an obligation.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "web",
+          "title": "Ce que change la nouvelle loi sur les baux",
+          "publisher": "Example Guide Juridique",
+          "published": "2024-01-08",
+          "url": "https://droit.example.org/nouvelle-loi-baux",
+          "language": "fr",
+          "text": "Selon la nouvelle loi, le locataire peut résilier le bail avec un préavis d'un mois. Le propriétaire doit respecter un préavis de six mois. La loi est entrée en vigueur le 1er janvier 2024.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "web",
+          "title": "What the new tenancy law changes (English translation)",
+          "publisher": "Example Expat Advice",
+          "published": "2024-01-15",
+          "url": "https://expat.example.com/tenancy-law-translation",
+          "language": "en",
+          "text": "Under the new law, the tenant must terminate the lease with one month's notice. The landlord must give six months' notice. The law came into force on 1 January 2024.",
+          "translation_of": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "landlord must give six months' notice",
+            "subject": "landlord",
+            "predicate": "must give",
+            "object": "six months' notice",
+            "polarity": "positive",
+            "claim_type": "normative"
+          }
+        ],
+        "issues": [
+          {
+            "category": "TRANSLATION_DISCREPANCY",
+            "affected": [
+              "tenant must terminate the lease",
+              "locataire peut résilier le bail"
+            ],
+            "red": true
+          }
+        ],
+        "independent_groups": [
+          [
+            "a",
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H19",
+      "category": "low_reputation_correct",
+      "description": "A social media claim of a record-hot marathon day is confirmed by the municipal weather station record.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "dunmore_runner_88",
+          "published": "2023-06-18",
+          "url": "https://social.example.com/dunmore_runner_88/post/5521",
+          "language": "en",
+          "text": "The Dunmore Marathon was run in 31 degrees Celsius heat today. That makes it the hottest edition of the race on record. The previous record was 28 degrees Celsius in 2015.",
+          "basis": "anecdotal",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "dataset",
+          "title": "Dunmore station: race-day temperature summary",
+          "publisher": "Dunmore Municipal Weather Station",
+          "published": "2023-06-19",
+          "url": "https://weather.example.org/dunmore/race-days",
+          "language": "en",
+          "text": "On 18 June 2023, the Dunmore station recorded an air temperature of 31.2 °C at noon. This is the highest noon temperature on any Dunmore Marathon race day since the race began in 1998. The previous highest race-day noon temperature was 28.4 °C on 21 June 2015.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "hottest edition of the race on record",
+            "subject": "2023 Dunmore Marathon",
+            "predicate": "is",
+            "object": "hottest edition on record",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "recorded an air temperature of 31.2",
+            "subject": "Dunmore station on 18 June 2023",
+            "predicate": "recorded",
+            "object": "31.2 °C at noon",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "relations": [
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "highest noon temperature on any Dunmore Marathon",
+              "hottest edition of the race on record"
+            ]
+          },
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "recorded an air temperature of 31.2",
+              "31 degrees Celsius heat today"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "hottest edition of the race on record",
+            "status": "SUPPORTED"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H20",
+      "category": "high_reputation_incorrect",
+      "description": "A reference work gives an opening year for a canal that two independent primary records contradict.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "book",
+          "title": "Encyclopedia of Inland Waterways",
+          "author": "Gwendolyn Marsh",
+          "publisher": "Example Reference Books",
+          "published": "2012-09-01",
+          "url": "https://reference.example.com/waterways",
+          "language": "en",
+          "text": "The Haldane Canal, opened in 1823, linked the Eastfield coal pits with the port of Selwick. It was 27 kilometres long and had 11 locks.",
+          "basis": "secondary",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "dataset",
+          "title": "Haldane Canal Company minute books, transcribed",
+          "publisher": "Selwick County Archive",
+          "published": "2019-02-14",
+          "url": "https://archive.example.org/haldane-minutes",
+          "language": "en",
+          "text": "The minutes of the Haldane Canal Company record that the canal opened to boat traffic on 14 May 1831. The company's directors approved the final payment to the lock builders in April 1831.",
+          "basis": "dataset",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "news",
+          "title": "Opening of the Haldane Canal",
+          "publisher": "Selwick Example Courier",
+          "published": "1831-05-16",
+          "url": "https://archive.example.org/courier/1831-05-16",
+          "language": "en",
+          "text": "The Haldane Canal was opened on 14 May 1831, when the first coal barges passed through the Eastfield locks. A large crowd gathered at the Selwick basin to watch their arrival.",
+          "basis": "observational",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "opened in 1823",
+            "subject": "Haldane Canal",
+            "predicate": "opened in",
+            "object": "1823",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "opened to boat traffic on 14 May 1831",
+            "subject": "Haldane Canal",
+            "predicate": "opened on",
+            "object": "14 May 1831",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "TEMPORAL_DISAGREEMENT",
+            "affected": [
+              "opened in 1823",
+              "opened to boat traffic on 14 May 1831"
+            ],
+            "red": true
+          }
+        ],
+        "relations": [
+          {
+            "type": "CONTRADICTS",
+            "between": [
+              "opened in 1823",
+              "opened to boat traffic on 14 May 1831"
+            ]
+          },
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "first coal barges passed through",
+              "opened to boat traffic on 14 May 1831"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "opened in 1823",
+            "status": "CONTRADICTED"
+          },
+          {
+            "sentence": "opened to boat traffic on 14 May 1831",
+            "status": "SUPPORTED"
+          }
+        ],
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ],
+          [
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H21",
+      "category": "ambiguous",
+      "description": "A water-quality note reports a nitrate value without a unit and a vague 'many farms' claim.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "blog",
+          "title": "Ardle River summer sampling",
+          "author": "Ardle Rivers Trust volunteers",
+          "published": "2023-09-04",
+          "url": "https://ardletrust.example.org/summer-sampling",
+          "language": "en",
+          "text": "Water samples from the Ardle River were taken at six sites in July 2023. At the Millbrook site, the nitrate concentration reached 50. Many nearby farms have since changed their fertiliser schedules.",
+          "basis": "observational",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "the nitrate concentration reached 50",
+            "subject": "nitrate concentration at Millbrook site",
+            "predicate": "reached",
+            "object": "50 (unit unspecified)",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "issues": [
+          {
+            "category": "AMBIGUOUS_PROPOSITION",
+            "affected": [
+              "the nitrate concentration reached 50"
+            ],
+            "red": false
+          },
+          {
+            "category": "AMBIGUOUS_PROPOSITION",
+            "affected": [
+              "Many nearby farms have since changed"
+            ],
+            "red": false
+          }
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "H22",
+      "category": "no_issue",
+      "description": "Two independent sources agree on a lighthouse's date and height; one sentence is an opinion.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "book",
+          "title": "Lights of the Western Shore",
+          "author": "Bronwen Teague",
+          "publisher": "Example Maritime Books",
+          "published": "2010-05-20",
+          "url": "https://maritime.example.com/lights-western-shore",
+          "language": "en",
+          "text": "The Carrow Point lighthouse was first lit in 1872. Its stone tower is 38 metres tall and was designed by the engineer Matthias Hale. In my view it is the most elegant lighthouse on the coast.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "web",
+          "title": "Visit Carrow Point",
+          "publisher": "Carrow Heritage Society",
+          "published": "2021-04-02",
+          "url": "https://heritage.example.org/carrow-point",
+          "language": "en",
+          "text": "Carrow Point lighthouse has guided ships since 1872. Visitors can climb the 38-metre tower on summer weekends. The light was automated in 1984.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "first lit in 1872",
+            "subject": "Carrow Point lighthouse",
+            "predicate": "was first lit in",
+            "object": "1872",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "most elegant lighthouse on the coast",
+            "subject": "Carrow Point lighthouse",
+            "predicate": "is",
+            "object": "most elegant lighthouse on the coast",
+            "polarity": "positive",
+            "claim_type": "opinion"
+          }
+        ],
+        "relations": [
+          {
+            "type": "SUPPORTS",
+            "between": [
+              "guided ships since 1872",
+              "first lit in 1872"
+            ]
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "first lit in 1872",
+            "status": "SUPPORTED"
+          },
+          {
+            "sentence": "most elegant lighthouse on the coast",
+            "status": "OUT_OF_SCOPE"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "NUMERICAL_INCONSISTENCY",
+          "TEMPORAL_DISAGREEMENT",
+          "CATEGORICAL_CONFLICT"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a"
+          ],
+          [
+            "b"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "H23",
+      "category": "no_issue",
+      "description": "A report with correct arithmetic that explicitly declines to draw a causal conclusion.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "First-year statistics exam results 2024",
+          "publisher": "Brookfield College Examinations Office",
+          "published": "2024-05-30",
+          "url": "https://brookfield.example.org/exams/stats-2024",
+          "language": "en",
+          "text": "In the 2024 spring term, 250 students at Brookfield College sat the first-year statistics exam. Of these, 150 passed, giving a pass rate of 60 percent. The remaining 100 students may retake the exam in June. The pass rate was 52 percent in the previous year, so it rose by 8 percentage points. The college notes that the rise coincided with a new tutoring scheme but does not conclude that the scheme caused it.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "giving a pass rate of 60 percent",
+            "subject": "Brookfield statistics exam 2024",
+            "predicate": "has pass rate",
+            "object": "60 percent",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          },
+          {
+            "sentence": "rose by 8 percentage points",
+            "subject": "Brookfield statistics exam pass rate",
+            "predicate": "rose by",
+            "object": "8 percentage points",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          },
+          {
+            "sentence": "coincided with a new tutoring scheme",
+            "subject": "rise in pass rate",
+            "predicate": "coincided with",
+            "object": "new tutoring scheme",
+            "polarity": "positive",
+            "claim_type": "correlational"
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "giving a pass rate of 60 percent",
+            "status": "UNVERIFIED"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "ARITHMETIC_ERROR",
+          "UNSUPPORTED_CAUSAL_CLAIM",
+          "INVALID_INFERENCE"
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "H24",
+      "category": "no_issue",
+      "description": "A faithful English translation of a Spanish physics text; 300.000 and 300,000 are the same number in different locales.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "textbook",
+          "title": "Física para bachillerato",
+          "author": "Rocío Almagro",
+          "publisher": "Editorial Ejemplo",
+          "published": "2017-09-01",
+          "url": "https://editorial.example.com/fisica-bachillerato",
+          "language": "es",
+          "text": "La luz viaja en el vacío a unos 300.000 kilómetros por segundo. En el agua su velocidad es aproximadamente un 25 por ciento menor. Esta diferencia de velocidad explica por qué un lápiz parece doblado dentro de un vaso de agua.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "textbook",
+          "title": "Physics for upper secondary school (English translation)",
+          "author": "Rocío Almagro",
+          "publisher": "Example Educational Translations",
+          "published": "2019-02-01",
+          "url": "https://translations.example.org/physics-upper-secondary",
+          "language": "en",
+          "text": "In a vacuum, light travels at about 300,000 kilometres per second. In water its speed is roughly 25 percent lower. This difference in speed explains why a pencil appears bent inside a glass of water.",
+          "translation_of": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "light travels at about 300,000 kilometres",
+            "subject": "light in a vacuum",
+            "predicate": "travels at",
+            "object": "about 300,000 kilometres per second",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "roughly 25 percent lower",
+            "subject": "speed of light in water",
+            "predicate": "is lower by",
+            "object": "roughly 25 percent",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "difference in speed explains why a pencil",
+            "subject": "difference in speed of light",
+            "predicate": "explains",
+            "object": "pencil appearing bent in water",
+            "polarity": "positive",
+            "claim_type": "causal"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "TRANSLATION_DISCREPANCY",
+          "NUMERICAL_INCONSISTENCY",
+          "UNSUPPORTED_CAUSAL_CLAIM"
+        ],
+        "no_red": true,
+        "independent_groups": [
+          [
+            "a",
+            "b"
+          ]
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+---
+key: norvik-ko
+kind: news
+title: 노르빅 노동시장 (합성 예시)
+publisher: 예시 신문
+published: 2024-02-11
+language: ko
+synthetic: true
+---
+노르빅의 실업률은 2023년에 6.1퍼센트였다. 이 프로그램은 비용을 줄이지 못한다.
