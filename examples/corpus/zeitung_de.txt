@@ -1,0 +1,10 @@
+---
+key: zeitung-de
+kind: news
+title: Arbeitsmarkt Norvik (synthetisches Beispiel)
+publisher: Beispiel Zeitung
+published: 2024-02-10
+language: de
+synthetic: true
+---
+Die Arbeitslosenquote in Norvik lag 2023 bei 6,1 Prozent. Das Programm kann die Kosten nicht senken.

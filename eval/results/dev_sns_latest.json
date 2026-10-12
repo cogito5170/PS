@@ -1,0 +1,747 @@
+{
+ "dev_sns": {
+  "aggregate": {
+   "cases": 10,
+   "issues_strict": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "issues_family": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "gold": 6,
+    "pred": 6
+   },
+   "per_category": {
+    "AMBIGUOUS_PROPOSITION": {
+     "gold": 1,
+     "found": 1,
+     "pred": 1,
+     "pred_matched": 1
+    },
+    "ARITHMETIC_ERROR": {
+     "gold": 1,
+     "found": 1,
+     "pred": 1,
+     "pred_matched": 1
+    },
+    "NUMERICAL_INCONSISTENCY": {
+     "gold": 1,
+     "found": 1,
+     "pred": 1,
+     "pred_matched": 1
+    },
+    "TEMPORAL_DISAGREEMENT": {
+     "gold": 3,
+     "found": 3,
+     "pred": 3,
+     "pred_matched": 3
+    }
+   },
+   "contradiction_detection": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "gold": 4,
+    "pred": 4
+   },
+   "red": {
+    "total": 5,
+    "matched_gold": 5,
+    "precision": 1.0,
+    "no_red_cases": 5,
+    "no_red_cases_with_false_alarm": 0,
+    "false_alarm_case_rate": 0.0,
+    "red_label_agreement_on_found_issues": 1.0
+   },
+   "forbidden_violations": 0,
+   "propositions": {
+    "gold": 0,
+    "tp": 0,
+    "recall": null,
+    "pred_in_labeled_sentences": 0,
+    "precision_proxy": null
+   },
+   "relations": {
+    "gold": 0,
+    "tp": 0,
+    "recall": null,
+    "pred_of_labeled_types": 0
+   },
+   "statuses": {
+    "gold": 0,
+    "correct": 0,
+    "accuracy": null
+   },
+   "independence": {
+    "pairs": 0,
+    "agree": 0,
+    "accuracy": null
+   },
+   "traceability": {
+    "props": 20,
+    "traceable": 20,
+    "coverage": 1.0
+   },
+   "integrity_errors": 0,
+   "issue_calibration": {
+    "n": 6,
+    "brier": 0.0825,
+    "ece": 0.2667,
+    "bins": {
+     "0.6-0.8": {
+      "n": 5,
+      "mean_conf": 0.69,
+      "accuracy": 1
+     },
+     "0.8-1.0": {
+      "n": 1,
+      "mean_conf": 0.95,
+      "accuracy": 1
+     }
+    }
+   },
+   "status_calibration": {
+    "n": 0
+   },
+   "compression_ratio": 0.9166666666666666,
+   "latency": {
+    "total_s": 0.0594,
+    "mean_case_ms": 5.94,
+    "max_case_ms": 35.39,
+    "ms_per_proposition": 2.972
+   },
+   "model_calls": 0
+  },
+  "cases": [
+   {
+    "id": "SD01",
+    "category": "timeline_consistent",
+    "seconds": 0.03538741299996673,
+    "n_props": 4,
+    "model_calls": 0,
+    "issues": {
+     "gold": 0,
+     "pred": 0,
+     "tp_strict": 0,
+     "tp_family": 0,
+     "pred_matched_strict": 0,
+     "pred_matched_family": 0,
+     "gold_detail": [],
+     "pred_detail": []
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 0,
+     "matched": 0,
+     "no_red_case": true,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 4,
+     "traceable": 4
+    },
+    "integrity_errors": [],
+    "issue_calibration": [],
+    "compression": {
+     "source_words": 21,
+     "core_words": 19
+    }
+   },
+   {
+    "id": "SD02",
+    "category": "timeline_inconsistency",
+    "seconds": 0.0020267789999479646,
+    "n_props": 3,
+    "model_calls": 0,
+    "issues": {
+     "gold": 1,
+     "pred": 1,
+     "tp_strict": 1,
+     "tp_family": 1,
+     "pred_matched_strict": 1,
+     "pred_matched_family": 1,
+     "gold_detail": [
+      {
+       "category": "TEMPORAL_DISAGREEMENT",
+       "strict": true,
+       "family": true,
+       "red_expected": true,
+       "red_got": true
+      }
+     ],
+     "pred_detail": [
+      {
+       "id": "I-000001",
+       "category": "TEMPORAL_DISAGREEMENT",
+       "red": true,
+       "confidence": 0.7,
+       "matched": true
+      }
+     ]
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 1,
+     "matched": 1,
+     "no_red_case": false,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 3,
+     "traceable": 3
+    },
+    "integrity_errors": [],
+    "issue_calibration": [
+     [
+      0.7,
+      true
+     ]
+    ],
+    "compression": {
+     "source_words": 12,
+     "core_words": 11
+    }
+   },
+   {
+    "id": "SD03",
+    "category": "timeline_inconsistency",
+    "seconds": 0.0011033040000256733,
+    "n_props": 2,
+    "model_calls": 0,
+    "issues": {
+     "gold": 1,
+     "pred": 1,
+     "tp_strict": 1,
+     "tp_family": 1,
+     "pred_matched_strict": 1,
+     "pred_matched_family": 1,
+     "gold_detail": [
+      {
+       "category": "TEMPORAL_DISAGREEMENT",
+       "strict": true,
+       "family": true,
+       "red_expected": true,
+       "red_got": true
+      }
+     ],
+     "pred_detail": [
+      {
+       "id": "I-000001",
+       "category": "TEMPORAL_DISAGREEMENT",
+       "red": true,
+       "confidence": 0.7,
+       "matched": true
+      }
+     ]
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 1,
+     "matched": 1,
+     "no_red_case": false,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 2,
+     "traceable": 2
+    },
+    "integrity_errors": [],
+    "issue_calibration": [
+     [
+      0.7,
+      true
+     ]
+    ],
+    "compression": {
+     "source_words": 9,
+     "core_words": 10
+    }
+   },
+   {
+    "id": "SD04",
+    "category": "timeline_consistent",
+    "seconds": 0.011251542000081827,
+    "n_props": 2,
+    "model_calls": 0,
+    "issues": {
+     "gold": 0,
+     "pred": 0,
+     "tp_strict": 0,
+     "tp_family": 0,
+     "pred_matched_strict": 0,
+     "pred_matched_family": 0,
+     "gold_detail": [],
+     "pred_detail": []
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 0,
+     "matched": 0,
+     "no_red_case": true,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 2,
+     "traceable": 2
+    },
+    "integrity_errors": [],
+    "issue_calibration": [],
+    "compression": {
+     "source_words": 23,
+     "core_words": 17
+    }
+   },
+   {
+    "id": "SD05",
+    "category": "timeline_inconsistency",
+    "seconds": 0.001286395999954948,
+    "n_props": 1,
+    "model_calls": 0,
+    "issues": {
+     "gold": 1,
+     "pred": 1,
+     "tp_strict": 1,
+     "tp_family": 1,
+     "pred_matched_strict": 1,
+     "pred_matched_family": 1,
+     "gold_detail": [
+      {
+       "category": "TEMPORAL_DISAGREEMENT",
+       "strict": true,
+       "family": true,
+       "red_expected": true,
+       "red_got": true
+      }
+     ],
+     "pred_detail": [
+      {
+       "id": "I-000001",
+       "category": "TEMPORAL_DISAGREEMENT",
+       "red": true,
+       "confidence": 0.7,
+       "matched": true
+      }
+     ]
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 1,
+     "matched": 1,
+     "no_red_case": false,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 1,
+     "traceable": 1
+    },
+    "integrity_errors": [],
+    "issue_calibration": [
+     [
+      0.7,
+      true
+     ]
+    ],
+    "compression": {
+     "source_words": 12,
+     "core_words": 9
+    }
+   },
+   {
+    "id": "SD06",
+    "category": "timeline_consistent",
+    "seconds": 0.0012341770000148244,
+    "n_props": 2,
+    "model_calls": 0,
+    "issues": {
+     "gold": 0,
+     "pred": 0,
+     "tp_strict": 0,
+     "tp_family": 0,
+     "pred_matched_strict": 0,
+     "pred_matched_family": 0,
+     "gold_detail": [],
+     "pred_detail": []
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 0,
+     "matched": 0,
+     "no_red_case": true,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 2,
+     "traceable": 2
+    },
+    "integrity_errors": [],
+    "issue_calibration": [],
+    "compression": {
+     "source_words": 10,
+     "core_words": 9
+    }
+   },
+   {
+    "id": "SD07",
+    "category": "numerical_error",
+    "seconds": 0.0027347610000560962,
+    "n_props": 1,
+    "model_calls": 0,
+    "issues": {
+     "gold": 1,
+     "pred": 1,
+     "tp_strict": 1,
+     "tp_family": 1,
+     "pred_matched_strict": 1,
+     "pred_matched_family": 1,
+     "gold_detail": [
+      {
+       "category": "ARITHMETIC_ERROR",
+       "strict": true,
+       "family": true,
+       "red_expected": true,
+       "red_got": true
+      }
+     ],
+     "pred_detail": [
+      {
+       "id": "I-000001",
+       "category": "ARITHMETIC_ERROR",
+       "red": true,
+       "confidence": 0.95,
+       "matched": true
+      }
+     ]
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 1,
+     "matched": 1,
+     "no_red_case": false,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 1,
+     "traceable": 1
+    },
+    "integrity_errors": [],
+    "issue_calibration": [
+     [
+      0.95,
+      true
+     ]
+    ],
+    "compression": {
+     "source_words": 7,
+     "core_words": 4
+    }
+   },
+   {
+    "id": "SD08",
+    "category": "genuine_contradiction",
+    "seconds": 0.002586084999961713,
+    "n_props": 2,
+    "model_calls": 0,
+    "issues": {
+     "gold": 1,
+     "pred": 1,
+     "tp_strict": 1,
+     "tp_family": 1,
+     "pred_matched_strict": 1,
+     "pred_matched_family": 1,
+     "gold_detail": [
+      {
+       "category": "NUMERICAL_INCONSISTENCY",
+       "strict": true,
+       "family": true,
+       "red_expected": true,
+       "red_got": true
+      }
+     ],
+     "pred_detail": [
+      {
+       "id": "I-000001",
+       "category": "NUMERICAL_INCONSISTENCY",
+       "red": true,
+       "confidence": 0.75,
+       "matched": true
+      }
+     ]
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 1,
+     "matched": 1,
+     "no_red_case": false,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 2,
+     "traceable": 2
+    },
+    "integrity_errors": [],
+    "issue_calibration": [
+     [
+      0.75,
+      true
+     ]
+    ],
+    "compression": {
+     "source_words": 10,
+     "core_words": 12
+    }
+   },
+   {
+    "id": "SD09",
+    "category": "ambiguous",
+    "seconds": 0.0005133339999474629,
+    "n_props": 1,
+    "model_calls": 0,
+    "issues": {
+     "gold": 1,
+     "pred": 1,
+     "tp_strict": 1,
+     "tp_family": 1,
+     "pred_matched_strict": 1,
+     "pred_matched_family": 1,
+     "gold_detail": [
+      {
+       "category": "AMBIGUOUS_PROPOSITION",
+       "strict": true,
+       "family": true,
+       "red_expected": false,
+       "red_got": false
+      }
+     ],
+     "pred_detail": [
+      {
+       "id": "I-000001",
+       "category": "AMBIGUOUS_PROPOSITION",
+       "red": false,
+       "confidence": 0.6,
+       "matched": true
+      }
+     ]
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 0,
+     "matched": 0,
+     "no_red_case": true,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 1,
+     "traceable": 1
+    },
+    "integrity_errors": [],
+    "issue_calibration": [
+     [
+      0.6,
+      true
+     ]
+    ],
+    "compression": {
+     "source_words": 8,
+     "core_words": 8
+    }
+   },
+   {
+    "id": "SD10",
+    "category": "no_issue",
+    "seconds": 0.0013111929999922722,
+    "n_props": 2,
+    "model_calls": 0,
+    "issues": {
+     "gold": 0,
+     "pred": 0,
+     "tp_strict": 0,
+     "tp_family": 0,
+     "pred_matched_strict": 0,
+     "pred_matched_family": 0,
+     "gold_detail": [],
+     "pred_detail": []
+    },
+    "forbidden_violations": [],
+    "red": {
+     "n": 0,
+     "matched": 0,
+     "no_red_case": true,
+     "false_alarm": false
+    },
+    "propositions": {
+     "gold": 0,
+     "tp": 0,
+     "pred_in_labeled_sentences": 0
+    },
+    "relations": {
+     "gold": 0,
+     "tp": 0,
+     "pred_of_labeled_types": 0
+    },
+    "statuses": {
+     "gold": 0,
+     "correct": 0,
+     "detail": []
+    },
+    "status_calibration": [],
+    "traceability": {
+     "props": 2,
+     "traceable": 2
+    },
+    "integrity_errors": [],
+    "issue_calibration": [],
+    "compression": {
+     "source_words": 8,
+     "core_words": 11
+    }
+   }
+  ]
+ }
+}

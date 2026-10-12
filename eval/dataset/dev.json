@@ -1,0 +1,1295 @@
+{
+ "dataset": "dev",
+ "version": "1",
+ "cases": [
+  {
+   "id": "D01",
+   "category": "genuine_contradiction",
+   "description": "Two sources state different spans for the same bridge.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "The Halden Bridge has a main span of 420 metres. It opened to traffic last spring.",
+     "synthetic": true,
+     "publisher": "Example Post",
+     "published": "2023-03-01"
+    },
+    {
+     "key": "b",
+     "kind": "web",
+     "text": "The Halden Bridge has a main span of 380 metres.",
+     "synthetic": true,
+     "publisher": "Bridges Wiki (example)",
+     "published": "2023-05-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "NUMERICAL_INCONSISTENCY",
+      "affected": [
+       "span of 420 metres",
+       "span of 380 metres"
+      ],
+      "red": true
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "span of 420 metres",
+      "subject": "main span of halden bridge",
+      "predicate": "has_value",
+      "object": "420 metres"
+     }
+    ],
+    "relations": [
+     {
+      "type": "CONTRADICTS",
+      "between": [
+       "span of 420 metres",
+       "span of 380 metres"
+      ]
+     }
+    ],
+    "independent_groups": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "D02",
+   "category": "genuine_contradiction",
+   "description": "Functional attribute (capital) with two different values.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "textbook",
+     "text": "The capital of Ostria is Lenburg.",
+     "synthetic": true,
+     "published": "2020-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "blog",
+     "text": "The capital of Ostria is Varna.",
+     "synthetic": true,
+     "published": "2022-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "CATEGORICAL_CONFLICT",
+      "affected": [
+       "is Lenburg",
+       "is Varna"
+      ],
+      "red": true
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "is Lenburg",
+      "subject": "capital of ostria",
+      "predicate": "is",
+      "object": "lenburg"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D03",
+   "category": "genuine_contradiction",
+   "description": "A single document gives two opening years for the same museum.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "web",
+     "text": "The Kessel museum opened in 1987. Visitors were few at first. The Kessel museum opened in 1991 after long delays.",
+     "synthetic": true,
+     "published": "2021-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "INTERNAL_INCONSISTENCY",
+      "affected": [
+       "opened in 1987",
+       "opened in 1991"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D04",
+   "category": "genuine_contradiction",
+   "description": "Different signing years for a treaty.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "book",
+     "text": "The Treaty of Mardel was signed in 1648.",
+     "synthetic": true,
+     "published": "2010-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "web",
+     "text": "The Treaty of Mardel was signed in 1658.",
+     "synthetic": true,
+     "published": "2015-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TEMPORAL_DISAGREEMENT",
+      "affected": [
+       "signed in 1648",
+       "signed in 1658"
+      ],
+      "red": true
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "signed in 1648",
+      "subject": "treaty of mardel",
+      "predicate": "signed_in",
+      "object": "1648"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D05",
+   "category": "scope_difference",
+   "description": "Opposite effects under different experimental conditions.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "paper",
+     "text": "Policy X reduced costs by 20% under experimental conditions A.",
+     "synthetic": true,
+     "basis": "experimental",
+     "published": "2022-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "paper",
+     "text": "Policy X increased costs by 5% under experimental conditions B.",
+     "synthetic": true,
+     "basis": "experimental",
+     "published": "2022-06-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "NUMERICAL_INCONSISTENCY",
+     "CATEGORICAL_CONFLICT"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "conditions A",
+       "conditions B"
+      ]
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "conditions A",
+      "subject": "policy x",
+      "predicate": "decreases",
+      "object": "cost"
+     },
+     {
+      "sentence": "conditions B",
+      "subject": "policy x",
+      "predicate": "increases",
+      "object": "cost"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D06",
+   "category": "scope_difference",
+   "description": "Unemployment figures for different years.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "Unemployment in Tarvia was 7.2% in 2019.",
+     "synthetic": true,
+     "published": "2020-01-10"
+    },
+    {
+     "key": "b",
+     "kind": "news",
+     "text": "Unemployment in Tarvia was 4.1% in 2022.",
+     "synthetic": true,
+     "published": "2023-01-10"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "NUMERICAL_INCONSISTENCY"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "7.2% in 2019",
+       "4.1% in 2022"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "D07",
+   "category": "scope_difference",
+   "description": "Effect in adults vs no effect in children.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "paper",
+     "text": "The drug lowered blood pressure in adults.",
+     "synthetic": true,
+     "published": "2021-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "paper",
+     "text": "The drug did not lower blood pressure in children.",
+     "synthetic": true,
+     "published": "2021-06-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "CATEGORICAL_CONFLICT",
+     "MISSING_CONDITION"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "in adults",
+       "in children"
+      ]
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "did not lower",
+      "subject": "drug",
+      "predicate": "decreases",
+      "object": "blood pressure",
+      "polarity": "negative"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D08",
+   "category": "scope_difference",
+   "description": "Different measures (time vs distance) for the same commute.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "The average commute in Brenna is 30 minutes.",
+     "synthetic": true,
+     "published": "2022-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "news",
+     "text": "The average commute in Brenna is 12 kilometres.",
+     "synthetic": true,
+     "published": "2022-02-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "NUMERICAL_INCONSISTENCY"
+    ]
+   }
+  },
+  {
+   "id": "D09",
+   "category": "numerical_error",
+   "description": "Percent change computed wrongly.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "Ticket sales rose from 1,000 to 1,500 in 2023, a 25% increase.",
+     "synthetic": true,
+     "published": "2024-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "ARITHMETIC_ERROR",
+      "affected": [
+       "a 25% increase"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D10",
+   "category": "numerical_error",
+   "description": "Share computed wrongly.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "report",
+     "text": "In the survey, 30 of 120 respondents, or 40%, preferred the new design.",
+     "synthetic": true,
+     "published": "2024-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "ARITHMETIC_ERROR",
+      "affected": [
+       "or 40%"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D11",
+   "category": "numerical_error",
+   "description": "Components do not add up to the stated total.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "report",
+     "text": "The three programmes received 40 million, 30 million and 10 million euros, a total of 90 million euros.",
+     "synthetic": true,
+     "published": "2024-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "ARITHMETIC_ERROR",
+      "affected": [
+       "a total of 90 million"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D12",
+   "category": "no_issue",
+   "description": "Correct percent change must not be flagged.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "Membership grew from 400 to 500 in 2023, a 25% increase.",
+     "synthetic": true,
+     "published": "2024-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "ARITHMETIC_ERROR"
+    ],
+    "propositions": [
+     {
+      "sentence": "Membership grew",
+      "subject": "membership",
+      "predicate": "increased",
+      "object": "400 500"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D13",
+   "category": "misleading_quotation",
+   "description": "Quotation drops a negation.",
+   "documents": [
+    {
+     "key": "orig",
+     "kind": "paper",
+     "text": "The vaccine is not effective in infants under six months.",
+     "synthetic": true,
+     "author": "Lena Ortiz",
+     "published": "2022-01-01"
+    },
+    {
+     "key": "news",
+     "kind": "news",
+     "text": "Dr. Ortiz said \"the vaccine is effective in infants under six months\".",
+     "synthetic": true,
+     "publisher": "Example Gazette",
+     "published": "2022-02-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "MISLEADING_QUOTATION",
+      "affected": [
+       "Dr. Ortiz said"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D14",
+   "category": "misleading_quotation",
+   "description": "Verbatim quotation that omits the qualifying clause.",
+   "documents": [
+    {
+     "key": "orig",
+     "kind": "paper",
+     "text": "Remote work may raise productivity, but only for experienced employees.",
+     "synthetic": true,
+     "author": "Kim Example",
+     "published": "2022-01-01"
+    },
+    {
+     "key": "blog",
+     "kind": "blog",
+     "text": "Prof. Example said \"remote work may raise productivity\".",
+     "synthetic": true,
+     "published": "2022-03-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "MISLEADING_QUOTATION",
+      "affected": [
+       "Prof. Example said"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D15",
+   "category": "no_issue",
+   "description": "Accurate verbatim quotation.",
+   "documents": [
+    {
+     "key": "orig",
+     "kind": "report",
+     "text": "The new rail line will open in 2027.",
+     "synthetic": true,
+     "author": "Ana Example",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "news",
+     "kind": "news",
+     "text": "Minister Ana Example said \"the new rail line will open in 2027\".",
+     "synthetic": true,
+     "published": "2023-02-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "MISLEADING_QUOTATION"
+    ]
+   }
+  },
+  {
+   "id": "D16",
+   "category": "unsupported_causal",
+   "description": "Causal conclusion from a correlational survey.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "A survey of 2,000 households found that family dinners are associated with better grades among children. Therefore, family dinners improve grades.",
+     "synthetic": true,
+     "published": "2023-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "UNSUPPORTED_CAUSAL_CLAIM",
+      "affected": [
+       "family dinners improve grades"
+      ],
+      "red": true
+     },
+     {
+      "category": "INVALID_INFERENCE",
+      "affected": [
+       "family dinners improve grades"
+      ],
+      "red": true
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "associated with better grades",
+      "subject": "family dinners",
+      "predicate": "correlates_with",
+      "object": "better grades"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D17",
+   "category": "unsupported_causal",
+   "description": "Hedged premise turned into an asserted conclusion.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "Early results suggest that the supplement may improve sleep quality. Therefore, the supplement improves sleep quality.",
+     "synthetic": true,
+     "published": "2023-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "INVALID_INFERENCE",
+      "affected": [
+       "the supplement improves sleep quality"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D18",
+   "category": "no_issue",
+   "description": "Causal claim from a randomized trial is not flagged.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "paper",
+     "text": "In a randomized controlled trial of 300 pupils, the tutoring program raised math scores by 8 points.",
+     "synthetic": true,
+     "basis": "experimental",
+     "published": "2023-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "UNSUPPORTED_CAUSAL_CLAIM",
+     "INVALID_INFERENCE"
+    ],
+    "propositions": [
+     {
+      "sentence": "tutoring program raised",
+      "subject": "tutoring program",
+      "predicate": "increases",
+      "object": "math scores"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D19",
+   "category": "dependent_sources",
+   "description": "A wire story and two reproductions.",
+   "documents": [
+    {
+     "key": "wire",
+     "kind": "news",
+     "text": "The Corva dam cost 2.1 billion dollars to build.",
+     "synthetic": true,
+     "publisher": "Example Wire",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "copy1",
+     "kind": "news",
+     "text": "The Corva dam cost 2.1 billion dollars to build.",
+     "synthetic": true,
+     "publisher": "Example Daily",
+     "reproduces": "wire",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "copy2",
+     "kind": "news",
+     "text": "The Corva dam cost 2.1 billion dollars to build.",
+     "synthetic": true,
+     "publisher": "Example Times",
+     "reproduces": "wire",
+     "published": "2023-01-02"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "DEPENDENT_CORROBORATION",
+      "affected": [
+       "Corva dam cost"
+      ],
+      "red": false
+     }
+    ],
+    "statuses": [
+     {
+      "sentence": "Corva dam cost",
+      "status": "INSUFFICIENT_EVIDENCE"
+     }
+    ],
+    "independent_groups": [
+     [
+      "wire",
+      "copy1",
+      "copy2"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "D20",
+   "category": "dependent_sources",
+   "description": "Press release, a copy, and one independent experimental test.",
+   "documents": [
+    {
+     "key": "pr",
+     "kind": "web",
+     "text": "The Lumex battery reduces charging time by 30%.",
+     "synthetic": true,
+     "publisher": "Lumex Inc. (example)",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "copy",
+     "kind": "news",
+     "text": "The Lumex battery reduces charging time by 30%.",
+     "synthetic": true,
+     "publisher": "Example Tech News",
+     "reproduces": "pr",
+     "published": "2023-01-02"
+    },
+    {
+     "key": "lab",
+     "kind": "report",
+     "text": "The Lumex battery reduces charging time by 30%.",
+     "synthetic": true,
+     "publisher": "Independent Test Lab (example)",
+     "basis": "experimental",
+     "published": "2023-03-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "DEPENDENT_CORROBORATION",
+      "affected": [
+       "charging time by 30%"
+      ],
+      "red": false
+     }
+    ],
+    "statuses": [
+     {
+      "sentence": "charging time by 30%",
+      "status": "SUPPORTED"
+     }
+    ],
+    "independent_groups": [
+     [
+      "pr",
+      "copy"
+     ],
+     [
+      "lab"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "D21",
+   "category": "translation_error",
+   "description": "Digits swapped in translation.",
+   "documents": [
+    {
+     "key": "de",
+     "kind": "news",
+     "text": "Die Inflation lag im Jahr 2022 bei 8,1 Prozent.",
+     "synthetic": true,
+     "language": "de",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "en",
+     "kind": "news",
+     "text": "Inflation was 1.8 percent in 2022.",
+     "synthetic": true,
+     "language": "en",
+     "translation_of": "de",
+     "published": "2023-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TRANSLATION_DISCREPANCY",
+      "affected": [
+       "1.8 percent"
+      ],
+      "red": true
+     }
+    ],
+    "independent_groups": [
+     [
+      "de",
+      "en"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "D22",
+   "category": "translation_error",
+   "description": "Negation lost in translation.",
+   "documents": [
+    {
+     "key": "es",
+     "kind": "news",
+     "text": "El tratamiento no reduce el dolor en adultos.",
+     "synthetic": true,
+     "language": "es",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "en",
+     "kind": "news",
+     "text": "The treatment reduces pain in adults.",
+     "synthetic": true,
+     "language": "en",
+     "translation_of": "es",
+     "published": "2023-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TRANSLATION_DISCREPANCY",
+      "affected": [
+       "treatment reduces pain"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "D23",
+   "category": "no_issue",
+   "description": "Faithful French translation (decimal comma, modal preserved).",
+   "documents": [
+    {
+     "key": "fr",
+     "kind": "news",
+     "text": "Le taux de chômage était de 7,5 % en 2021. Cette mesure peut réduire les émissions.",
+     "synthetic": true,
+     "language": "fr",
+     "published": "2022-01-01"
+    },
+    {
+     "key": "en",
+     "kind": "news",
+     "text": "The unemployment rate was 7.5% in 2021. This measure may reduce emissions.",
+     "synthetic": true,
+     "language": "en",
+     "translation_of": "fr",
+     "published": "2022-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "TRANSLATION_DISCREPANCY"
+    ]
+   }
+  },
+  {
+   "id": "D24",
+   "category": "low_reputation_correct",
+   "description": "Blog claim confirmed by two independent primary sources.",
+   "documents": [
+    {
+     "key": "blog",
+     "kind": "blog",
+     "text": "The Arlo dam is 120 metres tall.",
+     "synthetic": true,
+     "published": "2023-01-01"
+    },
+    {
+     "key": "survey",
+     "kind": "dataset",
+     "text": "The height of the Arlo dam is 120 metres.",
+     "synthetic": true,
+     "basis": "dataset",
+     "publisher": "Example Survey Office",
+     "published": "2020-01-01"
+    },
+    {
+     "key": "agency",
+     "kind": "report",
+     "text": "The Arlo dam has a height of 120 metres.",
+     "synthetic": true,
+     "basis": "documentary",
+     "publisher": "Example Water Agency",
+     "published": "2019-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "statuses": [
+     {
+      "sentence": "is 120 metres tall",
+      "status": "SUPPORTED"
+     }
+    ],
+    "relations": [
+     {
+      "type": "DUPLICATES",
+      "between": [
+       "is 120 metres tall",
+       "height of the Arlo dam is"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "D25",
+   "category": "high_reputation_incorrect",
+   "description": "Textbook figure contradicted by two independent surveys.",
+   "documents": [
+    {
+     "key": "tb",
+     "kind": "textbook",
+     "text": "The Lindqvist glacier is 14 kilometres long.",
+     "synthetic": true,
+     "publisher": "Example University Press",
+     "published": "2015-01-01"
+    },
+    {
+     "key": "s1",
+     "kind": "dataset",
+     "text": "The Lindqvist glacier is 9 kilometres long.",
+     "synthetic": true,
+     "basis": "dataset",
+     "publisher": "Example Glacier Survey",
+     "published": "2021-01-01"
+    },
+    {
+     "key": "s2",
+     "kind": "report",
+     "text": "The Lindqvist glacier is 9 kilometres long.",
+     "synthetic": true,
+     "basis": "dataset",
+     "publisher": "Example Polar Institute",
+     "published": "2022-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "NUMERICAL_INCONSISTENCY",
+      "affected": [
+       "14 kilometres long"
+      ],
+      "red": true
+     }
+    ],
+    "statuses": [
+     {
+      "sentence": "14 kilometres long",
+      "status": "CONTRADICTED"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D26",
+   "category": "high_reputation_incorrect",
+   "description": "Review relies on a retracted trial.",
+   "documents": [
+    {
+     "key": "trial",
+     "kind": "paper",
+     "text": "Drug Z reduces relapse rates by 40% in adults.",
+     "synthetic": true,
+     "basis": "experimental",
+     "retracted": true,
+     "published": "2016-01-01"
+    },
+    {
+     "key": "review",
+     "kind": "paper",
+     "text": "Drug Z reduces relapse rates in adults.",
+     "synthetic": true,
+     "cites": [
+      "trial"
+     ],
+     "publisher": "Example Journal of Reviews",
+     "published": "2018-01-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "RETRACTED_SOURCE_DEPENDENCY",
+      "affected": [
+       "Drug Z reduces relapse rates in adults"
+      ],
+      "red": true
+     }
+    ],
+    "statuses": [
+     {
+      "sentence": "by 40% in adults",
+      "status": "RETRACTED"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D27",
+   "category": "ambiguous",
+   "description": "Pronoun without antecedent and relative time without a date.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "text": "It increased by 40% last year.",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "issues": [
+     {
+      "category": "AMBIGUOUS_PROPOSITION",
+      "affected": [
+       "It increased"
+      ],
+      "red": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "D28",
+   "category": "ambiguous",
+   "description": "A dose given without a unit.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "The typical dose is 5.",
+     "synthetic": true,
+     "published": "2023-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "issues": [
+     {
+      "category": "AMBIGUOUS_PROPOSITION",
+      "affected": [
+       "typical dose"
+      ],
+      "red": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "D29",
+   "category": "no_issue",
+   "description": "Same physical fact in two unit systems.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "textbook",
+     "text": "The boiling point of water at sea level is 100 °C.",
+     "synthetic": true,
+     "published": "2015-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "web",
+     "text": "The boiling point of water at sea level is 212 °F.",
+     "synthetic": true,
+     "published": "2020-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "NUMERICAL_INCONSISTENCY"
+    ],
+    "relations": [
+     {
+      "type": "DUPLICATES",
+      "between": [
+       "100 °C",
+       "212 °F"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "D30",
+   "category": "no_issue",
+   "description": "Conflicting opinions are not factual contradictions.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "In my opinion, the new library is beautiful.",
+     "synthetic": true,
+     "published": "2023-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "text": "I think the new library is ugly.",
+     "synthetic": true,
+     "published": "2023-01-02"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "CATEGORICAL_CONFLICT"
+    ],
+    "statuses": [
+     {
+      "sentence": "library is beautiful",
+      "status": "OUT_OF_SCOPE"
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "library is ugly",
+      "subject": "new library",
+      "predicate": "is",
+      "object": "ugly",
+      "claim_type": "opinion"
+     }
+    ]
+   }
+  },
+  {
+   "id": "D31",
+   "category": "no_issue",
+   "description": "A hedged claim does not contradict a negated assertion.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "Coffee may reduce headaches.",
+     "synthetic": true,
+     "published": "2023-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "web",
+     "text": "Coffee does not reduce headaches.",
+     "synthetic": true,
+     "published": "2023-01-02"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "CATEGORICAL_CONFLICT"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "may reduce",
+       "does not reduce"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "D32",
+   "category": "no_issue",
+   "description": "Three independent sources agree: two independent corroborations reach tau.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "The Senna tunnel is 4.2 kilometres long.",
+     "synthetic": true,
+     "publisher": "Example Post",
+     "published": "2022-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "report",
+     "text": "The Senna tunnel is 4.2 kilometres long.",
+     "synthetic": true,
+     "publisher": "Example Transport Agency",
+     "published": "2021-01-01"
+    },
+    {
+     "key": "c",
+     "kind": "web",
+     "text": "The Senna tunnel is 4.2 kilometres long.",
+     "synthetic": true,
+     "publisher": "Example Travel Guide",
+     "published": "2020-01-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "statuses": [
+     {
+      "sentence": "Senna tunnel",
+      "status": "SUPPORTED"
+     }
+    ],
+    "independent_groups": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ],
+     [
+      "c"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "D34",
+   "category": "no_issue",
+   "description": "Two independent unspecified-basis sources: one corroboration stays below tau.",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "The Orsa ferry carries 600 passengers.",
+     "synthetic": true,
+     "publisher": "Example Post",
+     "published": "2022-01-01"
+    },
+    {
+     "key": "b",
+     "kind": "blog",
+     "text": "The Orsa ferry carries 600 passengers.",
+     "synthetic": true,
+     "published": "2022-03-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "statuses": [
+     {
+      "sentence": "Orsa ferry",
+      "status": "INSUFFICIENT_EVIDENCE"
+     }
+    ],
+    "relations": [
+     {
+      "type": "DUPLICATES",
+      "between": [
+       "Orsa ferry",
+       "Orsa ferry"
+      ]
+     }
+    ],
+    "independent_groups": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "D33",
+   "category": "no_issue",
+   "description": "A declared correction supersedes the earlier figure.",
+   "documents": [
+    {
+     "key": "orig",
+     "kind": "news",
+     "text": "The Rasko plant employs 1,200 workers.",
+     "synthetic": true,
+     "publisher": "Example Wire",
+     "published": "2023-01-01"
+    },
+    {
+     "key": "corr",
+     "kind": "news",
+     "text": "Correction: The Rasko plant employs 900 workers.",
+     "synthetic": true,
+     "publisher": "Example Wire",
+     "corrects": "orig",
+     "published": "2023-01-03"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "relations": [
+     {
+      "type": "CORRECTS",
+      "between": [
+       "employs 900",
+       "employs 1,200"
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}
