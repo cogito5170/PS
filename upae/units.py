@@ -59,6 +59,12 @@ UNITS: dict[str, tuple[str, float, str]] = {
     "그램": ("kg", 0.001, "mass"), "톤": ("kg", 1000, "mass"), "리터": ("l", 1, "volume"),
     "개월": ("s", 2629800, "time"), "시간": ("s", 3600, "time"), "메가와트": ("W", 1e6, "power"),
     "기가와트": ("W", 1e9, "power"), "킬로와트": ("W", 1e3, "power"), "점": ("points", 1, "points"),
+    "곳": ("count", 1, "count"), "개교": ("count", 1, "count"), "개": ("count", 1, "count"),
+    "그루": ("count", 1, "count"), "회": ("count", 1, "count"), "건": ("count", 1, "count"),
+    "마리": ("count", 1, "count"), "장": ("count", 1, "count"), "가구": ("count", 1, "count"),
+    "위": ("rank", 1, "rank"), "㎍/㎥": ("ug/m3", 1, "concentration"), "μg/m³": ("ug/m3", 1, "concentration"),
+    "ug/m3": ("ug/m3", 1, "concentration"), "ppm": ("ppm", 1, "concentration"), "mg/l": ("mg/l", 1, "concentration"),
+    "db": ("dB", 1, "sound"), "데시벨": ("dB", 1, "sound"),
     "seats": ("count", 1, "count"), "votes": ("count", 1, "count"),
     "species": ("count", 1, "count"), "hectares": ("m2", 10000, "area"),
     "ha": ("m2", 10000, "area"), "km2": ("m2", 1e6, "area"),
@@ -67,7 +73,7 @@ UNITS: dict[str, tuple[str, float, str]] = {
 TEMPERATURE = {
     "°c": "C", "degrees celsius": "C", "celsius": "C", "degrees c": "C", "°f": "F",
     "degrees fahrenheit": "F", "fahrenheit": "F", "degrees f": "F", "kelvin": "K",
-    "k": "K",
+    "k": "K", "도": "C", "℃": "C",
 }
 CURRENCY_PREFIX = {"$": "USD", "us$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "₩": "KRW"}
 CURRENCY_SUFFIX = {"usd": "USD", "dollars": "USD", "eur": "EUR", "euros": "EUR",

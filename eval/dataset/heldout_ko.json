@@ -1,0 +1,715 @@
+{
+  "dataset": "heldout_ko",
+  "version": "1",
+  "cases": [
+    {
+      "id": "K01",
+      "category": "genuine_contradiction",
+      "description": "Two independent Korean sports reports give incompatible final league rankings for the same club and season.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "청람 FC, 극적인 승리로 정규리그 마무리",
+          "author": "김도현",
+          "publisher": "한빛스포츠",
+          "published": "2025-11-30",
+          "url": "https://sports.example.org/k01-a",
+          "language": "ko",
+          "text": "프로축구 청람 FC가 2025시즌 정규리그를 3위로 마쳤다. 청람 FC는 마지막 경기에서 도원 유나이티드를 2대 1로 꺾고 승점 61을 쌓았다. 구단은 이 순위 덕분에 다음 시즌 아시아 클럽대회 예선 출전권을 손에 넣었다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "청람 FC, 아쉬움 남긴 한 해",
+          "author": "이수민",
+          "publisher": "주간 그라운드",
+          "published": "2025-12-03",
+          "url": "https://ground.example.com/k01-b",
+          "language": "ko",
+          "text": "청람 FC의 2025시즌은 기대에 못 미치는 성적으로 끝났습니다. 청람 FC는 2025시즌 정규리그 최종 순위 7위에 그쳐 상위 스플릿 진입에도 실패했습니다. 시즌 내내 이어진 수비 불안이 가장 큰 약점으로 지적됩니다.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "정규리그를 3위로 마쳤다", "subject": "청람 FC", "predicate": "마치다 (최종 순위)", "object": "2025시즌 정규리그 3위", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "최종 순위 7위에 그쳐", "subject": "청람 FC", "predicate": "그치다 (최종 순위)", "object": "2025시즌 정규리그 7위", "polarity": "positive", "claim_type": "empirical"}
+        ],
+        "issues": [
+          {"category": "NUMERICAL_INCONSISTENCY", "affected": ["정규리그를 3위로 마쳤다", "최종 순위 7위에 그쳐"], "red": true}
+        ],
+        "forbidden_issue_categories": ["TRANSLATION_DISCREPANCY", "MISLEADING_QUOTATION"],
+        "relations": [
+          {"type": "CONTRADICTS", "between": ["정규리그를 3위로 마쳤다", "최종 순위 7위에 그쳐"]}
+        ],
+        "independent_groups": [["a"], ["b"]]
+      }
+    },
+    {
+      "id": "K02",
+      "category": "genuine_contradiction",
+      "description": "A sponsor press release and an independent news report state opposite outcomes for the same primary endpoint of the same trial.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "로타미프렌 임상 3상 결과 발표",
+          "publisher": "미르제약",
+          "published": "2026-03-17",
+          "url": "https://press.example.com/k02-a",
+          "language": "ko",
+          "text": "미르제약은 만성 편두통 치료 후보물질 로타미프렌의 임상 3상 시험인 베리타-2의 결과를 공개했습니다. 회사에 따르면 이 시험의 주평가변수인 월평균 편두통 일수에서 로타미프렌 투여군은 위약군 대비 통계적으로 유의한 감소를 보였습니다. 미르제약은 내년 상반기에 품목허가를 신청할 계획입니다.",
+          "basis": "experimental",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "베리타-2 시험 등록 결과 들여다보니",
+          "author": "정하은",
+          "publisher": "메디컬 투데이 예시판",
+          "published": "2026-03-24",
+          "url": "https://medical.example.org/k02-b",
+          "language": "ko",
+          "text": "임상시험 등록 사이트에 올라온 베리타-2 시험의 최종 결과가 확인됐다. 주평가변수인 월평균 편두통 일수 감소폭에서 로타미프렌 투여군은 위약군과 통계적으로 유의한 차이가 없었다. 일부 이차평가변수에서만 개선 경향이 관찰된 것으로 나타났다.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "통계적으로 유의한 감소를 보였습니다", "subject": "로타미프렌 투여군 (베리타-2)", "predicate": "감소시키다", "object": "월평균 편두통 일수 (위약 대비 유의)", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "위약군과 통계적으로 유의한 차이가 없었다", "subject": "로타미프렌 투여군 (베리타-2)", "predicate": "차이가 있다", "object": "월평균 편두통 일수 감소폭 (위약 대비 유의)", "polarity": "negative", "claim_type": "empirical"}
+        ],
+        "issues": [
+          {"category": "CATEGORICAL_CONFLICT", "affected": ["통계적으로 유의한 감소를 보였습니다", "위약군과 통계적으로 유의한 차이가 없었다"], "red": true}
+        ],
+        "forbidden_issue_categories": ["TRANSLATION_DISCREPANCY", "DEPENDENT_CORROBORATION"],
+        "relations": [
+          {"type": "CONTRADICTS", "between": ["통계적으로 유의한 감소를 보였습니다", "위약군과 통계적으로 유의한 차이가 없었다"]}
+        ],
+        "independent_groups": [["a"], ["b"]]
+      }
+    },
+    {
+      "id": "K03",
+      "category": "scope_difference",
+      "description": "Two fine-dust figures for the same city and year differ because one is an annual mean and the other a winter-season mean.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "2024년 서하시 대기질 연례 보고서",
+          "publisher": "서하시 보건환경연구원",
+          "published": "2025-04-10",
+          "url": "https://env.example.org/k03-a",
+          "language": "ko",
+          "text": "서하시 보건환경연구원이 집계한 2024년 서하시의 연평균 초미세먼지 농도는 18㎍/㎥였다. 이는 전년보다 2㎍/㎥ 낮은 수치다. 측정은 시내 도시대기측정소 12곳의 자료를 바탕으로 이루어졌다.",
+          "basis": "dataset",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "서하시 겨울 공기, 여전히 '나쁨'",
+          "author": "최윤아",
+          "publisher": "서하일보",
+          "published": "2025-03-05",
+          "url": "https://news.example.com/k03-b",
+          "language": "ko",
+          "text": "2024년 겨울철(1~2월과 12월) 서하시의 초미세먼지 평균 농도는 32㎍/㎥로 나타났다. 같은 기간 하루 평균 농도가 '나쁨' 수준을 기록한 날은 27일에 달했다. 시는 겨울철 미세먼지 저감 대책을 다음 달 발표할 예정이다.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "연평균 초미세먼지 농도는 18㎍/㎥였다", "subject": "서하시 2024년 연평균 초미세먼지 농도", "predicate": "이다", "object": "18㎍/㎥", "polarity": "positive", "claim_type": "statistical"},
+          {"sentence": "초미세먼지 평균 농도는 32㎍/㎥로", "subject": "서하시 2024년 겨울철 초미세먼지 평균 농도", "predicate": "이다", "object": "32㎍/㎥", "polarity": "positive", "claim_type": "statistical"}
+        ],
+        "forbidden_issue_categories": ["MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY", "DEPENDENT_CORROBORATION", "ARITHMETIC_ERROR"],
+        "no_red": true,
+        "relations": [
+          {"type": "DIFFERS_IN_SCOPE", "between": ["연평균 초미세먼지 농도는 18㎍/㎥였다", "초미세먼지 평균 농도는 32㎍/㎥로"]}
+        ],
+        "statuses": [
+          {"sentence": "연평균 초미세먼지 농도는 18㎍/㎥였다", "status": "UNVERIFIED"},
+          {"sentence": "초미세먼지 평균 농도는 32㎍/㎥로", "status": "UNVERIFIED"}
+        ]
+      }
+    },
+    {
+      "id": "K04",
+      "category": "scope_difference",
+      "description": "Two EV driving-range figures differ because they were measured under different temperature conditions; one source explicitly confirms the other under matching conditions.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "해솔모터스, 신형 전기 세단 E7 출시",
+          "author": "박지훈",
+          "publisher": "오토 이코노미",
+          "published": "2026-01-15",
+          "url": "https://auto.example.org/k04-a",
+          "language": "ko",
+          "text": "전기차 제조사 해솔모터스가 신형 세단 'E7'을 출시했다. 회사는 E7의 1회 충전 주행거리가 상온(25도) 기준 520km라고 밝혔다. 판매 가격은 5,900만 원부터 시작한다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "E7 저온 주행거리 시험 결과",
+          "publisher": "미르자동차시험원",
+          "published": "2026-02-20",
+          "url": "https://testlab.example.com/k04-b",
+          "language": "ko",
+          "text": "미르자동차시험원이 영하 7도 환경에서 해솔모터스 E7을 시험한 결과 1회 충전 주행거리는 384km로 측정되었다. 같은 차량의 상온 시험에서는 주행거리가 제조사 발표치와 큰 차이가 없었다. 시험원은 저온 조건의 결과이므로 상온 공인 수치와 직접 비교해서는 안 된다고 덧붙였다.",
+          "basis": "experimental",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "기준 520km라고 밝혔다", "subject": "해솔모터스 E7", "predicate": "주행거리 (1회 충전, 상온 25도)", "object": "520km", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "주행거리는 384km로 측정되었다", "subject": "해솔모터스 E7", "predicate": "주행거리 (1회 충전, 영하 7도)", "object": "384km", "polarity": "positive", "claim_type": "empirical"}
+        ],
+        "forbidden_issue_categories": ["MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY", "ARITHMETIC_ERROR", "DEPENDENT_CORROBORATION"],
+        "no_red": true,
+        "relations": [
+          {"type": "DIFFERS_IN_SCOPE", "between": ["기준 520km라고 밝혔다", "주행거리는 384km로 측정되었다"]},
+          {"type": "SUPPORTS", "between": ["제조사 발표치와 큰 차이가 없었다", "기준 520km라고 밝혔다"]}
+        ],
+        "statuses": [
+          {"sentence": "기준 520km라고 밝혔다", "status": "SUPPORTED"}
+        ],
+        "independent_groups": [["a"], ["b"]]
+      }
+    },
+    {
+      "id": "K05",
+      "category": "numerical_error",
+      "description": "A news article reports a growth percentage that does not follow from the two absolute export figures it gives.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "도원시 반도체 수출 사상 최대",
+          "author": "윤서진",
+          "publisher": "도원경제신문",
+          "published": "2026-01-22",
+          "url": "https://economy.example.org/k05-a",
+          "language": "ko",
+          "text": "도원시의 2025년 반도체 수출액은 552억 달러로 집계됐다. 이는 2024년의 480억 달러보다 약 25% 늘어난 규모다. 도원시는 수출 증가세가 올해도 이어질 것으로 내다봤다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "dataset",
+          "title": "도원세관 품목별 수출 통계 (반도체)",
+          "publisher": "도원세관",
+          "published": "2026-01-15",
+          "url": "https://customs.example.com/k05-b",
+          "language": "ko",
+          "text": "도원세관 관할 지역의 반도체 수출액은 2024년 480억 달러, 2025년 552억 달러로 집계되었다. 2025년 반도체는 관할 지역 전체 수출의 41%를 차지했다.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "반도체 수출액은 552억 달러로 집계됐다", "subject": "도원시 2025년 반도체 수출액", "predicate": "이다", "object": "552억 달러", "polarity": "positive", "claim_type": "statistical"},
+          {"sentence": "약 25% 늘어난 규모다", "subject": "도원시 반도체 수출액", "predicate": "증가하다 (2024년 대비)", "object": "약 25%", "polarity": "positive", "claim_type": "mathematical"}
+        ],
+        "issues": [
+          {"category": "ARITHMETIC_ERROR", "affected": ["약 25% 늘어난 규모다"], "red": true}
+        ],
+        "forbidden_issue_categories": ["MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY"]
+      }
+    },
+    {
+      "id": "K06",
+      "category": "numerical_error",
+      "description": "A single education news item states a pass rate that is inconsistent with its own counts.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "영재교육원 선발시험 결과 발표",
+          "author": "한지우",
+          "publisher": "미르교육신문",
+          "published": "2025-12-12",
+          "url": "https://edu.example.org/k06-a",
+          "language": "ko",
+          "text": "미르시 교육청이 주관한 2026학년도 영재교육원 선발시험에는 모두 2,000명이 응시했다. 이 가운데 340명이 최종 합격해 합격률은 21%를 기록했다. 교육청은 내년부터 선발 인원을 50명 늘릴 방침이다.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "모두 2,000명이 응시했다", "subject": "2026학년도 미르시 영재교육원 선발시험", "predicate": "응시하다", "object": "2,000명", "polarity": "positive", "claim_type": "statistical"},
+          {"sentence": "합격률은 21%를 기록했다", "subject": "2026학년도 미르시 영재교육원 선발시험 합격률", "predicate": "이다", "object": "21% (340명 합격)", "polarity": "positive", "claim_type": "mathematical"}
+        ],
+        "issues": [
+          {"category": "ARITHMETIC_ERROR", "affected": ["합격률은 21%를 기록했다"], "red": true}
+        ],
+        "forbidden_issue_categories": ["MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY", "DEPENDENT_CORROBORATION"]
+      }
+    },
+    {
+      "id": "K07",
+      "category": "misleading_quotation",
+      "description": "A secondary article quotes a researcher in a way that drops the hedge and negation present in her original statement.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "커피 섭취와 심혈관 질환 추적 연구 결과 발표",
+          "publisher": "해솔대학교 의과대학",
+          "published": "2026-05-08",
+          "url": "https://med.example.org/k07-a",
+          "language": "ko",
+          "text": "해솔대학교 예방의학교실 박서윤 교수 연구팀은 성인 1만 2천 명을 8년간 추적 관찰한 결과를 발표했습니다. 박서윤 교수는 발표에서 \"하루 커피 세 잔을 마시는 사람에게서 심혈관 질환 발생이 다소 적게 나타났지만, 이 자료만으로 커피가 심장병 위험을 낮춘다고 단정할 수는 없습니다\"라고 말했습니다. 연구팀은 인과관계를 확인하려면 무작위 대조시험이 필요하다고 덧붙였습니다.",
+          "basis": "observational",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "\"커피 세 잔이 심장을 지킨다\"",
+          "author": "오민재",
+          "publisher": "헬스라이프 예시",
+          "published": "2026-05-10",
+          "url": "https://health.example.com/k07-b",
+          "language": "ko",
+          "text": "커피가 심장 건강을 지켜 준다는 연구 결과가 나왔다. 연구를 이끈 박서윤 교수는 언론 인터뷰에서 \"커피가 심장병 위험을 낮춘다\"고 말했다. 전문가들은 하루 세 잔 정도가 적당하다고 조언한다.",
+          "cites": ["a"],
+          "basis": "secondary",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "교수는 언론 인터뷰에서", "subject": "커피", "predicate": "낮추다", "object": "심장병 위험", "polarity": "positive", "claim_type": "quotation"},
+          {"sentence": "단정할 수는 없습니다", "subject": "커피", "predicate": "낮춘다고 단정할 수 있다", "object": "심장병 위험", "polarity": "negative", "claim_type": "quotation"}
+        ],
+        "issues": [
+          {"category": "MISLEADING_QUOTATION", "affected": ["교수는 언론 인터뷰에서"], "red": true}
+        ],
+        "forbidden_issue_categories": ["TRANSLATION_DISCREPANCY", "ARITHMETIC_ERROR"]
+      }
+    },
+    {
+      "id": "K08",
+      "category": "unsupported_causal",
+      "description": "A parenting blog turns a cross-sectional correlation, explicitly hedged by the original survey, into a causal claim.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "중학생 독서 습관과 학업 성취도 조사",
+          "publisher": "미르교육연구소",
+          "published": "2026-06-02",
+          "url": "https://research.example.org/k08-a",
+          "language": "ko",
+          "text": "미르교육연구소는 중학생 3,400명을 대상으로 독서 습관과 학업 성취도의 관계를 조사했다. 하루 1시간 이상 책을 읽는 학생의 국어 성적 평균은 그렇지 않은 학생보다 12점 높았다. 연구소는 단면 조사의 특성상 이 결과가 인과관계를 보여 주지는 않는다고 밝혔다.",
+          "basis": "survey",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "blog",
+          "title": "책 읽는 아이가 성적도 좋다",
+          "author": "열공맘",
+          "published": "2026-06-09",
+          "url": "https://blog.example.com/k08-b",
+          "language": "ko",
+          "text": "독서가 성적을 올린다는 사실이 마침내 연구로 증명됐습니다. 매일 한 시간씩 책을 읽으면 국어 점수가 12점 오른다는 것입니다. 부모라면 지금 당장 아이에게 독서 습관을 길러 주어야 합니다.",
+          "cites": ["a"],
+          "basis": "secondary",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "국어 성적 평균은 그렇지 않은 학생보다", "subject": "하루 1시간 이상 독서하는 중학생", "predicate": "높다 (국어 성적 평균)", "object": "12점", "polarity": "positive", "claim_type": "correlational"},
+          {"sentence": "국어 점수가 12점 오른다는", "subject": "매일 한 시간 독서", "predicate": "올리다", "object": "국어 점수 12점", "polarity": "positive", "claim_type": "causal"},
+          {"sentence": "지금 당장 아이에게 독서 습관을", "subject": "부모", "predicate": "길러 주어야 한다", "object": "아이의 독서 습관", "polarity": "positive", "claim_type": "normative"}
+        ],
+        "issues": [
+          {"category": "UNSUPPORTED_CAUSAL_CLAIM", "affected": ["국어 점수가 12점 오른다는", "성적을 올린다는 사실이"], "red": false}
+        ],
+        "forbidden_issue_categories": ["TRANSLATION_DISCREPANCY", "ARITHMETIC_ERROR"],
+        "statuses": [
+          {"sentence": "지금 당장 아이에게 독서 습관을", "status": "OUT_OF_SCOPE"}
+        ]
+      }
+    },
+    {
+      "id": "K09",
+      "category": "unsupported_causal",
+      "description": "A city official attributes a local temperature drop to a tree-planting programme although a region-wide cooling of similar size is reported independently.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "서하시 도심, 지난여름 더위 한풀 꺾여",
+          "author": "강예린",
+          "publisher": "서하일보",
+          "published": "2025-09-18",
+          "url": "https://news.example.com/k09-a",
+          "language": "ko",
+          "text": "서하시는 2024년 말 도심 공원 네 곳에 나무 3만 그루를 심었다. 2025년 여름 서하시 도심의 평균기온은 25.1도로 전년보다 1.8도 낮았다. 시 관계자는 나무 심기 사업 덕분에 도심 기온이 그만큼 내려갔다고 설명하며 사업을 확대하겠다고 밝혔다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "2025년 여름철 기후 분석",
+          "publisher": "중부지방기상센터",
+          "published": "2025-09-05",
+          "url": "https://weather.example.org/k09-b",
+          "language": "ko",
+          "text": "2025년 여름 중부 지방 전체의 평균기온은 전년보다 1.6도 낮았다. 센터는 장마 기간이 길어지고 일사량이 줄어든 점을 주된 요인으로 꼽았다. 이번 여름의 기온 하락 폭은 도시와 농촌 지역에서 비슷하게 나타났다.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "나무 심기 사업 덕분에", "subject": "서하시 나무 심기 사업", "predicate": "낮추다", "object": "도심 기온 (1.8도)", "polarity": "positive", "claim_type": "causal"},
+          {"sentence": "25.1도로 전년보다 1.8도 낮았다", "subject": "서하시 도심 2025년 여름 평균기온", "predicate": "낮다 (전년 대비)", "object": "1.8도", "polarity": "positive", "claim_type": "statistical"},
+          {"sentence": "중부 지방 전체의 평균기온은", "subject": "중부 지방 2025년 여름 평균기온", "predicate": "낮다 (전년 대비)", "object": "1.6도", "polarity": "positive", "claim_type": "statistical"}
+        ],
+        "issues": [
+          {"category": "UNSUPPORTED_CAUSAL_CLAIM", "affected": ["나무 심기 사업 덕분에"], "red": false}
+        ],
+        "forbidden_issue_categories": ["TRANSLATION_DISCREPANCY", "MISLEADING_QUOTATION", "DEPENDENT_CORROBORATION"],
+        "relations": [
+          {"type": "DIFFERS_IN_SCOPE", "between": ["25.1도로 전년보다 1.8도 낮았다", "중부 지방 전체의 평균기온은"]}
+        ],
+        "independent_groups": [["a"], ["b"]]
+      }
+    },
+    {
+      "id": "K10",
+      "category": "dependent_sources",
+      "description": "A company press release is reworded by a news outlet and a tech blog; the three agreeing documents share one origin.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "누리셀, 고체전지 시제품 성능 공개",
+          "publisher": "누리셀",
+          "published": "2026-07-09",
+          "url": "https://nuricell.example.com/press/k10-a",
+          "language": "ko",
+          "text": "배터리 스타트업 누리셀은 자체 개발한 고체전지 시제품이 10분 만에 용량의 80%까지 충전된다고 9일 발표했다. 회사는 이 시제품이 1,000회 충방전 이후에도 초기 용량의 90% 이상을 유지했다고 설명했다. 누리셀은 2028년 양산을 목표로 하고 있다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "10분 충전 고체전지 나왔다",
+          "author": "서동욱",
+          "publisher": "테크 데일리 예시",
+          "published": "2026-07-09",
+          "url": "https://techdaily.example.org/k10-b",
+          "language": "ko",
+          "text": "누리셀이 개발한 고체전지 시제품은 단 10분이면 80%까지 충전할 수 있다. 1,000번 충전과 방전을 반복한 뒤에도 처음 용량의 90% 이상이 유지된 것으로 알려졌다. 회사 측은 2028년부터 본격적인 양산에 나설 계획이다.",
+          "reproduces": "a",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "blog",
+          "title": "오늘의 배터리 소식",
+          "author": "전지덕후",
+          "published": "2026-07-10",
+          "url": "https://blog.example.com/k10-c",
+          "language": "ko",
+          "text": "스타트업 누리셀이 10분 충전으로 80%를 채우는 고체전지를 선보였습니다. 누리셀 발표에 따르면 1,000회를 써도 용량이 90% 넘게 남는다고 합니다. 양산 목표 시점은 2028년입니다.",
+          "reproduces": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "10분 만에 용량의 80%까지", "subject": "누리셀 고체전지 시제품", "predicate": "충전되다", "object": "10분 만에 용량의 80%", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "단 10분이면 80%까지", "subject": "누리셀 고체전지 시제품", "predicate": "충전되다", "object": "10분 만에 80%", "polarity": "positive", "claim_type": "empirical"}
+        ],
+        "issues": [
+          {"category": "DEPENDENT_CORROBORATION", "affected": ["10분 만에 용량의 80%까지", "단 10분이면 80%까지", "10분 충전으로 80%를"], "red": false}
+        ],
+        "forbidden_issue_categories": ["NUMERICAL_INCONSISTENCY", "CATEGORICAL_CONFLICT", "MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY"],
+        "no_red": true,
+        "relations": [
+          {"type": "DUPLICATES", "between": ["10분 만에 용량의 80%까지", "단 10분이면 80%까지"]}
+        ],
+        "statuses": [
+          {"sentence": "10분 만에 용량의 80%까지", "status": "INSUFFICIENT_EVIDENCE"}
+        ],
+        "independent_groups": [["a", "b", "c"]]
+      }
+    },
+    {
+      "id": "K11",
+      "category": "translation_error",
+      "description": "An English translation of a Korean public-health notice turns a recommendation into an obligation.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "report",
+          "title": "2026-2027절기 독감 예방접종 안내",
+          "publisher": "해솔시 보건소",
+          "published": "2026-09-20",
+          "url": "https://health.example.org/k11-a",
+          "language": "ko",
+          "text": "올해 겨울 독감 예방접종은 만 65세 이상 어르신과 생후 6개월부터 13세까지의 어린이에게 무료로 제공됩니다. 접종은 권장 사항이며 의무는 아닙니다. 접종을 원하는 시민은 신분증을 지참하고 가까운 지정 의료기관을 방문하면 됩니다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "web",
+          "title": "2026-2027 Flu Vaccination Notice",
+          "publisher": "Haesol City Health Center (English page)",
+          "published": "2026-09-22",
+          "url": "https://health.example.org/en/k11-b",
+          "language": "en",
+          "text": "This winter, flu vaccinations are provided free of charge to seniors aged 65 and over and to children from 6 months to 13 years of age. Vaccination is mandatory for these groups. Residents who wish to be vaccinated can visit a nearby designated clinic with their ID.",
+          "translation_of": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "권장 사항이며 의무는 아닙니다", "subject": "독감 예방접종", "predicate": "의무이다", "object": "접종 대상자", "polarity": "negative", "claim_type": "normative"},
+          {"sentence": "Vaccination is mandatory for", "subject": "flu vaccination", "predicate": "is mandatory", "object": "eligible groups", "polarity": "positive", "claim_type": "normative"}
+        ],
+        "issues": [
+          {"category": "TRANSLATION_DISCREPANCY", "affected": ["권장 사항이며 의무는 아닙니다", "Vaccination is mandatory for"], "red": true}
+        ],
+        "forbidden_issue_categories": ["DEPENDENT_CORROBORATION", "MISLEADING_QUOTATION"],
+        "relations": [
+          {"type": "CONTRADICTS", "between": ["권장 사항이며 의무는 아닙니다", "Vaccination is mandatory for"]}
+        ]
+      }
+    },
+    {
+      "id": "K12",
+      "category": "translation_error",
+      "description": "A Korean translation of an English sports report changes a capacity figure.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "Harbor City FC unveils new stadium plan",
+          "author": "Sam Example",
+          "publisher": "Coastal Sports Example",
+          "published": "2026-04-06",
+          "url": "https://sports.example.com/k12-a",
+          "language": "en",
+          "text": "Harbor City FC unveiled plans for a new stadium on Monday. The stadium will seat 42,000 spectators and is scheduled to open in 2027. The club said construction costs will be covered mainly by private investors.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "news",
+          "title": "하버시티 FC, 새 경기장 계획 공개",
+          "publisher": "월드풋볼 한국어판 예시",
+          "published": "2026-04-07",
+          "url": "https://worldfootball.example.org/ko/k12-b",
+          "language": "ko",
+          "text": "하버시티 FC가 월요일 새 경기장 건설 계획을 공개했다. 새 경기장은 관중 24,000명을 수용할 수 있으며 2027년에 문을 열 예정이다. 구단은 건설 비용을 주로 민간 투자자들이 부담할 것이라고 밝혔다.",
+          "translation_of": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "seat 42,000 spectators", "subject": "Harbor City FC new stadium", "predicate": "seats", "object": "42,000 spectators", "polarity": "positive", "claim_type": "prediction"},
+          {"sentence": "관중 24,000명을 수용할", "subject": "하버시티 FC 새 경기장", "predicate": "수용하다", "object": "관중 24,000명", "polarity": "positive", "claim_type": "prediction"}
+        ],
+        "issues": [
+          {"category": "TRANSLATION_DISCREPANCY", "affected": ["관중 24,000명을 수용할", "seat 42,000 spectators"], "red": true}
+        ],
+        "forbidden_issue_categories": ["DEPENDENT_CORROBORATION", "MISLEADING_QUOTATION", "ARITHMETIC_ERROR"]
+      }
+    },
+    {
+      "id": "K13",
+      "category": "low_reputation_correct",
+      "description": "A social-media post about a river-level record is confirmed by an independent official monitoring dataset.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "강물지기_서하",
+          "published": "2025-07-14",
+          "url": "https://social.example.com/k13-a",
+          "language": "ko",
+          "text": "2025년 7월 14일 새벽 서하강 하류 수위가 7.8m까지 올라갔습니다. 1985년 관측을 시작한 이래 가장 높은 수위라고 합니다. 강변 산책로는 전부 통제되고 있으니 절대 가까이 가지 마세요.",
+          "basis": "anecdotal",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "dataset",
+          "title": "서하강 하류 관측소 수위 기록 (2025년 7월)",
+          "publisher": "서하강홍수통제소",
+          "published": "2025-07-31",
+          "url": "https://flood.example.org/k13-b",
+          "language": "ko",
+          "text": "서하강 하류 관측소의 2025년 7월 14일 최고 수위는 7.8m로 기록되었다. 이는 1985년 관측 개시 이후 최고치이며, 종전 최고 기록은 2002년의 7.3m였다. 홍수경보는 7월 14일 오전 4시에 발령되어 다음 날 오후에 해제되었다.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "수위가 7.8m까지 올라갔습니다", "subject": "서하강 하류 수위 (2025년 7월 14일)", "predicate": "올라가다", "object": "7.8m", "polarity": "positive", "claim_type": "observation"},
+          {"sentence": "최고 수위는 7.8m로 기록되었다", "subject": "서하강 하류 관측소 최고 수위 (2025년 7월 14일)", "predicate": "기록되다", "object": "7.8m", "polarity": "positive", "claim_type": "statistical"}
+        ],
+        "forbidden_issue_categories": ["NUMERICAL_INCONSISTENCY", "TEMPORAL_DISAGREEMENT", "MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY", "DEPENDENT_CORROBORATION"],
+        "no_red": true,
+        "relations": [
+          {"type": "SUPPORTS", "between": ["최고 수위는 7.8m로 기록되었다", "수위가 7.8m까지 올라갔습니다"]}
+        ],
+        "statuses": [
+          {"sentence": "수위가 7.8m까지 올라갔습니다", "status": "SUPPORTED"}
+        ],
+        "independent_groups": [["a"], ["b"]]
+      }
+    },
+    {
+      "id": "K14",
+      "category": "high_reputation_incorrect",
+      "description": "A school textbook gives a construction date that two independent primary sources (excavation report, archival record) contradict.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "textbook",
+          "title": "우리 고장의 역사 (중학교 지역사)",
+          "publisher": "미르교육출판",
+          "published": "2024-03-01",
+          "language": "ko",
+          "text": "청람 읍성은 조선 시대 청람 지역의 행정 중심지였다. 이 읍성은 1592년에 축조가 완료되었다. 성곽의 둘레는 약 1.4km에 이른다. 읍성 안에는 관아와 객사가 자리하고 있었다.",
+          "basis": "secondary",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "청람 읍성 서벽 구간 발굴 조사 보고서",
+          "publisher": "청람문화재연구원",
+          "published": "2025-02-14",
+          "url": "https://heritage.example.org/k14-b",
+          "language": "ko",
+          "text": "2024년 발굴 조사에서 청람 읍성 서쪽 성벽 기초부로부터 '무오년(1618)' 명문이 새겨진 기와가 출토되었다. 성벽 기초층에서는 17세기 전반의 도자기 조각만 확인되었다. 연구원은 성벽 축조가 1618년 무렵에 마무리된 것으로 판단했다.",
+          "basis": "observational",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "book",
+          "title": "청람현 관아 일지 역주본",
+          "publisher": "청람향토사료관",
+          "published": "2019-11-20",
+          "language": "ko",
+          "text": "청람현 관아 일지에는 1616년 봄에 읍성 축조를 시작하여 1618년 가을에 공사를 마쳤다는 기록이 남아 있다. 이 일지는 당시 현감이 직접 작성한 공문서이다.",
+          "basis": "dataset",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "1592년에 축조가 완료되었다", "subject": "청람 읍성", "predicate": "축조가 완료되다", "object": "1592년", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "1618년 무렵에 마무리된", "subject": "청람 읍성 성벽", "predicate": "축조가 마무리되다", "object": "1618년 무렵", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "1618년 가을에 공사를 마쳤다는", "subject": "청람 읍성", "predicate": "공사를 마치다", "object": "1618년 가을", "polarity": "positive", "claim_type": "empirical"}
+        ],
+        "issues": [
+          {"category": "TEMPORAL_DISAGREEMENT", "affected": ["1592년에 축조가 완료되었다", "1618년 무렵에 마무리된", "1618년 가을에 공사를 마쳤다는"], "red": true}
+        ],
+        "forbidden_issue_categories": ["TRANSLATION_DISCREPANCY", "MISLEADING_QUOTATION"],
+        "relations": [
+          {"type": "CONTRADICTS", "between": ["1592년에 축조가 완료되었다", "1618년 가을에 공사를 마쳤다는"]},
+          {"type": "SUPPORTS", "between": ["1618년 무렵에 마무리된", "1618년 가을에 공사를 마쳤다는"]}
+        ],
+        "statuses": [
+          {"sentence": "1592년에 축조가 완료되었다", "status": "CONTRADICTED"}
+        ],
+        "independent_groups": [["a"], ["b"], ["c"]]
+      }
+    },
+    {
+      "id": "K15",
+      "category": "ambiguous",
+      "description": "A short business item contains a pronoun with two possible antecedents and a figure with no unit.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "누리테크·한결소프트 공동 개발 협력",
+          "author": "임가온",
+          "publisher": "산업 브리핑 예시",
+          "published": "2026-08-25",
+          "url": "https://industry.example.com/k15-a",
+          "language": "ko",
+          "text": "인공지능 반도체 업체 누리테크와 소프트웨어 기업 한결소프트가 지난달 공동 개발 계약을 체결했다. 그 회사는 올해 하반기 연구개발 인력을 대폭 늘릴 계획이라고 밝혔다. 업계에서는 관련 투자가 120 이상이 될 것으로 보고 있다. 두 회사는 첫 공동 제품을 2027년에 내놓을 예정이다.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "그 회사는 올해 하반기", "subject": "그 회사 (누리테크 또는 한결소프트)", "predicate": "늘리다", "object": "연구개발 인력", "polarity": "positive", "claim_type": "prediction"},
+          {"sentence": "관련 투자가 120 이상이", "subject": "관련 투자", "predicate": "이상이 되다", "object": "120 (단위 없음)", "polarity": "positive", "claim_type": "prediction"}
+        ],
+        "issues": [
+          {"category": "AMBIGUOUS_PROPOSITION", "affected": ["그 회사는 올해 하반기"], "red": false},
+          {"category": "AMBIGUOUS_PROPOSITION", "affected": ["관련 투자가 120 이상이"], "red": false}
+        ],
+        "forbidden_issue_categories": ["MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY", "DEPENDENT_CORROBORATION", "ARITHMETIC_ERROR"],
+        "no_red": true
+      }
+    },
+    {
+      "id": "K16",
+      "category": "no_issue",
+      "description": "Two consistent education documents, including a correct fraction, where any warning would be a false alarm.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "news",
+          "title": "도원시, 초등 디지털 교과서 시범 운영",
+          "author": "백소율",
+          "publisher": "도원교육뉴스",
+          "published": "2025-12-08",
+          "url": "https://edu.example.com/k16-a",
+          "language": "ko",
+          "text": "도원시 교육청은 2026학년도부터 관내 초등학교 48곳 가운데 12곳에서 디지털 교과서 시범 수업을 운영한다고 밝혔다. 시범 학교는 관내 전체 초등학교의 4분의 1에 해당한다. 교육청은 시범 학교 교사를 대상으로 2026년 3월 중 연수를 실시할 예정이다.",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "report",
+          "title": "2026학년도 디지털 교과서 시범 운영 계획",
+          "publisher": "도원시 교육청",
+          "published": "2025-12-01",
+          "url": "https://edu.example.org/k16-b",
+          "language": "ko",
+          "text": "2026학년도 디지털 교과서 시범 운영 대상은 관내 초등학교 12개교이다. 시범 운영 기간은 2026년 3월부터 2027년 2월까지 1년이다. 참여 교원 연수는 2026년 3월 중에 실시한다.",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {"sentence": "48곳 가운데 12곳에서", "subject": "도원시 교육청", "predicate": "운영하다 (디지털 교과서 시범 수업)", "object": "초등학교 48곳 중 12곳", "polarity": "positive", "claim_type": "empirical"},
+          {"sentence": "전체 초등학교의 4분의 1에", "subject": "시범 학교", "predicate": "해당하다", "object": "전체 초등학교의 4분의 1", "polarity": "positive", "claim_type": "mathematical"},
+          {"sentence": "초등학교 12개교이다", "subject": "2026학년도 디지털 교과서 시범 운영 대상", "predicate": "이다", "object": "초등학교 12개교", "polarity": "positive", "claim_type": "empirical"}
+        ],
+        "forbidden_issue_categories": ["ARITHMETIC_ERROR", "NUMERICAL_INCONSISTENCY", "CATEGORICAL_CONFLICT", "TEMPORAL_DISAGREEMENT", "INTERNAL_INCONSISTENCY", "MISLEADING_QUOTATION", "TRANSLATION_DISCREPANCY", "UNSUPPORTED_CAUSAL_CLAIM"],
+        "no_red": true
+      }
+    }
+  ]
+}

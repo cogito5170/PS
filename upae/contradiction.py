@@ -223,6 +223,14 @@ def _level_value(q):
 def incompatibility(a: Proposition, b: Proposition, c: Comparison) -> None:
     """Fill c.compatible / conflict_dims / equivalent / entails / refines."""
     fam = c.family
+    if fam in ("change|value", "value|change"):
+        # "rose to 7.8 m" asserts the level 7.8 m: compare it with a stated value
+        ch, val = (a, b) if family(a) == "change" else (b, a)
+        if ch.quantity is not None and ch.quantity.kind in ("level", "from_to") and val.quantity is not None:
+            fam = "value"
+            c.family = "value"
+        else:
+            return
     if "|" in fam or fam in ("math", "fallback"):
         return
     if c.subject_sim < ENTITY_THRESHOLD:

@@ -40,8 +40,9 @@ def split_sentences(text: str) -> list[tuple[int, int]]:
                     if before.endswith(" " + last[0]) or before == last[0]:
                         continue
             # do not split inside an open quotation
-        if text[start:end].count('"') % 2 == 1:
-            continue
+        seg = text[start:end]
+        if seg.count('"') % 2 == 1 or seg.count("\u201c") > seg.count("\u201d"):
+            continue  # inside an open quotation (straight or curly quotes)
         seg = text[start:end].strip()
         if seg:
             s = start + (len(text[start:end]) - len(text[start:end].lstrip()))

@@ -104,6 +104,43 @@ class KoreanExtraction(unittest.TestCase):
         self.assertEqual((d.subject, d.object, d.inference_marker), ("필요한 것", "workflow", "결국"))
 
 
+class KoreanRound2(unittest.TestCase):
+    """Rules added after the blind Korean run (post-hoc, general phrasing patterns)."""
+
+    def test_curly_quotes_do_not_split(self):
+        t = "교수는 \u201c효과가 있었다. 하지만 단정할 수 없다\u201d라고 말했다. 다음 문장이다."
+        self.assertEqual(len(split_sentences(t)), 2)
+
+    def test_quote_after_adverbial(self):
+        d = one('박 교수는 언론 인터뷰에서 "커피가 위험을 낮춘다"고 말했다.')
+        self.assertEqual((d.attribution.kind, d.predicate), ("quoted", "decreases"))
+
+    def test_units_and_comparatives(self):
+        qs = {q.raw: q for _, _, q in find_quantities("18㎍/㎥ 25.1도 3만 그루 3위")}
+        self.assertEqual(qs["18㎍/㎥"].dimension, "concentration")
+        self.assertEqual(qs["25.1도"].norm_unit, "degC")
+        d = one("서하시의 평균기온은 전년보다 1.8도 낮았다.")
+        self.assertEqual((d.predicate, d.quantity.kind), ("decreased", "change"))
+
+    def test_reported_judgement_and_completion_event(self):
+        d = one("연구원은 성벽 축조가 1618년 무렵에 마무리된 것으로 판단했다.")
+        self.assertEqual((d.attribution.kind, d.predicate), ("reported", "completed_in"))
+        self.assertEqual(one("이 읍성은 1592년에 축조가 완료되었다.").predicate, "completed_in")
+
+    def test_formal_negation_and_permission(self):
+        self.assertTrue(meaning_changes("ko", "접종은 권장 사항이며 의무는 아닙니다.", "en", "Vaccination is mandatory for these groups."))
+        self.assertFalse(meaning_changes("ko", "신분증을 지참하고 방문하면 됩니다.", "en", "Residents can visit a clinic with their ID."))
+
+    def test_demonstrative_with_two_candidates_is_ambiguous(self):
+        g = analyze([doc("a", "누리테크와 한결소프트가 계약을 체결했다. 그 회사는 인력을 늘릴 계획이라고 밝혔다.")])
+        self.assertIn("AMBIGUOUS_PROPOSITION", cats(g))
+
+    def test_rise_to_level_supports_recorded_value(self):
+        g = analyze([doc("a", "서하강 하류 수위는 7.8m까지 올라갔다.", kind="social"),
+                     doc("b", "서하강 하류 수위는 7.8m로 기록되었다.", kind="dataset", basis="dataset")])
+        self.assertIn("DUPLICATES", {r.type.value for r in g.relations.values()})
+
+
 class KoreanAnalysis(unittest.TestCase):
     def test_genuine_and_scope(self):
         g = analyze([doc("a", "할덴 다리의 주경간은 420미터이다."), doc("b", "할덴 다리의 주경간은 380미터이다.")])

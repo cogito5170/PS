@@ -95,7 +95,7 @@ The dev set stayed at F1 1.00 with 0 false alarms, and the unit tests stayed gre
 4. **Demo corpus** (`examples/corpus`, 18 sources in 6 formats including an unreadable PDF and a Korean document):
    - 27 propositions, 31 relations, 12 issues (9 red), all of them intended;
    - the unreadable PDF and the unextracted Korean passage are both reported as limitations.
-5. **Unit tests**: 65 tests pass (`python -m unittest discover -s tests -t .`, about 0.4 s).
+5. **Unit tests**: 93 tests pass (`python -m unittest discover -s tests -t .`, about 0.4 s).
 
 ## 6. What these results do *not* show
 
@@ -103,3 +103,55 @@ The dev set stayed at F1 1.00 with 0 false alarms, and the unit tests stayed gre
 2. Extraction quality for any language other than English. Other languages are detected and compared against translations only.
 3. Scalability beyond a few dozen documents.
 4. The cost or quality of the optional model provider, which was not exercised: there were no credentials and no network.
+
+## 7. Korean (added later in the same session)
+
+Measured on 2026-10-12 against the Korean rule extractor (`upae/extract_ko.py`). The protocol is the same as for English:
+- the code was committed and pushed (`1cf591f`) **before** the blind run;
+- a separate agent wrote the held-out set after reading only `eval/DATASET_FORMAT.md`, and it was told not to describe any case contents in its report.
+
+| Metric | Korean dev (18, own cases) | **Korean held-out, blind** (16) | Korean held-out, post-hoc |
+|---|---|---|---|
+| Issue P / R / F1 (family) | 1.00 / 1.00 / 1.00 | **0.29 / 0.15 / 0.20** | 0.67 / 0.46 / 0.55 |
+| Contradiction detection recall | 1.00 (4 of 4) | **0.00 (0 of 3)** | 0.00 (0 of 3) |
+| Red warnings that match a gold issue | 10 of 10 | **1 of 2** | 3 of 3 |
+| False alarms on `no_red` cases | 0 of 8 | **0 of 6** | 0 of 6 |
+| Proposition recall | 1.00 (4 of 4) | **0.42 (15 of 36)** | 0.53 (19 of 36) |
+| Status accuracy | 1.00 (4 of 4) | **0.29 (2 of 7)** | 0.43 (3 of 7) |
+| Independence accuracy / traceability | 1.00 / 1.00 | 1.00 / 1.00 | 1.00 / 1.00 |
+
+Raw files: `eval/results/heldout_ko_run1_blind.*`, `heldout_ko_run2_posthoc.*` and `dev_ko_latest.*`.
+
+### 7.1 Interpretation
+
+1. The blind number (F1 0.20) is the honest one. The Korean rules fit the developer's own sentences (dev 1.00) but not natural Korean news prose.
+2. The engine stays conservative in Korean as well: it raised no false alarm on any clean case.
+
+### 7.2 Root causes found in the blind run
+
+All of these were fixed as general rules before the post-hoc run:
+- quotations with an adverbial before them (`교수는 인터뷰에서 "…"`);
+- curly quotation marks splitting sentences;
+- predicates without an object marker (`3위로 마쳤다`);
+- comparative predicates (`전년보다 1.8도 낮았다`);
+- passive value verbs (`기록되었다`, `이른다`);
+- completion events (`축조가 완료되었다`);
+- reported judgements (`…것으로 판단했다`);
+- `…라고 밝혔다` losing its copula;
+- Korean counters and units (`도`, `곳`, `그루`, `위`, `㎍/㎥`);
+- season and school-year times (`2025시즌`, `2026학년도`);
+- the formal negative `아닙니다` and permission `-면 됩니다` missing from the translation cues;
+- `그 회사는` with two candidate antecedents;
+- "rose to 7.8 m" not compared with "recorded at 7.8 m".
+
+### 7.3 Still missing after the post-hoc run
+
+1. All 3 Korean contradictions. They need semantic matching of different wordings of the same attribute: `3위로 마쳤다` vs `최종 순위 7위`; `유의한 감소를 보였습니다` vs `유의한 차이가 없었다`; `축조가 완료` vs `공사를 마쳤다는 기록`.
+2. Cross-sentence arithmetic (`이 가운데 340명 … 21%`).
+3. Unsupported causal claims stated without an inference marker (`덕분에`, `…다는 사실이 증명됐습니다`).
+
+These are the same gaps as in English (IMPLEMENTATION_PLAN 2.2–2.3, 2.7), and they are larger in Korean.
+
+### 7.4 Language detection fix
+
+"No Guts, Just Data." used to be detected as Spanish, from the single word "no". Short texts (under 8 words) now need two stop-word hits *and* a lead over English before a non-English language is chosen; otherwise plain-ASCII text is treated as low-confidence English. Confidence is capped at 0.6 for short texts. All English and Korean results are unchanged by this fix, and it is covered by tests.

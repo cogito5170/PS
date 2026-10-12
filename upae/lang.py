@@ -92,7 +92,7 @@ POSSIBILITY_CUES = {
     "nl": r"\b(kan|kunnen|zou|zouden|misschien|waarschijnlijk|lijkt)\b",
 }
 NECESSITY_CUES = {
-    "en": r"\b(must|always|necessarily|certainly|definitely|proves?|invariably|guarantees?)\b",
+    "en": r"\b(must|always|necessarily|certainly|definitely|proves?|invariably|guarantees?|mandatory|compulsory|obligatory|required)\b",
     "de": r"\b(muss|mussen|muessen|immer|notwendigerweise|sicher|definitiv|beweist|garantiert)\b",
     "fr": r"\b(doit|doivent|toujours|necessairement|certainement|prouve|garantit)\b",
     "es": r"\b(debe|deben|siempre|necesariamente|ciertamente|demuestra|garantiza)\b",
@@ -110,9 +110,9 @@ UNIVERSAL_CUES = {
     "nl": r"\b(alle|elke|ieder|niemand)\b",
 }
 # Korean is agglutinative: cues are verb endings and adverbs, matched without \b.
-NEGATION_CUES["ko"] = r"(?:지\s?(?:않|못)|않는|않았|않습|않을|못한|못했|못하|아니다|아닌|아니었|없다|없었|없는|없습|결코|전혀)"
-POSSIBILITY_CUES["ko"] = r"(?:수\s?(?:도\s?)?있|가능성|아마|것\s?같|보인다|보입니다|추정|듯하|듯합|모른다)"
-NECESSITY_CUES["ko"] = r"(?:반드시|항상|언제나|해야|하여야|틀림없|확실히|증명|입증)"
+NEGATION_CUES["ko"] = r"(?:지\s?(?:않|못)|않는|않았|않습|않을|못한|못했|못하|아니다|아닌|아니었|아닙|아니에요|없다|없었|없는|없습|결코|전혀)"
+POSSIBILITY_CUES["ko"] = r"(?:수\s?(?:도\s?)?있|가능성|아마|것\s?같|보인다|보입니다|추정|듯하|듯합|모른다|면\s?(?:됩니다|된다|돼요))"
+NECESSITY_CUES["ko"] = r"(?:반드시|항상|언제나|해야|하여야|틀림없|확실히|증명|입증|의무(?!는\s?아[니닙]|가\s?아[니닙])|필수)"
 UNIVERSAL_CUES["ko"] = r"(?:모든|모두|전부|누구나|아무도|예외\s?없이)"
 
 # backwards-compatible aliases

@@ -33,17 +33,18 @@ IMPLICIT_SUBJECT = "(화자)"  # omitted subject, attributed to the speaker/auth
 # ----------------------------------------------------------------------------- lexicons
 UP_T = r"(?:높일|늘릴|증가시킬|개선할|향상시킬|강화할|촉진할|높이|높인|높였|높여|늘리|늘린|늘렸|늘려|증가시키|증가시킨|증가시켰|개선하|개선한|개선했|개선시키|개선시킨|개선시켰|향상시키|향상시킨|향상시켰|강화하|강화한|강화했|끌어올리|끌어올린|끌어올렸|촉진하|촉진한|촉진했)"
 DOWN_T = r"(?:줄일|낮출|감소시킬|억제할|완화할|예방할|단축할|줄이|줄인|줄였|줄여|낮추|낮춘|낮췄|낮춰|감소시키|감소시킨|감소시켰|억제하|억제한|억제했|완화하|완화한|완화했|떨어뜨리|떨어뜨린|떨어뜨렸|예방하|예방한|예방했|단축하|단축한|단축했|단축시키|단축시킨|단축시켰)"
-UP_I = r"(?:증가할|늘어날|상승할|오를|높아질|증가하|증가한|증가했|증가해|증가됐|늘어나|늘어난|늘어났|늘었|상승하|상승한|상승했|올랐|오르|높아지|높아진|높아졌|확대되|확대된|확대됐|급증하|급증한|급증했|급등하|급등한|급등했)"
-DOWN_I = r"(?:감소할|줄어들|하락할|떨어질|낮아질|감소하|감소한|감소했|감소해|줄어들|줄어든|줄어들었|줄었|하락하|하락한|하락했|떨어지|떨어진|떨어졌|낮아지|낮아진|낮아졌|축소되|축소된|축소됐|급감하|급감한|급감했|급락하|급락한|급락했)"
+UP_I = r"(?:올라갔|올라간|올라가|증가할|늘어날|상승할|오를|높아질|증가하|증가한|증가했|증가해|증가됐|늘어나|늘어난|늘어났|늘었|상승하|상승한|상승했|올랐|오르|높아지|높아진|높아졌|확대되|확대된|확대됐|급증하|급증한|급증했|급등하|급등한|급등했)"
+DOWN_I = r"(?:내려갔|내려간|내려가|감소할|줄어들|하락할|떨어질|낮아질|감소하|감소한|감소했|감소해|줄어들|줄어든|줄어들었|줄었|하락하|하락한|하락했|떨어지|떨어진|떨어졌|낮아지|낮아진|낮아졌|축소되|축소된|축소됐|급감하|급감한|급감했|급락하|급락한|급락했)"
 CAUSE_V = r"(?:유발하|유발한|유발했|유발시|초래하|초래한|초래했|야기하|야기한|야기했|일으키|일으킨|일으켰)"
 EVENT_V = {
     "설립": "founded", "창립": "founded", "창업": "founded", "개관": "opened", "개장": "opened",
     "개업": "opened", "개통": "opened", "문을 열": "opened", "출간": "published", "출판": "published",
     "발표": "announced", "체결": "signed", "서명": "signed", "완공": "completed", "준공": "completed",
     "태어": "born", "출생": "born", "사망": "died", "폐쇄": "closed", "폐업": "closed", "출시": "launched",
+    "완료": "completed", "완성": "completed", "마무리": "completed", "마쳤": "completed", "끝났": "completed",
 }
 _EVENT_RE = "|".join(sorted((re.escape(k) for k in EVENT_V), key=len, reverse=True))
-NEG = re.compile(r"지\s?(?:않|못)|(?:않았|않는|않습|않을|않아)|못(?:했|한|하|합)|(?<![가-힣])안\s|아니(?:다|었|며|었다|에요)|없(?:다|었|는|습)")
+NEG = re.compile(r"지\s?(?:않|못)|(?:않았|않는|않습|않을|않아)|못(?:했|한|하|합)|(?<![가-힣])안\s|아니(?:다|었|며|었다|에요)|아닙|없(?:다|었|는|습)")
 POSSIBLE = re.compile(r"(?:ㄹ|을|를|할|일|될|줄일|높일|있을)?\s?수\s?(?:도\s?)?있|가능성이\s?(?:있|높)|것으로\s?(?:보인다|보입니다|보였|추정)|듯(?:하|합)|것\s?같|추정(?:된다|됩니다)|일지도")
 CANNOT = re.compile(r"수\s?(?:가\s)?없")
 PREDICTED = re.compile(r"예정(?:이|입니|이다)|계획(?:이|입니)|전망(?:이|입니|이다)|ㄹ\s?것(?:이다|입니다)|(?:할|될|줄|늘|오를|낮출|높일)\s?것(?:이다|입니다|으로)|겠(?:다|습니다)")
@@ -53,7 +54,7 @@ OPINION_END = re.compile(r"(?:라고|다고|고)\s?(?:생각한다|생각합니�
 EVALUATIVE = re.compile(r"최고|최악|훌륭|아름답|아름다운|멋지|멋진|형편없|끔찍|대단|추하|못생|역겨|감동적|지루")
 INFERENCE = re.compile(r"^(?:따라서|그러므로|그래서|결국|즉|이에\s?따라|이처럼|이로써|이는\s.+?(?:보여준다|의미한다|증명한다|입증한다)|이것은\s.+?(?:보여준다|증명한다))[,\s]+")
 COPULA_END = re.compile(r"(?:이었습니다|였습니다|입니다|이었다|였다|이다|이며|이에요|예요|임)\.?$")
-VALUE_VERB = re.compile(r"(?:에|을|를)?\s?(?:달했|달한|달한다|기록했|기록한|기록하|집계됐|집계되|나타났|조사됐|측정됐)")
+VALUE_VERB = re.compile(r"(?:에|을|를|로|으로)?\s?(?:달했|달한|달한다|기록했|기록한|기록하|기록되|기록됐|집계됐|집계되|나타났|조사됐|측정됐|측정되|이른다|이르렀|이릅니다|이르는)")
 STUDY_WORDS = re.compile(r"연구|조사|실험|시험|보고서|통계|분석|연구진|연구팀|자료|데이터|설문|센서스|인구조사")
 
 BASIS_CUES_KO = [
@@ -74,7 +75,7 @@ LOCATIONS = (r"(?:한국|대한민국|북한|미국|일본|중국|대만|태국|
              r"치앙마이|방콕|도쿄|오사카|베이징|상하이|뉴욕|런던|파리|베를린|[가-힣]{1,5}(?:특별시|광역시|시|군|구))")
 
 _NUM = r"[$€£₩]?\d[\d,]*(?:\.\d+)?"
-_NUMQ = rf"{_NUM}\s?(?:천|만|억|조)?\s?(?:퍼센트포인트|%p|퍼센트|%|명|원|달러|유로|엔|킬로미터|미터|톤|킬로그램|점|개월|시간|메가와트|기가와트|km|kg|m)?"
+_NUMQ = rf"{_NUM}\s?(?:천|만|억|조)?\s?(?:퍼센트포인트|%p|퍼센트|%|명|원|달러|유로|엔|킬로미터|미터|톤|킬로그램|점|개월|시간|메가와트|기가와트|km|kg|m|도|℃|곳|개교|개|그루|회|건|위|㎍/㎥|ppm)?"
 
 
 def detect_basis_ko(text: str) -> Optional[EvidenceBasis]:
@@ -102,7 +103,7 @@ def extract_scope_ko(clause: str) -> tuple[str, Scope, list]:
 
     # conditions: "실험 조건 A에서", "실험실 환경에서", "~경우에만"
     for rx in (re.compile(r"(?P<c>(?:[가-힣A-Za-z0-9]+(?<![은는이가을를의에도])\s){0,2}조건\s?[A-Za-z0-9가-힣]*?)\s?(?:하에서|에서만|에서는|에서|하에)(?=\s)"),
-               re.compile(r"(?P<c>[가-힣]+\s?(?:실험|시험|모의실험|시뮬레이션|환경))(?:에서만|에서는|에서)(?=\s)"),
+               re.compile(r"(?<![\d가-힣])(?P<c>(?:[가-힣\d]+\s)?[가-힣]+\s?(?:실험|시험|모의실험|시뮬레이션|환경))(?:에서만|에서는|에서)(?=\s)"),
                re.compile(r"(?P<c>[가-힣]+\s?감독)\s?(?:하에서|하에)(?=\s)"),
                re.compile(r"(?P<c>[가-힣A-Za-z0-9\s]{2,30}?)\s?(?P<k>경우에만|경우에는|경우에|경우|때에만|때에는|때만)(?=[\s,])")):
         while (m := rx.search(work)):
@@ -123,7 +124,7 @@ def extract_scope_ko(clause: str) -> tuple[str, Scope, list]:
     if pops:
         scope.population = "; ".join(dict.fromkeys(pops))
     # time
-    m = re.search(r"(?P<t>\d{4}년\s?\d{1,2}월(?:\s?\d{1,2}일)?|\d{4}년\s?(?:부터|~|-)\s?\d{4}년|\d{4}\s?[-~]\s?\d{4}년|\d{4}년(?:\s?(?:상반기|하반기|[1-4]분기))?)(?:까지|부터|에는|에도|에|의|도|동안)?(?=\s|,)", work)
+    m = re.search(r"(?P<t>\d{4}년\s?\d{1,2}월(?:\s?\d{1,2}일)?|\d{4}년\s?(?:부터|~|-)\s?\d{4}년|\d{4}\s?[-~]\s?\d{4}년|\d{4}(?:년|시즌|학년도|회계연도|연도)(?:\s?(?:상반기|하반기|[1-4]분기|봄|여름|가을|겨울|초|말|무렵|경))?)(?:\s?(?:새벽|아침|오전|오후|저녁|밤))?(?:까지|부터|에는|에도|에|의|도|동안)?(?=\s|,)", work)
     if m:
         scope.time = norm_ws(m.group("t"))
         scope.time_norm = _years(m.group("t"))
@@ -183,7 +184,7 @@ def _change_quantity(rest: str) -> tuple[str, Optional[Quantity]]:
                          norm_unit=b.norm_unit, dimension=b.dimension, kind="from_to",
                          from_value=a.norm_value, to_value=b.norm_value)
             return rest[:m.start()] + rest[m.end():], q
-    m = re.search(rf"(?P<q>{_NUMQ})(?:으로|로)\s", rest + " ")
+    m = re.search(rf"(?P<q>{_NUMQ})\s?(?:으로|로|까지)\s", rest + " ")
     if m:
         q = _q(m.group("q"))
         if q:
@@ -251,6 +252,17 @@ def parse_clause_ko(c: str) -> Optional[dict]:
         return dict(s=s, p="increases" if d > 0 else "decreases", o=_clean_object(m.group("o")),
                     ct=ClaimType.CAUSAL, conf=0.8, method="rule:causal-direction@1", direction=d,
                     quantity=q, neg=neg, verb=m.group("v"))
+    # comparative: "X는 전년보다 1.8도 낮았다"
+    m = re.search(rf"보다\s+(?:약\s)?(?P<q>{_NUMQ})?\s?(?P<v>높았|높다|높은|많았|많다|낮았|낮다|낮은|적었|적다)", rest)
+    if m:
+        d = 1 if m.group("v").startswith(("높", "많")) else -1
+        q = _q(m.group("q") or "")
+        if q is not None:
+            q.kind = "change_pp" if q.norm_unit == "pp" else "change"
+        lvl = _q(rest[:m.start()])
+        return dict(s=s, p="increased" if d > 0 else "decreased", o=None, ct=ClaimType.STATISTICAL,
+                    conf=0.75, method="rule:comparative@1", direction=d, quantity=q, neg=neg,
+                    notes=[f"level {lvl.raw}"] if lvl else [])
     # intransitive change: "X는 (A에서 B로 | N%로 | N%) 증가했다"
     m = re.search(rf"(?P<v>{UP_I}|{DOWN_I})", rest)
     if m:
@@ -296,6 +308,11 @@ def parse_clause_ko(c: str) -> Optional[dict]:
         q = _q(m.group("o"))
         return dict(s=s, p=verb_stem(m.group("v")), o=_clean_object(m.group("o")), ct=ClaimType.EMPIRICAL,
                     conf=0.5, method="rule:generic-verb@1", neg=neg, quantity=q)
+    # final predicate with a complement but no object marker: "X는 2025시즌을 3위로 마쳤다"
+    m = re.match(r"^(?P<o>.+?)\s+(?P<v>[가-힣]+(?:다|요|니다))$", rest)
+    if m and not COPULA_END.search(rest):
+        return dict(s=s, p=verb_stem(m.group("v")), o=_clean_object(m.group("o")), ct=ClaimType.EMPIRICAL,
+                    conf=0.45, method="rule:final-predicate@1", neg=neg, quantity=_q(m.group("o")))
     # bare predicate: "(나는) 퇴사한다"
     m = re.match(r"^(?P<v>[가-힣]+?)(?:한다|합니다|했다|했습니다|하였다|할\s?(?:것이다|예정이다|계획이다))\.?$", rest)
     if m:
@@ -310,7 +327,7 @@ def verb_stem(word: str) -> str:
 
 
 def _event(clause: str) -> Optional[dict]:
-    m = re.match(rf"^(?P<s>.+?)(?:은|는|이|가)\s+(?P<t>\d{{4}}년(?:\s?\d{{1,2}}월)?(?:\s?\d{{1,2}}일)?)(?:에)?\s+(?:(?P<place>[가-힣A-Za-z]+)에서\s+)?(?P<v>{_EVENT_RE})", clause)
+    m = re.match(rf"^(?P<s>.+?)(?:은|는|이|가)\s+(?P<t>\d{{4}}년(?:\s?\d{{1,2}}월)?(?:\s?\d{{1,2}}일)?)(?:\s?(?:봄|여름|가을|겨울|초|말|무렵|경))?(?:에)?\s+(?:(?P<place>[가-힣A-Za-z]+)에서\s+)?(?:[가-힣]+(?:이|가|을|를)\s+)?(?P<v>{_EVENT_RE})", clause)
     if not m:
         return None
     verb = EVENT_V[m.group("v")]
@@ -360,7 +377,8 @@ def extract_sentence_ko(raw: str, sent_index: int, span: tuple, doc_basis=None,
     attribution = Attribution()
     claim_override = None
     modality_override = None
-    m = re.match(r'^(?P<sp>.+?)(?:은|는|이|가)\s*["“](?P<q>[^"”]+)["”]\s*(?:이)?(?:라고|고)\s*(?:말했|밝혔|주장했|강조했|덧붙였|설명했|전했|말했습니다|밝혔습니다)', work) \
+    m = re.match(r'^(?P<sp>.+?)(?:은|는|이|가)\s+(?:[^"“]{0,40}?\s)?["“](?P<q>[^"”]+)["”]\s*(?:이)?(?:라고|고)\s*(?:말했|밝혔|주장했|강조했|덧붙였|설명했|전했|말했습니다|밝혔습니다)', work) \
+        or re.match(r'^(?P<sp>.+?)(?:은|는|이|가)\s*["“](?P<q>[^"”]+)["”]\s*(?:이)?(?:라고|고)\s*(?:말했|밝혔|주장했|강조했|덧붙였|설명했|전했|말했습니다|밝혔습니다)', work) \
         or re.match(r'^["“](?P<q>[^"”]+)["”]\s*(?:이)?(?:라고|고)\s*(?P<sp>.+?)(?:은|는|이|가)\s*(?:말했|밝혔|주장했|강조했|덧붙였)', work)
     if m:
         attribution = Attribution(speaker=norm_ws(m.group("sp")), kind="quoted", quote=m.group("q").strip())
@@ -374,11 +392,26 @@ def extract_sentence_ko(raw: str, sent_index: int, span: tuple, doc_basis=None,
             m = re.match(r"^(?P<sp>.+?)(?:은|는|이|가)\s+(?P<rest>.+?)(?:다|이라|라)고\s+(?P<v>밝혔|발표했|보고했|말했|주장했|추정했|전했|설명했|강조했|예측했|분석했|추산했|보도했)", work)
             if m and len(m.group("sp").split()) <= 6:
                 attribution = Attribution(speaker=norm_ws(m.group("sp")), kind="reported")
-                work = m.group("rest") + "다"
+                rest = m.group("rest")
+                # "…520km라고 밝혔다": a quoted noun predicate needs the copula back
+                work = rest + ("이다" if m.group(0)[len(m.group("sp")):].find(rest + "라고") >= 0
+                               or not re.search(r"[가-힣]$", rest) else "다")
                 if m.group("v").startswith(("예측",)):
                     claim_override = ClaimType.PREDICTION
                 if m.group("v").startswith(("추정", "추산")):
                     modality_override = Modality.POSSIBLE
+    if attribution.kind == "author":
+        # "연구원은 X가 1618년 무렵에 마무리된 것으로 판단했다" (reported judgement)
+        m = re.match(r"^(?P<sp>.+?)(?:은|는)\s+(?P<rest>.+?)\s?것으로\s+(?P<v>판단했|보고\s?있|추정했|분석했|평가했|결론지었|파악했|알려졌|확인됐)", work)
+        if m and len(m.group("sp").split()) <= 5:
+            rest = m.group("rest")
+            rest = re.sub(r"된$", "되었다", rest)
+            rest = re.sub(r"(?<![가-힣])한$|한$", "했다", rest) if not rest.endswith("되었다") else rest
+            rest = re.sub(r"인$", "이다", rest)
+            attribution = Attribution(speaker=norm_ws(m.group("sp")), kind="reported")
+            work = rest
+            if m.group("v").startswith(("추정", "보고")):
+                modality_override = Modality.POSSIBLE
     if OPINION_START.search(work) or OPINION_END.search(work):
         claim_override = ClaimType.OPINION
         work = OPINION_START.sub("", work)

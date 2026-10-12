@@ -23,7 +23,7 @@ from .models import (Attribution, ClaimType, Derivation, EvidenceBasis, Extracti
                      RelationType, ReviewStatus, Scope, Severity, Stance)
 from .providers import NullProvider, Provider
 from .registry import register_documents
-from .textutil import content_set, jaccard, norm_ws, normalize_phrase, short_hash
+from .textutil import content_set, jaccard, norm_ws, normalize_phrase, short_hash, split_sentences
 
 DEFAULT_CONFIG = {
     "ranking": {"relevance": 1.0, "evidence_quality": 1.0, "novelty": 0.5, "connectivity": 0.75,
@@ -990,9 +990,29 @@ class Analysis:
     SUBORDINATE_PRONOUN = re.compile(r"\b(?:after|before|when|because|since|until|while|although|once|as|if)\s+(it|they|he|she)\b", re.I)
     CANDIDATE_NP = re.compile(r"\b(?:[Tt]he|[Aa]n?)\s+(?:[A-Z][\w-]+\s+)*[a-zA-Z][\w-]+|\b[A-Z][a-z]+(?:\s+[A-Z][a-z]+)+")
 
+    KO_DEMONSTRATIVE = re.compile(r"^(?:그|이|저|해당)\s([가-힣]+?)(?:은|는|이|가|도)\s")
+    KO_COORDINATED = re.compile(r"[가-힣A-Za-z0-9]+(?:와|과)\s[가-힣A-Za-z0-9]+")
+    KO_BARE_NUMBER = re.compile(r"(?<![\d.,])(?P<n>\d[\d,]*(?:\.\d+)?)\s?(?:이상|이하|정도|가량|수준|안팎|내외)")
+
     def check_ambiguity(self) -> None:
         g = self.g
         for (pas_id, quote), props in self._sentence_props().items():
+            # Korean: "그 회사는 …" after a sentence naming two companies ("A와 B")
+            m = self.KO_DEMONSTRATIVE.match(quote)
+            if m:
+                text = g.passages[pas_id].text
+                sents = [text[a:b] for a, b in split_sentences(text)]
+                idx = next((i for i, x in enumerate(sents) if x.strip() == quote.strip()), None)
+                prev = sents[idx - 1] if idx else ""
+                if self.KO_COORDINATED.search(prev):
+                    for p in props:
+                        self.unresolved_pronoun.add(p.id)
+                        p.extraction.notes.append(f"pronoun '그 {m.group(1)}' could refer to several entities in: {prev.strip()}")
+            for nm in self.KO_BARE_NUMBER.finditer(quote):
+                v = float(nm.group("n").replace(",", ""))
+                if v >= 10 and not (1900 <= v <= 2100 and v.is_integer()):
+                    for p in props:
+                        p.extraction.notes.append(f"number-without-unit:{nm.group('n')}")
             m = self.SUBORDINATE_PRONOUN.search(quote)
             if not m:
                 continue

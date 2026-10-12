@@ -330,7 +330,10 @@ def ambiguity_reasons(p: Proposition, has_pub_date: bool, unresolved_pronoun: bo
     if unresolved_pronoun:
         note = next((n for n in p.extraction.notes if n.startswith("pronoun '") and "could refer" in n), None)
         out.append(note or f"subject '{p.surface.get('subject') or p.subject}' is a pronoun with no clear antecedent")
-    if p.quantity is not None and p.quantity.unit is None and p.quantity.kind == "level" \
+    bare = [n.split(":", 1)[1] for n in p.extraction.notes if n.startswith("number-without-unit:")]
+    if bare:
+        out.append(f"number '{bare[0]}' has no unit or measure")
+    elif p.quantity is not None and p.quantity.unit is None and p.quantity.kind == "level" \
             and p.claim_type == ClaimType.STATISTICAL and not any(n.startswith("value-noun:") for n in p.extraction.notes) \
             and not COUNT_ATTRIBUTE.search(p.subject):
         out.append(f"number '{p.quantity.raw}' has no unit or measure")
