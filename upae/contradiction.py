@@ -348,7 +348,8 @@ def incompatibility(a: Proposition, b: Proposition, c: Comparison) -> None:
             return
         # an event happens at one place; definite descriptions denote one value
         functional = (_functional(a) and _functional(b)) or a.predicate.endswith("_at")
-        if functional and c.object_sim < 0.2 and not pol_diff and a.predicate == "is":
+        if functional and c.object_sim < 0.2 and not pol_diff and \
+                (a.predicate == "is" or a.predicate.endswith("_at")):
             c.compatible, c.conflict_dims = False, ["categorical_value"]
             c.scope_notes["functional_assumption"] = True
 

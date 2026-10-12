@@ -69,6 +69,16 @@ class ContradictionSemantics(unittest.TestCase):
         g = analyze([doc("a", "The museum opened in 1987. It is popular. The museum opened in 1991.")])
         self.assertEqual(cats(g, red=True), ["INTERNAL_INCONSISTENCY"])
 
+    def test_event_place_conflict(self):
+        g = analyze([doc("a", "The Treaty of Kessmark ended the war. The treaty was signed in the harbour town of Orlavy in 1712."),
+                     doc("b", "The Treaty of Kessmark was signed in the inland town of Brennick in 1712.")])
+        self.assertIn("CATEGORICAL_CONFLICT", cats(g, red=True))
+        self.assertIn("DUPLICATES", rel_types(g))  # same year
+
+    def test_month_may_is_not_a_hedge(self):
+        g = analyze([doc("a", "The canal was opened on 14 May 1831.")])
+        self.assertEqual(next(iter(g.propositions.values())).modality.value, "asserted")
+
     def test_both_sides_preserved(self):
         g = analyze([doc("a", "The capital of Ostria is Lenburg."), doc("b", "The capital of Ostria is Varna.")])
         self.assertEqual(len(g.propositions), 2)
