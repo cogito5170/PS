@@ -25,7 +25,7 @@ python -m upae search out/analysis.sqlite "population Norvik"     # FTS5 lexical
 # re-run with the previous snapshot: stable IDs plus a "changes since previous analysis" section
 python -m upae analyze examples/corpus --out out2 --previous out/analysis.json
 
-python -m unittest discover -s tests -t .                          # 93 tests, about 0.5 s
+python -m unittest discover -s tests -t .                          # 108 tests, about 0.6 s
 python -m upae evaluate eval/dataset/dev.json eval/dataset/heldout.json \
     eval/dataset/dev_ko.json eval/dataset/heldout_ko.json --out eval_report.md
 ```
@@ -46,7 +46,7 @@ Missing metadata stays missing. The engine never invents authors, dates, pages o
 
 ### Optional model provider
 
-English and Korean are extracted by deterministic rules. Other languages (German, French, Spanish and others) are detected, and their translations are checked for changed negation, modality and numbers, but they are not extracted.
+English and Korean are extracted by deterministic rules. Social-media posts are normalized (emoji, hashtags, line-per-sentence, Korean bullet-style endings), and relative times ("내일부터", "3달 후", "tomorrow") are anchored to each post's publication date. Posts by the same author are checked for timeline consistency, and the report includes a timeline appendix. Other languages (German, French, Spanish and others) are detected, and their translations are checked for changed negation, modality and numbers, but they are not extracted.
 `--provider anthropic[:model]` (needs `pip install anthropic` and credentials) enables extraction for those other languages. Everything a model produces is labeled `model:<name>`, `deterministic=false`, and needs human review. The tests use a fake provider, and this adapter has **not** been exercised against the live API.
 
 ### Fonts (HTML report)

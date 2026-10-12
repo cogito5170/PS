@@ -1,0 +1,338 @@
+{
+ "dataset": "dev_sns",
+ "version": "1",
+ "cases": [
+  {
+   "id": "SD01",
+   "category": "timeline_consistent",
+   "description": "출발 예고, 도착 이틀째, 한 달 회고가 서로 맞음",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "내일부터 다낭에서 한 달 살기를 시작합니다 ✈️",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-03-01"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "다낭에 온 지 이틀\n아직 적응 중",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-03-03"
+    },
+    {
+     "key": "c",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "한 달 동안 베트남에서 지내며 원고를 끝냈습니다.",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-04-01"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "TEMPORAL_DISAGREEMENT"
+    ]
+   }
+  },
+  {
+   "id": "SD02",
+   "category": "timeline_inconsistency",
+   "description": "출발일 예고와 '온 지 이틀' 게시일이 2주 어긋남",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "내일부터 다낭에서 한 달 살기를 시작합니다",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-03-01"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "다낭에 온 지 이틀\n날씨가 덥다",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-03-17"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TEMPORAL_DISAGREEMENT",
+      "affected": [
+       "내일부터 다낭에서",
+       "다낭에 온 지 이틀"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "SD03",
+   "category": "timeline_inconsistency",
+   "description": "'한 달 동안' 회고인데 실제 기간은 열흘",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "모레부터 발리에서 지냅니다",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-05-10"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "한 달 동안 발리에서 서핑을 배웠습니다.",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-05-22"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TEMPORAL_DISAGREEMENT",
+      "affected": [
+       "모레부터 발리에서",
+       "한 달 동안 발리에서"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "SD04",
+   "category": "timeline_consistent",
+   "description": "영어 게시물: 출발, 3일째, 2주 회고",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "Tomorrow we fly to Lisbon for two weeks.",
+     "language": "en",
+     "synthetic": true,
+     "published": "2026-06-01"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "Day 3 in Lisbon. Pastries everywhere.",
+     "language": "en",
+     "synthetic": true,
+     "published": "2026-06-04"
+    },
+    {
+     "key": "c",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "After two weeks in Lisbon we are heading home.",
+     "language": "en",
+     "synthetic": true,
+     "published": "2026-06-16"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "TEMPORAL_DISAGREEMENT"
+    ]
+   }
+  },
+  {
+   "id": "SD05",
+   "category": "timeline_inconsistency",
+   "description": "영어 게시물: 출발 예고와 Day 3 날짜 불일치",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "Tomorrow we fly to Lisbon for two weeks.",
+     "language": "en",
+     "synthetic": true,
+     "published": "2026-06-01"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "Day 3 in Lisbon.",
+     "language": "en",
+     "synthetic": true,
+     "published": "2026-06-20"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TEMPORAL_DISAGREEMENT",
+      "affected": [
+       "Tomorrow we fly to Lisbon",
+       "Day 3 in Lisbon"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "SD06",
+   "category": "timeline_consistent",
+   "description": "작성자가 다르면 같은 여행으로 묶지 않음",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "내일부터 다낭에서 한 달 살기를 시작합니다",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-03-01"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@other_traveler",
+     "text": "다낭에 온 지 이틀",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-03-17"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "TEMPORAL_DISAGREEMENT"
+    ]
+   }
+  },
+  {
+   "id": "SD07",
+   "category": "numerical_error",
+   "description": "SNS 문체의 증가율 계산 오류",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "팔로워 1,000명에서 1,500명으로 25% 증가함 🎉\n#성장기록",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-02-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "ARITHMETIC_ERROR",
+      "affected": [
+       "25% 증가함"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "SD08",
+   "category": "genuine_contradiction",
+   "description": "두 사용자가 같은 행사 참가자 수를 다르게 보고",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@beach_a",
+     "text": "해변 정화 행사 참가자는 120명이었음",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-04-02"
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "author": "@beach_b",
+     "text": "해변 정화 행사 참가자는 45명이었음",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-04-02"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "NUMERICAL_INCONSISTENCY",
+      "affected": [
+       "120명이었음",
+       "45명이었음"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "SD09",
+   "category": "ambiguous",
+   "description": "게시일 없는 프로필의 상대 시점",
+   "documents": [
+    {
+     "key": "bio",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "3달 후 퇴사 → 디지털 노마드 전환 중",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "issues": [
+     {
+      "category": "AMBIGUOUS_PROPOSITION",
+      "affected": [
+       "3달 후 퇴사"
+      ],
+      "red": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "SD10",
+   "category": "no_issue",
+   "description": "이모지·해시태그가 많은 일상 게시물",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "author": "@example_nomad",
+     "text": "오늘 카페에서 원고 3장 완성함 ☕✨\n#작업기록 #노마드",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2026-07-07"
+    }
+   ],
+   "expected": {
+    "no_red": true
+   }
+  }
+ ]
+}

@@ -35,6 +35,8 @@ carries `"synthetic": true`. No real publication is cited.
 | `high_reputation_incorrect` | a claim from a high-reputation source (textbook, journal, agency) that is contradicted by independent primary evidence or relies on a retracted source |
 | `ambiguous` | an underspecified proposition (unresolved pronoun, vague quantifier, number without unit) |
 | `no_issue` | consistent, unproblematic documents; any red warning is a false alarm |
+| `timeline_inconsistency` | posts or documents by the same author whose relative time expressions ("tomorrow", "two days since I arrived", "for a month", "내일부터", "온 지 이틀", "한 달 동안") imply incompatible dates for the same episode, given each document's `published` date. Expected issue: `TEMPORAL_DISAGREEMENT` |
+| `timeline_consistent` | the same kind of posts whose implied dates agree; any red warning is a false alarm |
 
 ## 2. Document
 
@@ -65,6 +67,10 @@ Optional fields (omit rather than invent):
 * `retracted`: `true` if the document has been retracted
 * `basis`: what the document itself reports as its evidence:
   `experimental | observational | survey | dataset | review | secondary | expert_opinion | anecdotal`
+
+Social-media posts (`kind: "social"`) may use SNS style: one short line per sentence without final
+punctuation, noun-final sentences ("치앙마이에 온 지 이틀"), bullet-style endings (함/됨/임), emoji and
+hashtags. Timeline cases must set `published` (ISO date) on every post.
 
 Text conventions: ordinary declarative English prose (news, blog, textbook, abstract style).
 Non-English text is used for translation cases: the original (`language` set, e.g. `de`) and

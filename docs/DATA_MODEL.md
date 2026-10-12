@@ -1,4 +1,4 @@
-# Data Model (schema 1.1)
+# Data Model (schema 1.2)
 
 Definitions live in `upae/models.py`. Every object is a dataclass with `to_dict` and `from_dict`. Objects reference each other only by ID.
 ID prefixes: `S` source, `T` passage (a text span), `P` proposition, `E` evidence, `R` relation, `A` assessment, `I` issue, `D` derivation. IDs take the form `X-000001`.
@@ -59,7 +59,7 @@ Changes from the initial proposal in the specification, with the reason for each
 2. `surface` keeps the original wording; `subject` and `object` are normalized. Normalization never erases the original (C). `language` is the language the proposition was extracted in (`en`, `ko`, or the passage language for model extraction). In Korean, an omitted subject is written `(화자)` (the speaker), since Korean routinely drops subjects.
 3. `polarity`, `direction`, `quantifier` and `modality` are separate fields. This separation lets "may reduce", "does not reduce", "reduces" and "increases" be compared deterministically.
 4. `quantity` holds both the raw and the normalized value, the dimension and the kind (`level`, `change`, `change_pp`, `from_to`, `year`).
-5. `scope.time_norm` gives a year range for comparison, and `scope.definitions` maps a term to the definition proposition the source uses.
+5. `scope.time_norm` gives a year range for comparison, and `scope.definitions` maps a term to the definition proposition the source uses. Since schema 1.2, `scope.time_resolved` holds `[start, end]` ISO dates for a relative time ("내일", "3달 후", "10월", "next month") anchored to the source's publication date. The original wording stays in `scope.time`, and the resolution is noted in `extraction.notes`.
 6. `attribution` separates who asserts the claim (author, reported or quoted) from the document's author.
 7. A **compound** is a parent proposition (`claim_type=compound`, `components=[…]`). It is not compared itself; its status is that of its weakest component.
 8. **Mathematical** propositions (`equals(2 + 2, 5)`) are evaluated exactly. **Predictions**, **hypotheses**, **definitions**, **opinions** and **normative** statements are distinct claim types. Opinions and normative statements are `OUT_OF_SCOPE` for truth assessment, so an author's opinion is never promoted to fact.
@@ -142,6 +142,17 @@ Each red issue maps onto the seven required fields as follows: (1) `affected`, (
 ## 8. Derivation (`D-…`)
 
 A derivation records `conclusion`, `premises`, `marker` ("therefore") and `validity` (`valid | invalid | unknown`), plus the names of the `checks` that ran. "Valid" is claimed only when the conclusion duplicates or is entailed by a premise. Every other case is `unknown` or `invalid`.
+
+## 8a. Timeline and predictions (graph level, schema 1.2)
+
+- `timeline`: one record per (author, place family) episode. Each record lists `statements`, and each statement has a `kind`, `quote`, `source` and `implied_start` (an `[earliest, latest]` date window) plus a human-readable `explanation`. The record also has `checked` (at least two documents), `consistent`, `start_window` (the intersection of all windows) and, if inconsistent, a `conflict` (the two statements and the gap in days).
+- Statement kinds:
+  - `start`: "내일부터 …", "Tomorrow we fly to …";
+  - `elapsed`: "…에 온 지 이틀", "three days since we arrived";
+  - `day_count`: "Day 2", "3일째";
+  - `past_duration`: "한 달 동안 …했다", "after two weeks in …".
+- `predictions`: claims about a time after their publication date. Each records `due` (end of the resolved window) and `state`, which is one of `pending`, `fulfilled (self-reported …)`, `past due (no later documents …)` or `past due`. Only the last raises PREDICTION_PAST_DUE: the author kept publishing after the due date without reporting fulfilment.
+- Timeline agreement between posts by the same author is **not** evidence: no evidence items are created from it.
 
 ## 9. Omission
 

@@ -48,6 +48,11 @@ class IdAllocator:
         return ident
 
 
+def _jsonable(x):
+    """Timeline records embed issue details that may contain dates; keep them plain."""
+    return json.loads(json.dumps(x, default=str))
+
+
 class IntegrityError(ValueError):
     pass
 
@@ -69,6 +74,8 @@ class KnowledgeGraph:
         self.model_calls: int = 0
         self.fingerprints: dict[str, str] = {}          # object id -> stable fingerprint
         self.ranking: list[dict] = []
+        self.timeline: list[dict] = []                  # episodes with implied dates
+        self.predictions: list[dict] = []               # predicted claims with due dates
         self.timings: dict[str, float] = {}
         self.changes: Optional[dict] = None
         self._rel_index: dict[tuple, str] = {}
@@ -245,6 +252,8 @@ class KnowledgeGraph:
             "derivations": [d.to_dict() for d in self.derivations.values()],
             "omissions": [o.to_dict() for o in self.omissions],
             "ranking": list(self.ranking),
+            "timeline": _jsonable(self.timeline),
+            "predictions": list(self.predictions),
             "limitations": list(self.limitations),
             "model_calls": self.model_calls,
         }
@@ -275,6 +284,8 @@ class KnowledgeGraph:
             g.derivations[dv.id] = dv
         g.omissions = [Omission.from_dict(o) for o in data.get("omissions", [])]
         g.ranking = list(data.get("ranking", []))
+        g.timeline = list(data.get("timeline", []))
+        g.predictions = list(data.get("predictions", []))
         g.fingerprints = dict(data.get("fingerprints", {}))
         g.archive = dict(data.get("archive", {}))
         g.timings = dict(data.get("timings", {}))

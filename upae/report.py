@@ -249,6 +249,23 @@ def markdown_report(g: KnowledgeGraph, title: str = "Proposition Analysis Report
                 v = [f"{x['id']}: {x['from']}→{x['to']}" for x in v]
             L.append(f"- {k.replace('_', ' ')}: {', '.join(v) if v else 'none'}")
     L.append("")
+    L.append("## Appendix: timeline")
+    L.append("")
+    if not g.timeline and not g.predictions:
+        L.append("No dated episodes or predictions found.")
+    for n, ep in enumerate(g.timeline, 1):
+        verdict = ("not checked (single source)" if not ep["checked"] else
+                   f"consistent — start {ep['start_window'][0]}" + (f"…{ep['start_window'][1]}" if ep['start_window'][1] != ep['start_window'][0] else "")
+                   if ep["consistent"] else f"🔴 inconsistent (gap {ep['conflict']['gap_days']} day(s))")
+        L.append(f"{n}. **{ep['place']}** episode by {ep['author']}: {verdict}")
+        for s in ep["statements"]:
+            L.append(f"   - {s['source']} [{s['kind']}] “{_q(s['quote'], 90)}” → start ∈ {s['implied_start'][0]}…{s['implied_start'][1]} ({s['explanation']})")
+    if g.predictions:
+        L.append("")
+        L.append("Predictions (time anchored to publication date):")
+        for pr in g.predictions:
+            L.append(f"- {pr['proposition']} `{pr['text']}` — due {pr['due'] or 'n/a'}: {pr.get('state', 'not checked')}")
+    L.append("")
     L.append("## Appendix: omitted, merged and summarised propositions")
     L.append("")
     oc = Counter(o.decision for o in g.omissions)
@@ -279,6 +296,7 @@ def html_report(g: KnowledgeGraph, snapshot: dict, title: str = "Proposition Ana
         "issues": snapshot["issues"], "derivations": snapshot["derivations"],
         "ranking": snapshot.get("ranking", []), "omissions": snapshot.get("omissions", []),
         "limitations": snapshot.get("limitations", []), "changes": snapshot.get("changes"),
+        "timeline": snapshot.get("timeline", []), "predictions": snapshot.get("predictions", []),
         "legend": STATUS_LEGEND, "version": PROCESSING_VERSION,
     }
     payload = json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
@@ -401,6 +419,8 @@ function viewSources(){const v=document.getElementById('view');
 function viewChanges(){const v=document.getElementById('view');const c=D.changes;
  v.innerHTML='<h3>Changes since previous analysis</h3>'+(c?'<ul>'+Object.entries(c).map(([k,x])=>`<li>${k.replace(/_/g,' ')}: ${x.length?x.map(y=>typeof y==='object'?`${y.id}: ${y.from}→${y.to}`:y).join(', '):'none'}</li>`).join('')+'</ul>':'<p class="muted">No previous analysis supplied.</p>')+
  '<h3>Limitations</h3><ul>'+(D.limitations.map(l=>`<li>${esc(l)}</li>`).join('')||'<li>None recorded.</li>')+'</ul><h3>Status legend</h3><ul>'+Object.entries(D.legend).map(([k,x])=>`<li><b>${k}</b> — ${esc(x)}</li>`).join('')+'</ul>'+
+ '<h3>Timeline</h3>'+(D.timeline.length?'<ul>'+D.timeline.map(e=>`<li class="${e.consistent?'':'redtxt'}"><b>${esc(e.place)}</b> (${esc(e.author)}): ${!e.checked?'single source':e.consistent?'consistent, start '+e.start_window.join('…'):'inconsistent, gap '+e.conflict.gap_days+' day(s)'}<ul>${e.statements.map(s=>`<li>${s.source} [${s.kind}] “${esc(s.quote)}” → ${s.implied_start.join('…')}</li>`).join('')}</ul></li>`).join('')+'</ul>':'<p class="muted">No dated episodes.</p>')+
+ (D.predictions.length?'<h3>Predictions</h3><ul>'+D.predictions.map(p=>`<li>${p.proposition} <span class="formula">${esc(p.text)}</span> — due ${p.due||'n/a'}: ${esc(p.state||'')}</li>`).join('')+'</ul>':'')+
  '<h3>Omissions</h3><ul>'+D.omissions.map(o=>`<li>${o.proposition_id}: ${o.decision}${o.into?' → '+o.into:''} — ${esc(o.reason)}</li>`).join('')+'</ul>'}
 drawTabs();viewProps();
 </script></body></html>

@@ -158,7 +158,8 @@ _TIME_RE = re.compile(
     rf"\b(?P<prep>in|during|since|by|from|between|as of|until|before|after|throughout|over)\s+"
     rf"(?P<t>(?:the\s+)?(?:(?:early|late|mid)[- ])?(?:(?:{MONTHS})\s+)?(?:\d{{4}}s?)"
     rf"(?:\s*(?:-|–|to|and)\s*(?:(?:{MONTHS})\s+)?\d{{4}})?)", re.I)
-_REL_TIME_RE = re.compile(r"\b(last year|this year|next year|last month|this month|recently|"
+_REL_TIME_RE = re.compile(r"\b(tomorrow|yesterday|tonight|next week|last week|this week|next month|"
+                          r"last year|this year|next year|last month|this month|recently|"
                           r"currently|nowadays|today|at present|these days)\b", re.I)
 _COND_RES = [
     re.compile(r"(?:,\s*)?\b(?:but\s+)?only\s+(?P<c>(?:in|for|when|if|under|among|at|with)\s+[^,.;]+)", re.I),
@@ -594,7 +595,10 @@ def extract_sentence(sentence: str, sent_index: int, span: tuple[int, int],
     raw = sentence.strip()
     if raw.endswith("?") or len(raw.split()) < 3:
         return []
-    work = raw
+    from .sns import normalize_sns
+    work = normalize_sns(raw)
+    if len(work.split()) < 3:
+        return []
     attribution = Attribution()
     notes: list[str] = []
     claim_override: Optional[ClaimType] = None
@@ -688,9 +692,11 @@ def extract_sentence(sentence: str, sent_index: int, span: tuple[int, int],
         ct = parsed["ct"]
         modality = parsed.get("modality", Modality.ASSERTED)
         polarity = Polarity.NEGATIVE if parsed.get("neg") else Polarity.POSITIVE
-        if quantifier == "none":
+        if quantifier == "none" and parsed["method"] != "rule:fallback@1":
             polarity = Polarity.NEGATIVE if polarity == Polarity.POSITIVE else Polarity.POSITIVE
             quantifier = "all"
+        elif parsed["method"] == "rule:fallback@1":
+            quantifier, subject = None, normalize_phrase(_clean_np(subj_raw))  # slogans: "No Guts, Just Data"
         undated = strip_month_may(clause)
         if HEDGES.search(undated) and modality == Modality.ASSERTED:
             modality = Modality.POSSIBLE
@@ -753,12 +759,23 @@ def extract_sentence(sentence: str, sent_index: int, span: tuple[int, int],
     return drafts
 
 
-def extract_passage_text(text: str, doc_basis: Optional[EvidenceBasis] = None) -> list[Draft]:
-    """Extract drafts from a passage of English text."""
+def extract_passage_text(text: str, doc_basis: Optional[EvidenceBasis] = None,
+                         lines_are_sentences: bool = False) -> list[Draft]:
+    """Extract drafts from a passage of English text.  For social-media posts each
+    line is also a sentence boundary."""
     paragraph_basis = detect_basis(text)
     drafts: list[Draft] = []
-    for i, (s, e) in enumerate(split_sentences(text)):
-        drafts.extend(extract_sentence(text[s:e], i, (s, e), doc_basis, paragraph_basis))
+    if not lines_are_sentences:
+        for i, (s, e) in enumerate(split_sentences(text)):
+            drafts.extend(extract_sentence(text[s:e], i, (s, e), doc_basis, paragraph_basis))
+        return drafts
+    from .sns import split_lines
+    i = 0
+    for ls, le in split_lines(text):
+        line = text[ls:le]
+        for s, e in split_sentences(line):
+            drafts.extend(extract_sentence(line[s:e], i, (ls + s, ls + e), doc_basis, paragraph_basis))
+            i += 1
     return drafts
 
 

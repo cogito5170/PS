@@ -98,6 +98,16 @@ Alt: a morphological analyzer such as Mecab or Kiwi (more accurate, but a native
 Lim: the rules cover common news and report structures only. There is no cross-language alignment, so a Korean claim and an English claim are never compared with each other.
 M: the Korean evaluation sets (EVALUATION_REPORT §7).
 
+**D10. SNS text and timeline anchoring.**
+R: social posts are short, line-based and noun-final, and their meaning depends on their dates ("내일부터", "온 지 이틀"). Without anchoring, these statements could not be compared or checked at all.
+- `sns.py` normalizes only the *working copy* of a sentence: it removes emoji, hashtag marks, URLs and bullets, and restores bullet-style endings (함 → 한다). Quotes stay verbatim.
+- In Korean passages and in social posts, every line is a sentence boundary.
+- `timeline.py` resolves relative times against publication dates. It turns trip and stay statements into windows for the episode's start date, and flags a TEMPORAL_DISAGREEMENT when windows from the same author's posts cannot overlap. The counting tolerance is ±1 day for "day N", and 15 % of the duration for "for a month".
+
+Alt: date-parsing libraries such as dateparser or HeidelTime (a dependency, and English-centric); a model provider.
+Lim: places come from a small gazetteer with city → country families; episodes are grouped by author and place only; time zones are ignored.
+M: `eval/dataset/dev_sns.json` and the blind `heldout_sns.json` (EVALUATION_REPORT §8).
+
 ## 4. Data flow guarantees (checked by `KnowledgeGraph.validate()` and tests)
 
 4.1 Every proposition has a source and a passage. Its quote appears verbatim in the passage. The passage equals the corresponding span of the archived source text.

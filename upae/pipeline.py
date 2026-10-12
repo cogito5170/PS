@@ -129,6 +129,7 @@ class Analysis:
             g.fingerprints[p.id] = f"{g.sources[p.source_id].key}|{p.paragraph_index}|{short_hash(p.text)}"
         t0 = self._tick("register", t0)
         self.extract_all()
+        self.anchor_times()
         t0 = self._tick("extract", t0)
         self.link_definitions()
         self.link_attribution()
@@ -147,6 +148,7 @@ class Analysis:
         self.check_reworded_copies()
         self.check_retractions()
         self.check_ambiguity()
+        self.check_timelines()
         self.check_sources()
         t0 = self._tick("checks", t0)
         self.assess_all()
@@ -174,7 +176,8 @@ class Analysis:
                               key=lambda p: p.char_start):
                 lang = pas.language if pas.language != "und" else src.language
                 if lang in ("en", "und") or (src.language == "en" and pas.language_confidence < 0.3):
-                    drafts = extract_passage_text(pas.text, src.basis)
+                    drafts = extract_passage_text(pas.text, src.basis,
+                                                  lines_are_sentences=src.kind.value == "social")
                     self._materialise(src, pas, drafts, orig_map, model=False)
                 elif src.id in translated:
                     continue  # analysed through its translation
@@ -347,6 +350,95 @@ class Analysis:
                               rationale=f"Source presents this as a conclusion ('{d.inference_marker}').",
                               evidence_refs=[pas.id], confidence=0.7,
                               review_status=ReviewStatus.ASSERTED_BY_SOURCE, method="rule:inference-marker@1")
+
+    # -------------------------------------------------------------- time
+    def anchor_times(self) -> None:
+        """Resolve relative times against publication dates; present-tense claims
+        about a future time are predictions with a due date."""
+        from .timeline import anchor_propositions
+        g = self.g
+        for pid in anchor_propositions(g):
+            p = g.propositions[pid]
+            if p.modality in (Modality.ASSERTED, Modality.REPORTED):
+                p.modality = Modality.PREDICTED
+            if p.claim_type in (ClaimType.EMPIRICAL, ClaimType.STATISTICAL, ClaimType.OBSERVATION):
+                p.claim_type = ClaimType.PREDICTION
+            p.extraction.notes.append("refers to a time after publication: treated as a prediction")
+            p.text = formula(p)
+        for p in g.propositions.values():
+            # tracked predictions need a due date (an anchored time); bare intentions are not tracked
+            if p.modality == Modality.PREDICTED and p.claim_type != ClaimType.COMPOUND and p.scope.time_resolved:
+                src = g.sources[p.source_refs[0]]
+                g.predictions.append({"proposition": p.id, "source": src.id, "published": src.published,
+                                      "due": p.scope.time_resolved[1] if p.scope.time_resolved else None,
+                                      "text": p.text})
+
+    def check_timelines(self) -> None:
+        from .timeline import build_timelines, parse_iso
+        g = self.g
+        g.timeline = build_timelines(g)
+        for ep in g.timeline:
+            c = ep["conflict"]
+            if not c:
+                continue
+            a = c["a_props"][:1] or [c["a_source"]]
+            b = c["b_props"][:1] or [c["b_source"]]
+            if a[0] in g.propositions and b[0] in g.propositions and a[0] != b[0]:
+                self._rel(RelationType.CONTRADICTS, a[0], b[0],
+                          rationale=f"Timeline: implied start dates of the {ep['place']} episode do not overlap "
+                                    f"(gap {c['gap_days']} day(s)).",
+                          evidence_refs=[s["passage"] for s in ep["statements"]], confidence=0.7,
+                          method="rule:timeline@1", dimensions=["event_time"])
+            self._issue(C.IssueDraft(
+                category=IssueCategory.TEMPORAL_DISAGREEMENT, finding_class=FindingClass.UNRESOLVED_CONTRADICTION,
+                severity=Severity.MEDIUM, confidence=0.7, affected=a + b,
+                conflicting=a + b,
+                reason=(f"Posts by {ep['author']} about the {ep['place']} episode imply incompatible dates: "
+                        f"“{c['a']}” ({c['a_why']}) vs “{c['b']}” ({c['b_why']}); gap {c['gap_days']} day(s) "
+                        "beyond the counting tolerance."),
+                resolution="Check the publication dates and the intended reference point (arrival day, counting "
+                           "from 0 or 1, time zone); one of the relative time expressions is wrong or refers to "
+                           "a different trip.",
+                evidence=[s["passage"] for s in ep["statements"]], detector="rule:timeline@1",
+                assumptions=["Statements by the same author about the same place refer to one episode.",
+                             "Publication dates are the dates the posts were written."],
+                details={"timeline": ep, "key": f"{ep['author']}|{ep['place']}"}))
+        now = parse_iso(self.now)
+        # a planned start ("내일부터 …") later reported by the same author as under way
+        fulfilled = {}
+        for ep in g.timeline:
+            if not (ep["consistent"] and ep["checked"]):
+                continue
+            starts = [s for s in ep["statements"] if s["kind"] == "start"]
+            later = [s for s in ep["statements"] if s["kind"] != "start"]
+            for s in starts:
+                for pid in s["propositions"]:
+                    if later:
+                        fulfilled[pid] = sorted({x["source"] for x in later})
+        for pr in g.predictions:
+            due = parse_iso(pr["due"])
+            if pr["proposition"] in fulfilled:
+                pr["state"] = "fulfilled (self-reported in " + ", ".join(fulfilled[pr["proposition"]]) + ")"
+                continue
+            pr["state"] = "no due date" if due is None else ("pending" if now is None or now <= due else "past due")
+            if pr["state"] != "past due":
+                continue
+            # only a signal if the author kept posting after the due date without reporting fulfilment
+            src = g.sources[pr["source"]]
+            author = src.author or src.publisher
+            later = [s.id for s in g.sources.values() if author and (s.author or s.publisher) == author
+                     and parse_iso(s.published) and parse_iso(s.published) > due]
+            if not later:
+                pr["state"] = "past due (no later documents by the same author in the corpus)"
+                continue
+            pr["later_documents"] = later
+            self._issue(C.IssueDraft(
+                category=IssueCategory.PREDICTION_PAST_DUE, finding_class=FindingClass.MISSING_EVIDENCE,
+                severity=Severity.LOW, confidence=0.6, affected=[pr["proposition"]],
+                reason=f"Prediction due by {pr['due']}; the same author published {len(later)} later "
+                       f"document(s) ({', '.join(later)}) without a statement that it was fulfilled.",
+                resolution="Find a later source confirming or refuting the predicted event.",
+                evidence=[g.propositions[pr["proposition"]].passage_id], detector="rule:prediction-due@1"))
 
     # -------------------------------------------------------------- linking
     def link_definitions(self) -> None:

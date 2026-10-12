@@ -171,6 +171,13 @@ class DevRegression(unittest.TestCase):
         self.assertEqual(agg["integrity_errors"], 0)
         self.assertEqual(agg["traceability"]["coverage"], 1.0)
 
+    def test_dev_sns_set(self):
+        from upae.evaluate import run_dataset
+        agg, _ = run_dataset(ROOT / "eval" / "dataset" / "dev_sns.json")
+        self.assertGreaterEqual(agg["issues_family"]["f1"], 0.9)
+        self.assertEqual(agg["red"]["no_red_cases_with_false_alarm"], 0)
+        self.assertEqual(agg["integrity_errors"], 0)
+
     def test_dev_ko_set(self):
         from upae.evaluate import run_dataset
         agg, _ = run_dataset(ROOT / "eval" / "dataset" / "dev_ko.json")

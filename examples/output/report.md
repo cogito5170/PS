@@ -271,6 +271,10 @@ Metadata is reported only where present in the source; missing fields are marked
 
 No previous analysis supplied.
 
+## Appendix: timeline
+
+No dated episodes or predictions found.
+
 ## Appendix: omitted, merged and summarised propositions
 
 Counts: merged 6

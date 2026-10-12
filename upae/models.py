@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass, field, fields
 from enum import Enum
 from typing import Any, Optional
 
-SCHEMA_VERSION = "1.1"
+SCHEMA_VERSION = "1.2"
 PROCESSING_VERSION = "upae-0.1.0"
 
 
@@ -145,6 +145,7 @@ class IssueCategory(StrEnum):
     AMBIGUOUS_PROPOSITION = "AMBIGUOUS_PROPOSITION"
     EXTRACTION_UNCERTAIN = "EXTRACTION_UNCERTAIN"
     SOURCE_UNAVAILABLE = "SOURCE_UNAVAILABLE"
+    PREDICTION_PAST_DUE = "PREDICTION_PAST_DUE"
 
 
 class FindingClass(StrEnum):
@@ -222,6 +223,7 @@ class Quantity(Record):
 class Scope(Record):
     time: Optional[str] = None            # as written
     time_norm: Optional[list] = None      # [start_year, end_year]
+    time_resolved: Optional[list] = None  # [start, end] ISO dates, anchored to publication date
     location: Optional[str] = None
     population: Optional[str] = None
     conditions: list = field(default_factory=list)

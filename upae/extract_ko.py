@@ -24,6 +24,7 @@ from typing import Optional
 
 from .extract import Draft
 from .models import Attribution, ClaimType, EvidenceBasis, Modality, Polarity, Quantity, Scope
+from .sns import normalize_sns, split_lines
 from .textutil import norm_ws, split_sentences, strip_josa
 from .units import find_quantities
 
@@ -47,6 +48,7 @@ _EVENT_RE = "|".join(sorted((re.escape(k) for k in EVENT_V), key=len, reverse=Tr
 NEG = re.compile(r"지\s?(?:않|못)|(?:않았|않는|않습|않을|않아)|못(?:했|한|하|합)|(?<![가-힣])안\s|아니(?:다|었|며|었다|에요)|아닙|없(?:다|었|는|습)")
 POSSIBLE = re.compile(r"(?:ㄹ|을|를|할|일|될|줄일|높일|있을)?\s?수\s?(?:도\s?)?있|가능성이\s?(?:있|높)|것으로\s?(?:보인다|보입니다|보였|추정)|듯(?:하|합)|것\s?같|추정(?:된다|됩니다)|일지도")
 CANNOT = re.compile(r"수\s?(?:가\s)?없")
+INTENTION = re.compile(r"(?:려고|려)\s?(?:합니다|한다|해요|했다|했습니다)|(?:할|하려는)\s?(?:생각|계획|예정)(?:이다|입니다|이에요)?|해\s?보(?:려|겠)|살아\s?봅니다|해\s?봅니다")
 PREDICTED = re.compile(r"예정(?:이|입니|이다)|계획(?:이|입니)|전망(?:이|입니|이다)|ㄹ\s?것(?:이다|입니다)|(?:할|될|줄|늘|오를|낮출|높일)\s?것(?:이다|입니다|으로)|겠(?:다|습니다)")
 NORMATIVE = re.compile(r"해야\s?(?:한다|합니다|할|하며)|하여야|돼야|되어야|(?:하지|해서는)\s?안\s?된다|필요가\s?있다")
 OPINION_START = re.compile(r"^(?:제|내|저의|나의|우리의?)\s?(?:생각|의견|판단)(?:에는|에|으로는|은)[,\s]+|^개인적으로(?:는)?[,\s]+|^솔직히[,\s]+")
@@ -130,7 +132,8 @@ def extract_scope_ko(clause: str) -> tuple[str, Scope, list]:
         scope.time_norm = _years(m.group("t"))
         cut(m)
     else:
-        m = re.search(r"(?P<t>작년|지난해|올해|금년|내년|어제|오늘|내일|최근|현재|요즘|지난달|이번\s?달|다음\s?달|지난주|이번\s?주|\d+\s?(?:달|개월|년|주|일)\s?(?:후|뒤|전|만에))(?:에는|에|부터|까지|에도)?(?=\s|,)", work)
+        m = re.search(r"(?P<t>작년|지난해|올해|금년|내년|어제|오늘|내일|모레|최근|현재|요즘|지난달|이번\s?달|다음\s?달|지난주|이번\s?주|다음\s?주|\d+\s?(?:달|개월|년|주|일)\s?(?:후|뒤|전|만에)|(?:한|두|세|석)\s?(?:달|주)\s?(?:후|뒤|전))(?:에는|에|부터|까지|에도)?(?=\s|,)", work) \
+            or re.search(r"(?<![\d.])(?P<t>\d{1,2}\s?월(?:\s?\d{1,2}\s?일)?)(?:부터|까지|에는|에|중|말|초)?(?=\s|,)", work)
         if m:
             scope.time = norm_ws(m.group("t"))
             notes.append("relative-time")
@@ -313,11 +316,25 @@ def parse_clause_ko(c: str) -> Optional[dict]:
     if m and not COPULA_END.search(rest):
         return dict(s=s, p=verb_stem(m.group("v")), o=_clean_object(m.group("o")), ct=ClaimType.EMPIRICAL,
                     conf=0.45, method="rule:final-predicate@1", neg=neg, quantity=_q(m.group("o")))
+    # progressive aspect: "디지털 노마드 전환 중"
+    m = re.match(r"^(?P<o>.*?)\s?(?P<v>[가-힣]+)\s?중\.?$", rest)
+    if m and m.group("v") not in ("그", "이"):
+        return dict(s=s, p=m.group("v"), o=_clean_object(m.group("o")) or None, ct=ClaimType.EMPIRICAL,
+                    conf=0.5, method="rule:progressive@1", notes=["progressive aspect (중)"])
+    # elapsed time: "치앙마이에 온 지 이틀"
+    m = re.match(r"^(?P<o>.*?)\s?(?:온|간|도착한|머문|지낸|산|시작한|일한|입국한)\s?지\s?(?P<d>[가-힣\d\s]+?)(?:째|가 됐다|이 됐다|가 지났다|이 지났다)?\.?$", rest)
+    if m:
+        return dict(s=s, p="elapsed_since", o=_clean_object(m.group("o")) or None, ct=ClaimType.OBSERVATION,
+                    conf=0.6, method="rule:elapsed@1", notes=[f"elapsed: {m.group('d').strip()}"])
     # bare predicate: "(나는) 퇴사한다"
     m = re.match(r"^(?P<v>[가-힣]+?)(?:한다|합니다|했다|했습니다|하였다|할\s?(?:것이다|예정이다|계획이다))\.?$", rest)
     if m:
         return dict(s=s, p=m.group("v"), o=None, ct=ClaimType.EMPIRICAL, conf=0.5,
                     method="rule:bare-predicate@1", neg=neg)
+    # noun-final SNS sentence ("…사람은 최종 결정만 하는 구조."): an implicit copula
+    if s == IMPLICIT_SUBJECT and not re.search(r"(?:다|요|죠|까|네|군)\.?$", rest) and len(rest) >= 4:
+        return dict(s=s, p="is", o=_clean_object(rest), ct=ClaimType.EMPIRICAL, conf=0.4,
+                    method="rule:nominal-sentence@1", notes=["noun-final sentence: implicit copula"])
     return None
 
 
@@ -373,7 +390,9 @@ def extract_sentence_ko(raw: str, sent_index: int, span: tuple, doc_basis=None,
     raw = raw.strip()
     if raw.endswith("?") or len(raw.split()) < 2:
         return []
-    work = raw
+    work = normalize_sns(raw)
+    if len(work.split()) < 2:
+        return []
     attribution = Attribution()
     claim_override = None
     modality_override = None
@@ -445,6 +464,9 @@ def extract_sentence_ko(raw: str, sent_index: int, span: tuple, doc_basis=None,
             modality = Modality.ASSERTED
             if POSSIBLE.search(clause) and not CANNOT.search(clause):
                 modality = Modality.POSSIBLE
+            if INTENTION.search(clause) and ct not in (ClaimType.DEFINITION, ClaimType.MATHEMATICAL):
+                modality = Modality.PREDICTED
+                parsed.setdefault("notes", []).append("intention (-려고 하다 / -해 보다)")
             if PREDICTED.search(clause) and ct not in (ClaimType.DEFINITION, ClaimType.MATHEMATICAL):
                 modality = Modality.PREDICTED
                 if ct != ClaimType.CAUSAL:
@@ -495,8 +517,14 @@ def extract_sentence_ko(raw: str, sent_index: int, span: tuple, doc_basis=None,
 
 
 def extract_passage_text_ko(text: str, doc_basis: Optional[EvidenceBasis] = None) -> list[Draft]:
+    """Each line is a sentence boundary (SNS posts and Korean prose rarely hard-wrap);
+    sentences are then split on punctuation inside each line."""
     paragraph_basis = detect_basis_ko(text)
     drafts: list[Draft] = []
-    for i, (s, e) in enumerate(split_sentences(text)):
-        drafts.extend(extract_sentence_ko(text[s:e], i, (s, e), doc_basis, paragraph_basis))
+    i = 0
+    for ls, le in split_lines(text):
+        line = text[ls:le]
+        for s, e in split_sentences(line):
+            drafts.extend(extract_sentence_ko(line[s:e], i, (ls + s, ls + e), doc_basis, paragraph_basis))
+            i += 1
     return drafts
