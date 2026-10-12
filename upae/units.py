@@ -17,7 +17,8 @@ WORD_NUMBERS = {
     "half": 0.5, "a third": 1 / 3, "a quarter": 0.25,
 }
 SCALES = {"thousand": 1e3, "million": 1e6, "billion": 1e9, "trillion": 1e12,
-          "k": 1e3, "m": 1e6, "bn": 1e9}
+          "k": 1e3, "m": 1e6, "bn": 1e9,
+          "천": 1e3, "만": 1e4, "억": 1e8, "조": 1e12}
 
 # unit token -> (canonical unit, factor to canonical, dimension)
 UNITS: dict[str, tuple[str, float, str]] = {
@@ -51,6 +52,13 @@ UNITS: dict[str, tuple[str, float, str]] = {
     "patients": ("count", 1, "count"), "students": ("count", 1, "count"),
     "cases": ("count", 1, "count"), "jobs": ("count", 1, "count"),
     "points": ("points", 1, "points"), "point": ("points", 1, "points"),
+    # Korean
+    "퍼센트포인트": ("pp", 1, "ratio_pp"), "%p": ("pp", 1, "ratio_pp"), "퍼센트": ("percent", 1, "ratio"),
+    "프로": ("percent", 1, "ratio"), "명": ("count", 1, "count"), "킬로미터": ("m", 1000, "length"),
+    "미터": ("m", 1, "length"), "센티미터": ("m", 0.01, "length"), "킬로그램": ("kg", 1, "mass"),
+    "그램": ("kg", 0.001, "mass"), "톤": ("kg", 1000, "mass"), "리터": ("l", 1, "volume"),
+    "개월": ("s", 2629800, "time"), "시간": ("s", 3600, "time"), "메가와트": ("W", 1e6, "power"),
+    "기가와트": ("W", 1e9, "power"), "킬로와트": ("W", 1e3, "power"), "점": ("points", 1, "points"),
     "seats": ("count", 1, "count"), "votes": ("count", 1, "count"),
     "species": ("count", 1, "count"), "hectares": ("m2", 10000, "area"),
     "ha": ("m2", 10000, "area"), "km2": ("m2", 1e6, "area"),
@@ -61,21 +69,22 @@ TEMPERATURE = {
     "degrees fahrenheit": "F", "fahrenheit": "F", "degrees f": "F", "kelvin": "K",
     "k": "K",
 }
-CURRENCY_PREFIX = {"$": "USD", "us$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY"}
+CURRENCY_PREFIX = {"$": "USD", "us$": "USD", "€": "EUR", "£": "GBP", "¥": "JPY", "₩": "KRW"}
 CURRENCY_SUFFIX = {"usd": "USD", "dollars": "USD", "eur": "EUR", "euros": "EUR",
-                   "gbp": "GBP", "pounds sterling": "GBP", "yen": "JPY"}
+                   "gbp": "GBP", "pounds sterling": "GBP", "yen": "JPY",
+                   "원": "KRW", "달러": "USD", "유로": "EUR", "엔": "JPY"}
 
 _NUM = r"(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?"
 _unit_alts = sorted(set(UNITS) | set(TEMPERATURE) | set(CURRENCY_SUFFIX), key=len, reverse=True)
 _UNIT_RE = "|".join(re.escape(u) for u in _unit_alts)
-_SCALE_RE = r"(?:thousand|million|billion|trillion|bn)"
+_SCALE_RE = r"(?:(?:thousand|million|billion|trillion|bn)\b|천|만|억|조)"
 _WORDNUM_RE = "|".join(sorted((re.escape(w) for w in WORD_NUMBERS), key=len, reverse=True))
 
 QUANTITY_RE = re.compile(
     rf"(?P<approx>(?:about|around|approximately|roughly|nearly|almost|some|over|under|more than|less than|at least|up to|~)\s+)?"
-    rf"(?P<cur>US\$|\$|€|£|¥)?\s?"
+    rf"(?P<cur>US\$|\$|€|£|¥|₩)?\s?"
     rf"(?P<num>{_NUM}|\b(?:{_WORDNUM_RE})\b)"
-    rf"(?:\s?(?P<scale>{_SCALE_RE})\b)?"
+    rf"(?:\s?(?P<scale>{_SCALE_RE}))?"
     rf"(?:\s?(?P<unit>{_UNIT_RE})(?![A-Za-z]))?",
     re.I,
 )

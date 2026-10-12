@@ -115,7 +115,8 @@ POPULATION_NOUNS = ("patients|adults|children|women|men|students|pupils|mice|rat
                     "speakers|readers|athletes|soldiers|teachers|nurses|doctors|"
                     "cases|samples|plants|trees|fish|birds|cows|pigs|dogs|cats")
 
-PRONOUNS = {"it", "they", "this", "that", "these", "those", "he", "she", "its", "them", "which"}
+PRONOUNS = {"it", "they", "this", "that", "these", "those", "he", "she", "its", "them", "which",
+            "그것", "이것", "저것", "그", "그녀", "그들", "이들"}
 
 NON_LOCATIONS = {"january", "february", "march", "april", "may", "june", "july", "august",
                  "september", "october", "november", "december", "policy", "phase", "table",

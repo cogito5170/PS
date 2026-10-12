@@ -11,7 +11,8 @@ _ABBREV = {
     "inc", "ltd", "co", "jr", "sr", "approx", "dept", "est", "u.s", "u.k", "al", "ca",
 }
 
-_SENT_END = re.compile(r'([.!?])(["”’)]*)(\s+)(?=["“(]?[A-Z0-9À-ɏ])')
+# a sentence may start with a Latin capital, a digit, Hangul, kana or CJK ideographs
+_SENT_END = re.compile(r'([.!?])(["\u201d\u2019)]*)(\s+)(?=["\u201c(]?[A-Z0-9\u00C0-\u024F\uAC00-\uD7A3\u3040-\u30FF\u4E00-\u9FFF])')
 
 
 def split_sentences(text: str) -> list[tuple[int, int]]:
@@ -31,7 +32,7 @@ def split_sentences(text: str) -> list[tuple[int, int]]:
             word = last[0].lower() if last else ""
             if word in _ABBREV:
                 continue
-            if len(word) == 1 and word.isalpha():
+            if len(word) == 1 and word.isascii() and word.isalpha():
                 # an initial ("J. Smith", "John F. Kennedy") follows a capitalised word or
                 # starts the sentence; "conditions A." or "90 °C." end a sentence
                 prev = re.findall(r"(\S+)\s+\S$", before)
@@ -81,6 +82,8 @@ def strip_accents(s: str) -> str:
 
 def stem(word: str) -> str:
     """Very light English suffix stripping (deterministic, conservative)."""
+    if not word.isascii():
+        return word
     w = word
     for suf, rep in (("ies", "y"), ("sses", "ss"), ("ing", ""), ("edly", ""), ("ed", ""),
                      ("es", ""), ("s", "")):
@@ -93,13 +96,44 @@ def stem(word: str) -> str:
     return w
 
 
+HANGUL = re.compile(r"[\uAC00-\uD7A3]")
+
+# Korean particles (josa) stripped from the end of a word for comparison purposes.
+# Single-syllable particles are stripped only when at least two syllables remain, so
+# nouns that merely end in the same syllable ("나이", "마을") stay intact.
+_JOSA_LONG = ("에서부터", "에서는", "에게서", "으로는", "으로써", "으로서", "이라는", "이라고", "에서도",
+              "까지는", "에서", "에게", "으로", "까지", "부터", "보다", "처럼", "라는", "이란", "에는",
+              "에도", "와의", "과의", "께서", "한테", "마다", "조차", "밖에")
+_JOSA_SHORT = ("은", "는", "이", "가", "을", "를", "의", "에", "로", "과", "와", "도", "만", "란")
+KO_STOPWORDS = {"그리고", "그러나", "하지만", "또한", "및", "등", "것", "수", "더", "또", "그", "이", "저",
+                "해당", "각", "있다", "없다", "한다", "했다", "된다", "됐다", "이다", "였다"}
+
+
+def strip_josa(word: str) -> str:
+    if not HANGUL.search(word):
+        return word
+    for j in _JOSA_LONG:
+        if word.endswith(j) and len(word) - len(j) >= 1:
+            return word[: -len(j)]
+    for j in _JOSA_SHORT:
+        if word.endswith(j) and len(word) - len(j) >= 2:
+            return word[: -len(j)]
+    return word
+
+
 def tokens(text: str) -> list[str]:
-    return re.findall(r"[a-z0-9À-ɏ]+(?:[.'-][a-z0-9]+)*", text.lower())
+    return re.findall(r"[a-z0-9\u00C0-\u024F\uAC00-\uD7A3]+(?:[.'-][a-z0-9]+)*", text.lower())
 
 
 def content_tokens(text: str) -> list[str]:
     out = []
     for t in tokens(text):
+        if HANGUL.search(t):
+            t = strip_josa(t)
+            if t in KO_STOPWORDS or not t:
+                continue
+            out.append(t)
+            continue
         t = _SYNONYMS.get(t, t)
         if t in STOPWORDS or len(t) < 2:
             continue

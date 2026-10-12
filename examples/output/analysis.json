@@ -130,7 +130,7 @@
    "connector": "json",
    "metadata": {
     "detected_language": "en",
-    "detected_language_confidence": 0.88
+    "detected_language_confidence": 0.98
    }
   },
   {
@@ -163,7 +163,7 @@
    "connector": "json",
    "metadata": {
     "detected_language": "en",
-    "detected_language_confidence": 1.0
+    "detected_language_confidence": 0.6
    }
   },
   {
@@ -396,7 +396,7 @@
    "connector": "text",
    "metadata": {
     "detected_language": "en",
-    "detected_language_confidence": 0.66
+    "detected_language_confidence": 0.77
    }
   },
   {
@@ -597,7 +597,7 @@
    "connector": "text",
    "metadata": {
     "detected_language": "en",
-    "detected_language_confidence": 0.88
+    "detected_language_confidence": 1.0
    }
   }
  ],
@@ -645,7 +645,7 @@
    "char_start": 0,
    "char_end": 121,
    "language": "en",
-   "language_confidence": 0.88,
+   "language_confidence": 0.98,
    "page": 112,
    "section": "4.2 Northern cities",
    "paragraph_index": 0
@@ -657,7 +657,7 @@
    "char_start": 0,
    "char_end": 45,
    "language": "en",
-   "language_confidence": 1.0,
+   "language_confidence": 0.6,
    "page": null,
    "section": null,
    "paragraph_index": 0
@@ -753,7 +753,7 @@
    "char_start": 210,
    "char_end": 295,
    "language": "en",
-   "language_confidence": 0.48,
+   "language_confidence": 0.84,
    "page": null,
    "section": "Discussion",
    "paragraph_index": 1
@@ -825,7 +825,7 @@
    "char_start": 0,
    "char_end": 88,
    "language": "en",
-   "language_confidence": 0.88,
+   "language_confidence": 1.0,
    "page": null,
    "section": null,
    "paragraph_index": 0
@@ -921,8 +921,8 @@
   {
    "id": "P-000002",
    "fingerprint": "f62f6d3bf028aee0",
-   "text": "Dr. Velin ⊢ ◇decreases(tablet, migraine frequency)",
-   "subject": "tablet",
+   "text": "Dr. Velin ⊢ ◇decreases(lumora tablets, migraine frequency)",
+   "subject": "lumora tablets",
    "predicate": "decreases",
    "object": "migraine frequency",
    "claim_type": "causal",
@@ -981,9 +981,11 @@
    "extraction": {
     "method": "rule-en@1/rule:causal-direction@1",
     "version": "upae-0.1.0",
-    "confidence": 0.8,
+    "confidence": 0.75,
     "review_required": false,
-    "notes": [],
+    "notes": [
+     "definite description 'the tablet' resolved to 'lumora tablets' (heuristic)"
+    ],
     "deterministic": true
    },
    "version": 1,
@@ -1058,6 +1060,148 @@
   },
   {
    "id": "P-000004",
+   "fingerprint": "f77109a012ebd0b5",
+   "text": "has_value(노르빅의 실업률) = 6.1퍼센트 | t=2023년",
+   "subject": "노르빅의 실업률",
+   "predicate": "has_value",
+   "object": null,
+   "claim_type": "statistical",
+   "surface": {
+    "subject": "노르빅의 실업률",
+    "predicate": "has_value",
+    "object": null
+   },
+   "modality": "asserted",
+   "polarity": "positive",
+   "direction": 0,
+   "quantity": {
+    "value": 6.1,
+    "unit": "퍼센트",
+    "raw": "6.1퍼센트",
+    "norm_value": 6.1,
+    "norm_unit": "percent",
+    "dimension": "ratio",
+    "kind": "level",
+    "approximate": false,
+    "from_value": null,
+    "to_value": null
+   },
+   "quantifier": null,
+   "scope": {
+    "time": "2023년",
+    "time_norm": [
+     2023,
+     2023
+    ],
+    "location": null,
+    "population": null,
+    "conditions": [],
+    "units": "퍼센트",
+    "definitions": {}
+   },
+   "attribution": {
+    "speaker": null,
+    "kind": "author",
+    "quote": null,
+    "origin_source_id": null
+   },
+   "source_refs": [
+    "S-000003"
+   ],
+   "passage_id": "T-000003",
+   "quote": "노르빅의 실업률은 2023년에 6.1퍼센트였다.",
+   "quote_span": [
+    0,
+    26
+   ],
+   "language": "ko",
+   "original_text": null,
+   "evidence_refs": [],
+   "relation_refs": [],
+   "issue_refs": [],
+   "components": [],
+   "parent_id": null,
+   "stated_basis": null,
+   "extraction": {
+    "method": "rule-ko@1/rule:value@1",
+    "version": "upae-0.1.0",
+    "confidence": 0.8,
+    "review_required": false,
+    "notes": [],
+    "deterministic": true
+   },
+   "version": 1,
+   "supersedes": null,
+   "superseded_by": null,
+   "created_at": "2026-10-12T00:00:00+00:00",
+   "schema_version": "1.1"
+  },
+  {
+   "id": "P-000005",
+   "fingerprint": "39a138d174b8bd7b",
+   "text": "¬decreases(프로그램, 비용)",
+   "subject": "프로그램",
+   "predicate": "decreases",
+   "object": "비용",
+   "claim_type": "causal",
+   "surface": {
+    "subject": "이 프로그램",
+    "predicate": "줄이",
+    "object": "비용"
+   },
+   "modality": "asserted",
+   "polarity": "negative",
+   "direction": -1,
+   "quantity": null,
+   "quantifier": null,
+   "scope": {
+    "time": null,
+    "time_norm": null,
+    "location": null,
+    "population": null,
+    "conditions": [],
+    "units": null,
+    "definitions": {}
+   },
+   "attribution": {
+    "speaker": null,
+    "kind": "author",
+    "quote": null,
+    "origin_source_id": null
+   },
+   "source_refs": [
+    "S-000003"
+   ],
+   "passage_id": "T-000003",
+   "quote": "이 프로그램은 비용을 줄이지 못한다.",
+   "quote_span": [
+    27,
+    47
+   ],
+   "language": "ko",
+   "original_text": null,
+   "evidence_refs": [],
+   "relation_refs": [],
+   "issue_refs": [],
+   "components": [],
+   "parent_id": null,
+   "stated_basis": null,
+   "extraction": {
+    "method": "rule-ko@1/rule:causal-direction@1",
+    "version": "upae-0.1.0",
+    "confidence": 0.8,
+    "review_required": false,
+    "notes": [],
+    "deterministic": true
+   },
+   "version": 1,
+   "supersedes": null,
+   "superseded_by": null,
+   "created_at": "2026-10-12T00:00:00+00:00",
+   "schema_version": "1.1"
+  },
+  {
+   "id": "P-000006",
    "fingerprint": "bbe9bc5dbff68ddd",
    "text": "has_value(population of norvik) = 1.2 million | t=2020",
    "subject": "population of norvik",
@@ -1143,7 +1287,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000005",
+   "id": "P-000007",
    "fingerprint": "67d049ec510c6725",
    "text": "is_defined_as(unemployment rate, share without work) | pop=all adults",
    "subject": "unemployment rate",
@@ -1209,7 +1353,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000006",
+   "id": "P-000008",
    "fingerprint": "a17d6313df8f7fd6",
    "text": "has_value(population of norvik) = 951,000 | t=2020",
    "subject": "population of norvik",
@@ -1295,7 +1439,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000007",
+   "id": "P-000009",
    "fingerprint": "7574eef3ac55797a",
    "text": "has_value(population of norvik) = 950,000 | t=2020",
    "subject": "population of norvik",
@@ -1381,7 +1525,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000008",
+   "id": "P-000010",
    "fingerprint": "fb0c4cb4acb1aa08",
    "text": "is_defined_as(unemployment rate, share of the labour force without work)",
    "subject": "unemployment rate",
@@ -1449,7 +1593,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000009",
+   "id": "P-000011",
    "fingerprint": "af991f75ece4aed7",
    "text": "decreases(congestion charging, traffic) = −18% | t=2019; loc=Norvik",
    "subject": "congestion charging",
@@ -1531,7 +1675,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000010",
+   "id": "P-000012",
    "fingerprint": "7325dcdedfdd2881",
    "text": "[opinion] is(congestion charge, best policy norvik has adopted)",
    "subject": "congestion charge",
@@ -1595,7 +1739,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000011",
+   "id": "P-000013",
    "fingerprint": "931589c622e54e7c",
    "text": "increases(congestion charging, traffic) = +3% | t=2021; loc=Velport",
    "subject": "congestion charging",
@@ -1675,7 +1819,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000012",
+   "id": "P-000014",
    "fingerprint": "1ad1ab9f752872cb",
    "text": "correlates_with(oat milk consumption, higher exam scores) | pop=students",
    "subject": "oat milk consumption",
@@ -1741,7 +1885,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000013",
+   "id": "P-000015",
    "fingerprint": "b93ee57dc9c3ff41",
    "text": "increases(oat milk, exam scores)",
    "subject": "oat milk",
@@ -1810,7 +1954,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000014",
+   "id": "P-000016",
    "fingerprint": "873888a85825c6ab",
    "text": "decreases(vitamin q, fracture risk) = −50% | pop=older adults",
    "subject": "vitamin q",
@@ -1887,7 +2031,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000015",
+   "id": "P-000017",
    "fingerprint": "f0512312d786ba06",
    "text": "decreases(vitamin q, fracture risk) | pop=older adults",
    "subject": "vitamin q",
@@ -1957,7 +2101,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000016",
+   "id": "P-000018",
    "fingerprint": "41f1fedf88efe88f",
    "text": "decreases(lumora tablet, migraine frequency) = −30% | pop=400 adults; cond=supervised dosing; cond=a randomized controlled trial",
    "subject": "lumora tablet",
@@ -2039,7 +2183,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000017",
+   "id": "P-000019",
    "fingerprint": "94ce7dfe1368f419",
    "text": "¬decreases(lumora tablet, migraine frequency) | pop=children",
    "subject": "lumora tablet",
@@ -2114,7 +2258,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000018",
+   "id": "P-000020",
    "fingerprint": "6f08a98864761f43",
    "text": "◇decreases(tablet, migraine frequency) | pop=adults; cond=under supervised dosing",
    "subject": "tablet",
@@ -2184,7 +2328,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000019",
+   "id": "P-000021",
    "fingerprint": "441a48aedf9da867",
    "text": "increased(sales of lumora) : from 2.0 million to 2.6 million | t=2023",
    "subject": "sales of lumora",
@@ -2273,7 +2417,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000020",
+   "id": "P-000022",
    "fingerprint": "4fd349aff6fc8726",
    "text": "employs(lumora plant, 1,200 workers) = 1,200 | loc=Norvik",
    "subject": "lumora plant",
@@ -2354,12 +2498,12 @@
    },
    "version": 1,
    "supersedes": null,
-   "superseded_by": "P-000025",
+   "superseded_by": "P-000027",
    "created_at": "2026-10-12T00:00:00+00:00",
    "schema_version": "1.1"
   },
   {
-   "id": "P-000021",
+   "id": "P-000023",
    "fingerprint": "060ca9622e3c514f",
    "text": "increased(sales of lumora) : from 2.0 million to 2.6 million | t=2023",
    "subject": "sales of lumora",
@@ -2448,7 +2592,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000022",
+   "id": "P-000024",
    "fingerprint": "40fc58c1ef43f41e",
    "text": "employs(lumora plant, 1,200 workers) = 1,200 | loc=Norvik",
    "subject": "lumora plant",
@@ -2529,12 +2673,12 @@
    },
    "version": 1,
    "supersedes": null,
-   "superseded_by": "P-000025",
+   "superseded_by": "P-000027",
    "created_at": "2026-10-12T00:00:00+00:00",
    "schema_version": "1.1"
   },
   {
-   "id": "P-000023",
+   "id": "P-000025",
    "fingerprint": "ec40e544be6d047c",
    "text": "increased(sales of lumora) : from 2.0 million to 2.6 million | t=2023",
    "subject": "sales of lumora",
@@ -2623,7 +2767,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000024",
+   "id": "P-000026",
    "fingerprint": "f330062c58484e9d",
    "text": "employs(lumora plant, 1,200 workers) = 1,200 | loc=Norvik",
    "subject": "lumora plant",
@@ -2704,12 +2848,12 @@
    },
    "version": 1,
    "supersedes": null,
-   "superseded_by": "P-000025",
+   "superseded_by": "P-000027",
    "created_at": "2026-10-12T00:00:00+00:00",
    "schema_version": "1.1"
   },
   {
-   "id": "P-000025",
+   "id": "P-000027",
    "fingerprint": "4b915ce18fc1763b",
    "text": "employs(lumora plant, 900 workers) = 900 | loc=Norvik",
    "subject": "lumora plant",
@@ -2782,13 +2926,13 @@
     "deterministic": true
    },
    "version": 2,
-   "supersedes": "P-000024",
+   "supersedes": "P-000026",
    "superseded_by": null,
    "created_at": "2026-10-12T00:00:00+00:00",
    "schema_version": "1.1"
   },
   {
-   "id": "P-000026",
+   "id": "P-000028",
    "fingerprint": "29af082db7f93500",
    "text": "has_value(unemployment rate) = 1.6 percent | t=2023; loc=Norvik",
    "subject": "unemployment rate",
@@ -2868,7 +3012,7 @@
    "schema_version": "1.1"
   },
   {
-   "id": "P-000027",
+   "id": "P-000029",
    "fingerprint": "4403efd93d775035",
    "text": "decreases(programme, cost)",
    "subject": "programme",
@@ -2943,7 +3087,7 @@
    "stance": "supports",
    "source_id": "S-000012",
    "passage_id": "T-000012",
-   "via_proposition": "P-000016",
+   "via_proposition": "P-000018",
    "basis": "experimental",
    "primary": true,
    "directness": "indirect",
@@ -2970,7 +3114,7 @@
    "stance": "supports",
    "source_id": "S-000012",
    "passage_id": "T-000013",
-   "via_proposition": "P-000018",
+   "via_proposition": "P-000020",
    "basis": "experimental",
    "primary": true,
    "directness": "indirect",
@@ -2997,7 +3141,7 @@
    "stance": "supports",
    "source_id": "S-000012",
    "passage_id": "T-000012",
-   "via_proposition": "P-000016",
+   "via_proposition": "P-000018",
    "basis": "experimental",
    "primary": true,
    "directness": "indirect",
@@ -3024,7 +3168,7 @@
    "stance": "supports",
    "source_id": "S-000012",
    "passage_id": "T-000013",
-   "via_proposition": "P-000018",
+   "via_proposition": "P-000020",
    "basis": "experimental",
    "primary": true,
    "directness": "indirect",
@@ -3047,11 +3191,11 @@
   },
   {
    "id": "E-000005",
-   "proposition_id": "P-000008",
+   "proposition_id": "P-000010",
    "stance": "supports",
    "source_id": "S-000004",
    "passage_id": "T-000004",
-   "via_proposition": "P-000005",
+   "via_proposition": "P-000007",
    "basis": "unspecified",
    "primary": false,
    "directness": "indirect",
@@ -3074,11 +3218,11 @@
   },
   {
    "id": "E-000006",
-   "proposition_id": "P-000006",
+   "proposition_id": "P-000008",
    "stance": "supports",
    "source_id": "S-000006",
    "passage_id": "T-000006",
-   "via_proposition": "P-000007",
+   "via_proposition": "P-000009",
    "basis": "dataset",
    "primary": true,
    "directness": "direct",
@@ -3101,11 +3245,11 @@
   },
   {
    "id": "E-000007",
-   "proposition_id": "P-000007",
+   "proposition_id": "P-000009",
    "stance": "supports",
    "source_id": "S-000005",
    "passage_id": "T-000005",
-   "via_proposition": "P-000006",
+   "via_proposition": "P-000008",
    "basis": "dataset",
    "primary": true,
    "directness": "direct",
@@ -3128,11 +3272,11 @@
   },
   {
    "id": "E-000008",
-   "proposition_id": "P-000015",
+   "proposition_id": "P-000017",
    "stance": "supports",
    "source_id": "S-000010",
    "passage_id": "T-000010",
-   "via_proposition": "P-000014",
+   "via_proposition": "P-000016",
    "basis": "experimental",
    "primary": true,
    "directness": "direct",
@@ -3158,11 +3302,11 @@
   },
   {
    "id": "E-000009",
-   "proposition_id": "P-000019",
+   "proposition_id": "P-000021",
    "stance": "supports",
    "source_id": "S-000014",
    "passage_id": "T-000015",
-   "via_proposition": "P-000021",
+   "via_proposition": "P-000023",
    "basis": "unspecified",
    "primary": false,
    "directness": "direct",
@@ -3185,226 +3329,10 @@
   },
   {
    "id": "E-000010",
-   "proposition_id": "P-000021",
-   "stance": "supports",
-   "source_id": "S-000013",
-   "passage_id": "T-000014",
-   "via_proposition": "P-000019",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "same_period",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000011",
-   "proposition_id": "P-000019",
-   "stance": "supports",
-   "source_id": "S-000015",
-   "passage_id": "T-000016",
-   "via_proposition": "P-000023",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "same_period",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000012",
    "proposition_id": "P-000023",
    "stance": "supports",
    "source_id": "S-000013",
    "passage_id": "T-000014",
-   "via_proposition": "P-000019",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "same_period",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000013",
-   "proposition_id": "P-000020",
-   "stance": "supports",
-   "source_id": "S-000014",
-   "passage_id": "T-000015",
-   "via_proposition": "P-000022",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "unknown",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000014",
-   "proposition_id": "P-000022",
-   "stance": "supports",
-   "source_id": "S-000013",
-   "passage_id": "T-000014",
-   "via_proposition": "P-000020",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "unknown",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000015",
-   "proposition_id": "P-000020",
-   "stance": "supports",
-   "source_id": "S-000015",
-   "passage_id": "T-000016",
-   "via_proposition": "P-000024",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "unknown",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000016",
-   "proposition_id": "P-000024",
-   "stance": "supports",
-   "source_id": "S-000013",
-   "passage_id": "T-000014",
-   "via_proposition": "P-000020",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "unknown",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000017",
-   "proposition_id": "P-000021",
-   "stance": "supports",
-   "source_id": "S-000015",
-   "passage_id": "T-000016",
-   "via_proposition": "P-000023",
-   "basis": "unspecified",
-   "primary": false,
-   "directness": "direct",
-   "independence_group": "G-000013",
-   "temporal_relevance": "same_period",
-   "conflicts_of_interest": [],
-   "missing_method_details": [],
-   "strength": 0.4,
-   "strength_terms": {
-    "basis_weight": 0.4,
-    "secondhand": 1.0,
-    "directness": 1.0,
-    "causal_design": 1.0,
-    "conflict_of_interest": 1.0,
-    "method_details": 1.0,
-    "temporal": 1.0,
-    "retracted": 1.0
-   },
-   "method": "rel:DUPLICATES"
-  },
-  {
-   "id": "E-000018",
-   "proposition_id": "P-000023",
-   "stance": "supports",
-   "source_id": "S-000014",
-   "passage_id": "T-000015",
    "via_proposition": "P-000021",
    "basis": "unspecified",
    "primary": false,
@@ -3427,11 +3355,65 @@
    "method": "rel:DUPLICATES"
   },
   {
-   "id": "E-000019",
-   "proposition_id": "P-000022",
+   "id": "E-000011",
+   "proposition_id": "P-000021",
    "stance": "supports",
    "source_id": "S-000015",
    "passage_id": "T-000016",
+   "via_proposition": "P-000025",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "same_period",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000012",
+   "proposition_id": "P-000025",
+   "stance": "supports",
+   "source_id": "S-000013",
+   "passage_id": "T-000014",
+   "via_proposition": "P-000021",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "same_period",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000013",
+   "proposition_id": "P-000022",
+   "stance": "supports",
+   "source_id": "S-000014",
+   "passage_id": "T-000015",
    "via_proposition": "P-000024",
    "basis": "unspecified",
    "primary": false,
@@ -3454,12 +3436,174 @@
    "method": "rel:DUPLICATES"
   },
   {
-   "id": "E-000020",
+   "id": "E-000014",
    "proposition_id": "P-000024",
+   "stance": "supports",
+   "source_id": "S-000013",
+   "passage_id": "T-000014",
+   "via_proposition": "P-000022",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "unknown",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000015",
+   "proposition_id": "P-000022",
+   "stance": "supports",
+   "source_id": "S-000015",
+   "passage_id": "T-000016",
+   "via_proposition": "P-000026",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "unknown",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000016",
+   "proposition_id": "P-000026",
+   "stance": "supports",
+   "source_id": "S-000013",
+   "passage_id": "T-000014",
+   "via_proposition": "P-000022",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "unknown",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000017",
+   "proposition_id": "P-000023",
+   "stance": "supports",
+   "source_id": "S-000015",
+   "passage_id": "T-000016",
+   "via_proposition": "P-000025",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "same_period",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000018",
+   "proposition_id": "P-000025",
    "stance": "supports",
    "source_id": "S-000014",
    "passage_id": "T-000015",
-   "via_proposition": "P-000022",
+   "via_proposition": "P-000023",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "same_period",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000019",
+   "proposition_id": "P-000024",
+   "stance": "supports",
+   "source_id": "S-000015",
+   "passage_id": "T-000016",
+   "via_proposition": "P-000026",
+   "basis": "unspecified",
+   "primary": false,
+   "directness": "direct",
+   "independence_group": "G-000013",
+   "temporal_relevance": "unknown",
+   "conflicts_of_interest": [],
+   "missing_method_details": [],
+   "strength": 0.4,
+   "strength_terms": {
+    "basis_weight": 0.4,
+    "secondhand": 1.0,
+    "directness": 1.0,
+    "causal_design": 1.0,
+    "conflict_of_interest": 1.0,
+    "method_details": 1.0,
+    "temporal": 1.0,
+    "retracted": 1.0
+   },
+   "method": "rel:DUPLICATES"
+  },
+  {
+   "id": "E-000020",
+   "proposition_id": "P-000026",
+   "stance": "supports",
+   "source_id": "S-000014",
+   "passage_id": "T-000015",
+   "via_proposition": "P-000024",
    "basis": "unspecified",
    "primary": false,
    "directness": "direct",
@@ -3486,7 +3630,7 @@
    "stance": "challenges",
    "source_id": "S-000012",
    "passage_id": "T-000012",
-   "via_proposition": "P-000017",
+   "via_proposition": "P-000019",
    "basis": "experimental",
    "primary": true,
    "directness": "indirect",
@@ -3509,7 +3653,7 @@
   },
   {
    "id": "E-000022",
-   "proposition_id": "P-000017",
+   "proposition_id": "P-000019",
    "stance": "challenges",
    "source_id": "S-000002",
    "passage_id": "T-000001",
@@ -3536,11 +3680,11 @@
   },
   {
    "id": "E-000023",
-   "proposition_id": "P-000004",
+   "proposition_id": "P-000006",
    "stance": "challenges",
    "source_id": "S-000005",
    "passage_id": "T-000005",
-   "via_proposition": "P-000006",
+   "via_proposition": "P-000008",
    "basis": "dataset",
    "primary": true,
    "directness": "direct",
@@ -3563,11 +3707,11 @@
   },
   {
    "id": "E-000024",
-   "proposition_id": "P-000006",
+   "proposition_id": "P-000008",
    "stance": "challenges",
    "source_id": "S-000004",
    "passage_id": "T-000004",
-   "via_proposition": "P-000004",
+   "via_proposition": "P-000006",
    "basis": "unspecified",
    "primary": false,
    "directness": "direct",
@@ -3590,11 +3734,11 @@
   },
   {
    "id": "E-000025",
-   "proposition_id": "P-000004",
+   "proposition_id": "P-000006",
    "stance": "challenges",
    "source_id": "S-000006",
    "passage_id": "T-000006",
-   "via_proposition": "P-000007",
+   "via_proposition": "P-000009",
    "basis": "dataset",
    "primary": true,
    "directness": "direct",
@@ -3617,11 +3761,11 @@
   },
   {
    "id": "E-000026",
-   "proposition_id": "P-000007",
+   "proposition_id": "P-000009",
    "stance": "challenges",
    "source_id": "S-000004",
    "passage_id": "T-000004",
-   "via_proposition": "P-000004",
+   "via_proposition": "P-000006",
    "basis": "unspecified",
    "primary": false,
    "directness": "direct",
@@ -3647,8 +3791,8 @@
   {
    "id": "R-000001",
    "type": "DERIVED_FROM",
-   "source": "P-000013",
-   "target": "P-000012",
+   "source": "P-000015",
+   "target": "P-000014",
    "directed": true,
    "rationale": "Source presents this as a conclusion ('therefore').",
    "evidence_refs": [
@@ -3671,7 +3815,7 @@
     "T-000001",
     "T-000001"
    ],
-   "confidence": 0.7,
+   "confidence": 0.9,
    "review_status": "auto_deterministic",
    "method": "rule:entailment@1",
    "dimensions": [],
@@ -3680,7 +3824,7 @@
   {
    "id": "R-000003",
    "type": "REFINES",
-   "source": "P-000016",
+   "source": "P-000018",
    "target": "P-000001",
    "directed": true,
    "rationale": "Same claim with additional scope restrictions (population, conditions).",
@@ -3700,7 +3844,7 @@
   {
    "id": "R-000004",
    "type": "REFINES",
-   "source": "P-000018",
+   "source": "P-000020",
    "target": "P-000001",
    "directed": true,
    "rationale": "Same claim with additional scope restrictions (population, conditions).",
@@ -3720,33 +3864,13 @@
   {
    "id": "R-000005",
    "type": "REFINES",
-   "source": "P-000016",
-   "target": "P-000002",
-   "directed": true,
-   "rationale": "Same claim with additional scope restrictions (population, conditions).",
-   "evidence_refs": [
-    "T-000001",
-    "T-000012"
-   ],
-   "confidence": 0.7,
-   "review_status": "auto_deterministic",
-   "method": "rule:refinement@1",
-   "dimensions": [
-    "population",
-    "conditions"
-   ],
-   "assumptions": []
-  },
-  {
-   "id": "R-000006",
-   "type": "REFINES",
    "source": "P-000018",
    "target": "P-000002",
    "directed": true,
    "rationale": "Same claim with additional scope restrictions (population, conditions).",
    "evidence_refs": [
     "T-000001",
-    "T-000013"
+    "T-000012"
    ],
    "confidence": 0.9,
    "review_status": "auto_deterministic",
@@ -3758,10 +3882,30 @@
    "assumptions": []
   },
   {
+   "id": "R-000006",
+   "type": "REFINES",
+   "source": "P-000020",
+   "target": "P-000002",
+   "directed": true,
+   "rationale": "Same claim with additional scope restrictions (population, conditions).",
+   "evidence_refs": [
+    "T-000001",
+    "T-000013"
+   ],
+   "confidence": 0.7,
+   "review_status": "auto_deterministic",
+   "method": "rule:refinement@1",
+   "dimensions": [
+    "population",
+    "conditions"
+   ],
+   "assumptions": []
+  },
+  {
    "id": "R-000007",
    "type": "REFINES",
-   "source": "P-000005",
-   "target": "P-000008",
+   "source": "P-000007",
+   "target": "P-000010",
    "directed": true,
    "rationale": "Same claim with additional scope restrictions (population).",
    "evidence_refs": [
@@ -3779,8 +3923,8 @@
   {
    "id": "R-000008",
    "type": "DUPLICATES",
-   "source": "P-000006",
-   "target": "P-000007",
+   "source": "P-000008",
+   "target": "P-000009",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3800,8 +3944,8 @@
   {
    "id": "R-000009",
    "type": "ENTAILS",
-   "source": "P-000014",
-   "target": "P-000015",
+   "source": "P-000016",
+   "target": "P-000017",
    "directed": true,
    "rationale": "The quantified claim implies the unquantified claim (same scope).",
    "evidence_refs": [
@@ -3817,8 +3961,8 @@
   {
    "id": "R-000010",
    "type": "DUPLICATES",
-   "source": "P-000019",
-   "target": "P-000021",
+   "source": "P-000021",
+   "target": "P-000023",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3838,8 +3982,8 @@
   {
    "id": "R-000011",
    "type": "DUPLICATES",
-   "source": "P-000019",
-   "target": "P-000023",
+   "source": "P-000021",
+   "target": "P-000025",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3859,8 +4003,8 @@
   {
    "id": "R-000012",
    "type": "DUPLICATES",
-   "source": "P-000020",
-   "target": "P-000022",
+   "source": "P-000022",
+   "target": "P-000024",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3880,8 +4024,8 @@
   {
    "id": "R-000013",
    "type": "DUPLICATES",
-   "source": "P-000020",
-   "target": "P-000024",
+   "source": "P-000022",
+   "target": "P-000026",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3901,8 +4045,8 @@
   {
    "id": "R-000014",
    "type": "DUPLICATES",
-   "source": "P-000021",
-   "target": "P-000023",
+   "source": "P-000023",
+   "target": "P-000025",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3922,8 +4066,8 @@
   {
    "id": "R-000015",
    "type": "DUPLICATES",
-   "source": "P-000022",
-   "target": "P-000024",
+   "source": "P-000024",
+   "target": "P-000026",
    "directed": false,
    "rationale": "Same entities, predicate, polarity, value and scope.",
    "evidence_refs": [
@@ -3944,7 +4088,7 @@
    "id": "R-000016",
    "type": "CONTRADICTS",
    "source": "P-000001",
-   "target": "P-000017",
+   "target": "P-000019",
    "directed": false,
    "rationale": "Claims conflict on polarity but population is specified for only one of them; contradiction depends on unstated scope.",
    "evidence_refs": [
@@ -3968,14 +4112,14 @@
    "id": "R-000017",
    "type": "DIFFERS_IN_SCOPE",
    "source": "P-000002",
-   "target": "P-000017",
+   "target": "P-000019",
    "directed": false,
    "rationale": "At least one claim is hedged/predicted (possible vs asserted); a possibility does not contradict an assertion.",
    "evidence_refs": [
     "T-000001",
     "T-000012"
    ],
-   "confidence": 0.64,
+   "confidence": 0.77,
    "review_status": "auto_deterministic",
    "method": "rule:scope-align@1",
    "dimensions": [
@@ -3990,8 +4134,8 @@
   {
    "id": "R-000018",
    "type": "CONTRADICTS",
-   "source": "P-000004",
-   "target": "P-000006",
+   "source": "P-000006",
+   "target": "P-000008",
    "directed": false,
    "rationale": "Same entities, predicate and scope; incompatible on value.",
    "evidence_refs": [
@@ -4013,8 +4157,8 @@
   {
    "id": "R-000019",
    "type": "CONTRADICTS",
-   "source": "P-000004",
-   "target": "P-000007",
+   "source": "P-000006",
+   "target": "P-000009",
    "directed": false,
    "rationale": "Same entities, predicate and scope; incompatible on value.",
    "evidence_refs": [
@@ -4036,8 +4180,8 @@
   {
    "id": "R-000020",
    "type": "DIFFERS_IN_SCOPE",
-   "source": "P-000009",
-   "target": "P-000011",
+   "source": "P-000011",
+   "target": "P-000013",
    "directed": false,
    "rationale": "Claims look incompatible on direction, magnitude but differ in time, location; they are not contradictory as stated.",
    "evidence_refs": [
@@ -4059,8 +4203,8 @@
   {
    "id": "R-000021",
    "type": "DIFFERS_IN_SCOPE",
-   "source": "P-000016",
-   "target": "P-000017",
+   "source": "P-000018",
+   "target": "P-000019",
    "directed": false,
    "rationale": "Claims look incompatible on polarity but differ in population; they are not contradictory as stated.",
    "evidence_refs": [
@@ -4081,8 +4225,8 @@
   {
    "id": "R-000022",
    "type": "DIFFERS_IN_SCOPE",
-   "source": "P-000017",
-   "target": "P-000018",
+   "source": "P-000019",
+   "target": "P-000020",
    "directed": false,
    "rationale": "Claims look incompatible on polarity but differ in population; they are not contradictory as stated.",
    "evidence_refs": [
@@ -4103,8 +4247,8 @@
   {
    "id": "R-000023",
    "type": "CORRECTS",
-   "source": "P-000025",
-   "target": "P-000020",
+   "source": "P-000027",
+   "target": "P-000022",
    "directed": true,
    "rationale": "S-000016 is a declared correction of S-000013; conflicting claim superseded.",
    "evidence_refs": [
@@ -4122,8 +4266,8 @@
   {
    "id": "R-000024",
    "type": "CORRECTS",
-   "source": "P-000025",
-   "target": "P-000022",
+   "source": "P-000027",
+   "target": "P-000024",
    "directed": true,
    "rationale": "S-000016 is a declared correction of S-000014; conflicting claim superseded.",
    "evidence_refs": [
@@ -4141,8 +4285,8 @@
   {
    "id": "R-000025",
    "type": "CORRECTS",
-   "source": "P-000025",
-   "target": "P-000024",
+   "source": "P-000027",
+   "target": "P-000026",
    "directed": true,
    "rationale": "S-000016 is a declared correction of S-000015; conflicting claim superseded.",
    "evidence_refs": [
@@ -4160,8 +4304,8 @@
   {
    "id": "R-000026",
    "type": "DERIVED_FROM",
-   "source": "P-000021",
-   "target": "P-000019",
+   "source": "P-000023",
+   "target": "P-000021",
    "directed": true,
    "rationale": "S-000014 reproduces S-000013; reworded sentence anchored by shared numbers and terms.",
    "evidence_refs": [
@@ -4177,8 +4321,8 @@
   {
    "id": "R-000027",
    "type": "DERIVED_FROM",
-   "source": "P-000023",
-   "target": "P-000019",
+   "source": "P-000025",
+   "target": "P-000021",
    "directed": true,
    "rationale": "S-000015 reproduces S-000013; reworded sentence anchored by shared numbers and terms.",
    "evidence_refs": [
@@ -4194,8 +4338,8 @@
   {
    "id": "R-000028",
    "type": "DERIVED_FROM",
-   "source": "P-000022",
-   "target": "P-000020",
+   "source": "P-000024",
+   "target": "P-000022",
    "directed": true,
    "rationale": "S-000014 reproduces S-000013; reworded sentence anchored by shared numbers and terms.",
    "evidence_refs": [
@@ -4211,8 +4355,8 @@
   {
    "id": "R-000029",
    "type": "DERIVED_FROM",
-   "source": "P-000024",
-   "target": "P-000020",
+   "source": "P-000026",
+   "target": "P-000022",
    "directed": true,
    "rationale": "S-000015 reproduces S-000013; reworded sentence anchored by shared numbers and terms.",
    "evidence_refs": [
@@ -4228,8 +4372,8 @@
   {
    "id": "R-000030",
    "type": "DERIVED_FROM",
-   "source": "P-000023",
-   "target": "P-000021",
+   "source": "P-000025",
+   "target": "P-000023",
    "directed": true,
    "rationale": "S-000015 reproduces S-000014; reworded sentence anchored by shared numbers and terms.",
    "evidence_refs": [
@@ -4245,8 +4389,8 @@
   {
    "id": "R-000031",
    "type": "DERIVED_FROM",
-   "source": "P-000024",
-   "target": "P-000022",
+   "source": "P-000026",
+   "target": "P-000024",
    "directed": true,
    "rationale": "S-000015 reproduces S-000014; reworded sentence anchored by shared numbers and terms.",
    "evidence_refs": [
@@ -4296,7 +4440,7 @@
      "to_status": "CONFLICTING_EVIDENCE",
      "actor": "system",
      "reason": "Support S=0.50 and challenge C=0.50; neither dominates.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
@@ -4321,7 +4465,7 @@
     "support_strength": 0.5,
     "challenge_strength": 0,
     "stated_basis": null,
-    "extraction_confidence": 0.8,
+    "extraction_confidence": 0.75,
     "deterministic_extraction": true,
     "tau": 0.8
    },
@@ -4333,7 +4477,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Only weak independent evidence (S=0.50, C=0.00 < τ=0.8).",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
@@ -4368,13 +4512,67 @@
      "to_status": "OUT_OF_SCOPE",
      "actor": "system",
      "reason": "opinion — recorded as attributed opinion, not assessed as fact.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
    "id": "A-000004",
    "proposition_id": "P-000004",
+   "status": "UNVERIFIED",
+   "confidence": 0.7,
+   "rationale": "No evidence in the corpus beyond the assertion itself.",
+   "belnap": "N",
+   "support_strength": 0,
+   "challenge_strength": 0,
+   "support_groups": [],
+   "challenge_groups": [],
+   "dependent_copies": 0,
+   "criteria": {
+    "independent_support_groups": 0,
+    "independent_challenge_groups": 0,
+    "dependent_copies": 0,
+    "support_strength": 0,
+    "challenge_strength": 0,
+    "stated_basis": null,
+    "extraction_confidence": 0.8,
+    "deterministic_extraction": true,
+    "tau": 0.8
+   },
+   "review_required": false,
+   "review_triggers": [],
+   "history": []
+  },
+  {
+   "id": "A-000005",
+   "proposition_id": "P-000005",
+   "status": "UNVERIFIED",
+   "confidence": 0.7,
+   "rationale": "No evidence in the corpus beyond the assertion itself.",
+   "belnap": "N",
+   "support_strength": 0,
+   "challenge_strength": 0,
+   "support_groups": [],
+   "challenge_groups": [],
+   "dependent_copies": 0,
+   "criteria": {
+    "independent_support_groups": 0,
+    "independent_challenge_groups": 0,
+    "dependent_copies": 0,
+    "support_strength": 0,
+    "challenge_strength": 0,
+    "stated_basis": null,
+    "extraction_confidence": 0.8,
+    "deterministic_extraction": true,
+    "tau": 0.8
+   },
+   "review_required": false,
+   "review_triggers": [],
+   "history": []
+  },
+  {
+   "id": "A-000006",
+   "proposition_id": "P-000006",
    "status": "CONTRADICTED",
    "confidence": 0.9,
    "rationale": "2 independent challenging group(s), C=1.80 ≥ τ, S=0.00.",
@@ -4406,13 +4604,13 @@
      "to_status": "CONTRADICTED",
      "actor": "system",
      "reason": "2 independent challenging group(s), C=1.80 ≥ τ, S=0.00.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000005",
-   "proposition_id": "P-000005",
+   "id": "A-000007",
+   "proposition_id": "P-000007",
    "status": "UNVERIFIED",
    "confidence": 0.7,
    "rationale": "No evidence in the corpus beyond the assertion itself.",
@@ -4438,8 +4636,8 @@
    "history": []
   },
   {
-   "id": "A-000006",
-   "proposition_id": "P-000006",
+   "id": "A-000008",
+   "proposition_id": "P-000008",
    "status": "SUPPORTED",
    "confidence": 0.59,
    "rationale": "1 independent supporting group(s), S=0.90 ≥ τ, C=0.40.",
@@ -4472,13 +4670,13 @@
      "to_status": "SUPPORTED",
      "actor": "system",
      "reason": "1 independent supporting group(s), S=0.90 ≥ τ, C=0.40.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000007",
-   "proposition_id": "P-000007",
+   "id": "A-000009",
+   "proposition_id": "P-000009",
    "status": "SUPPORTED",
    "confidence": 0.59,
    "rationale": "1 independent supporting group(s), S=0.90 ≥ τ, C=0.40.",
@@ -4511,13 +4709,13 @@
      "to_status": "SUPPORTED",
      "actor": "system",
      "reason": "1 independent supporting group(s), S=0.90 ≥ τ, C=0.40.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000008",
-   "proposition_id": "P-000008",
+   "id": "A-000010",
+   "proposition_id": "P-000010",
    "status": "INSUFFICIENT_EVIDENCE",
    "confidence": 0.6,
    "rationale": "Only weak independent evidence (S=0.20, C=0.00 < τ=0.8).",
@@ -4548,13 +4746,13 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Only weak independent evidence (S=0.20, C=0.00 < τ=0.8).",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000009",
-   "proposition_id": "P-000009",
+   "id": "A-000011",
+   "proposition_id": "P-000011",
    "status": "UNVERIFIED",
    "confidence": 0.7,
    "rationale": "No evidence in the corpus beyond the assertion itself.",
@@ -4580,8 +4778,8 @@
    "history": []
   },
   {
-   "id": "A-000010",
-   "proposition_id": "P-000010",
+   "id": "A-000012",
+   "proposition_id": "P-000012",
    "status": "OUT_OF_SCOPE",
    "confidence": 0.8,
    "rationale": "opinion — recorded as attributed opinion, not assessed as fact.",
@@ -4610,13 +4808,13 @@
      "to_status": "OUT_OF_SCOPE",
      "actor": "system",
      "reason": "opinion — recorded as attributed opinion, not assessed as fact.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000011",
-   "proposition_id": "P-000011",
+   "id": "A-000013",
+   "proposition_id": "P-000013",
    "status": "UNVERIFIED",
    "confidence": 0.7,
    "rationale": "No evidence in the corpus beyond the assertion itself.",
@@ -4642,8 +4840,8 @@
    "history": []
   },
   {
-   "id": "A-000012",
-   "proposition_id": "P-000012",
+   "id": "A-000014",
+   "proposition_id": "P-000014",
    "status": "UNVERIFIED",
    "confidence": 0.7,
    "rationale": "No evidence in the corpus beyond the assertion itself.",
@@ -4669,8 +4867,8 @@
    "history": []
   },
   {
-   "id": "A-000013",
-   "proposition_id": "P-000013",
+   "id": "A-000015",
+   "proposition_id": "P-000015",
    "status": "UNVERIFIED",
    "confidence": 0.7,
    "rationale": "No evidence in the corpus beyond the assertion itself.",
@@ -4696,8 +4894,8 @@
    "history": []
   },
   {
-   "id": "A-000014",
-   "proposition_id": "P-000014",
+   "id": "A-000016",
+   "proposition_id": "P-000016",
    "status": "RETRACTED",
    "confidence": 0.95,
    "rationale": "Source S-000010 is marked as retracted.",
@@ -4726,13 +4924,13 @@
      "to_status": "RETRACTED",
      "actor": "system",
      "reason": "Source S-000010 is marked as retracted.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000015",
-   "proposition_id": "P-000015",
+   "id": "A-000017",
+   "proposition_id": "P-000017",
    "status": "HUMAN_REVIEW_REQUIRED",
    "confidence": null,
    "rationale": "Review required: relies on retracted source S-000010",
@@ -4765,71 +4963,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: relies on retracted source S-000010",
-     "at": "2026-10-12T14:18:12+00:00"
-    }
-   ]
-  },
-  {
-   "id": "A-000016",
-   "proposition_id": "P-000016",
-   "status": "UNVERIFIED",
-   "confidence": 0.7,
-   "rationale": "No evidence in the corpus beyond the assertion itself.",
-   "belnap": "N",
-   "support_strength": 0,
-   "challenge_strength": 0,
-   "support_groups": [],
-   "challenge_groups": [],
-   "dependent_copies": 0,
-   "criteria": {
-    "independent_support_groups": 0,
-    "independent_challenge_groups": 0,
-    "dependent_copies": 0,
-    "support_strength": 0,
-    "challenge_strength": 0,
-    "stated_basis": "experimental",
-    "extraction_confidence": 0.8,
-    "deterministic_extraction": true,
-    "tau": 0.8
-   },
-   "review_required": false,
-   "review_triggers": [],
-   "history": []
-  },
-  {
-   "id": "A-000017",
-   "proposition_id": "P-000017",
-   "status": "INSUFFICIENT_EVIDENCE",
-   "confidence": 0.6,
-   "rationale": "Only weak independent evidence (S=0.00, C=0.20 < τ=0.8).",
-   "belnap": "N",
-   "support_strength": 0,
-   "challenge_strength": 0.2,
-   "support_groups": [],
-   "challenge_groups": [
-    "G-000002"
-   ],
-   "dependent_copies": 0,
-   "criteria": {
-    "independent_support_groups": 0,
-    "independent_challenge_groups": 1,
-    "dependent_copies": 0,
-    "support_strength": 0,
-    "challenge_strength": 0.2,
-    "stated_basis": "experimental",
-    "extraction_confidence": 0.75,
-    "deterministic_extraction": true,
-    "tau": 0.8
-   },
-   "review_required": false,
-   "review_triggers": [],
-   "history": [
-    {
-     "from_status": "UNVERIFIED",
-     "to_status": "INSUFFICIENT_EVIDENCE",
-     "actor": "system",
-     "reason": "Only weak independent evidence (S=0.00, C=0.20 < τ=0.8).",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
@@ -4863,60 +4997,25 @@
   {
    "id": "A-000019",
    "proposition_id": "P-000019",
-   "status": "HUMAN_REVIEW_REQUIRED",
-   "confidence": null,
-   "rationale": "Review required: source sentence contains an arithmetic inconsistency",
-   "belnap": "N",
-   "support_strength": 0,
-   "challenge_strength": 0,
-   "support_groups": [],
-   "challenge_groups": [],
-   "dependent_copies": 2,
-   "criteria": {
-    "independent_support_groups": 0,
-    "independent_challenge_groups": 0,
-    "dependent_copies": 2,
-    "support_strength": 0,
-    "challenge_strength": 0,
-    "stated_basis": null,
-    "extraction_confidence": 0.85,
-    "deterministic_extraction": true,
-    "tau": 0.8
-   },
-   "review_required": true,
-   "review_triggers": [
-    "source sentence contains an arithmetic inconsistency"
-   ],
-   "history": [
-    {
-     "from_status": "UNVERIFIED",
-     "to_status": "HUMAN_REVIEW_REQUIRED",
-     "actor": "system",
-     "reason": "Review required: source sentence contains an arithmetic inconsistency",
-     "at": "2026-10-12T14:18:12+00:00"
-    }
-   ]
-  },
-  {
-   "id": "A-000020",
-   "proposition_id": "P-000020",
    "status": "INSUFFICIENT_EVIDENCE",
-   "confidence": 0.7,
-   "rationale": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
+   "confidence": 0.6,
+   "rationale": "Only weak independent evidence (S=0.00, C=0.20 < τ=0.8).",
    "belnap": "N",
    "support_strength": 0,
-   "challenge_strength": 0,
+   "challenge_strength": 0.2,
    "support_groups": [],
-   "challenge_groups": [],
-   "dependent_copies": 2,
+   "challenge_groups": [
+    "G-000002"
+   ],
+   "dependent_copies": 0,
    "criteria": {
     "independent_support_groups": 0,
-    "independent_challenge_groups": 0,
-    "dependent_copies": 2,
+    "independent_challenge_groups": 1,
+    "dependent_copies": 0,
     "support_strength": 0,
-    "challenge_strength": 0,
-    "stated_basis": null,
-    "extraction_confidence": 0.55,
+    "challenge_strength": 0.2,
+    "stated_basis": "experimental",
+    "extraction_confidence": 0.75,
     "deterministic_extraction": true,
     "tau": 0.8
    },
@@ -4927,10 +5026,37 @@
      "from_status": "UNVERIFIED",
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
-     "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "reason": "Only weak independent evidence (S=0.00, C=0.20 < τ=0.8).",
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
+  },
+  {
+   "id": "A-000020",
+   "proposition_id": "P-000020",
+   "status": "UNVERIFIED",
+   "confidence": 0.7,
+   "rationale": "No evidence in the corpus beyond the assertion itself.",
+   "belnap": "N",
+   "support_strength": 0,
+   "challenge_strength": 0,
+   "support_groups": [],
+   "challenge_groups": [],
+   "dependent_copies": 0,
+   "criteria": {
+    "independent_support_groups": 0,
+    "independent_challenge_groups": 0,
+    "dependent_copies": 0,
+    "support_strength": 0,
+    "challenge_strength": 0,
+    "stated_basis": "experimental",
+    "extraction_confidence": 0.8,
+    "deterministic_extraction": true,
+    "tau": 0.8
+   },
+   "review_required": false,
+   "review_triggers": [],
+   "history": []
   },
   {
    "id": "A-000021",
@@ -4965,7 +5091,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: source sentence contains an arithmetic inconsistency",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
@@ -5000,7 +5126,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
@@ -5037,7 +5163,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: source sentence contains an arithmetic inconsistency",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
@@ -5072,13 +5198,85 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
    "id": "A-000025",
    "proposition_id": "P-000025",
+   "status": "HUMAN_REVIEW_REQUIRED",
+   "confidence": null,
+   "rationale": "Review required: source sentence contains an arithmetic inconsistency",
+   "belnap": "N",
+   "support_strength": 0,
+   "challenge_strength": 0,
+   "support_groups": [],
+   "challenge_groups": [],
+   "dependent_copies": 2,
+   "criteria": {
+    "independent_support_groups": 0,
+    "independent_challenge_groups": 0,
+    "dependent_copies": 2,
+    "support_strength": 0,
+    "challenge_strength": 0,
+    "stated_basis": null,
+    "extraction_confidence": 0.85,
+    "deterministic_extraction": true,
+    "tau": 0.8
+   },
+   "review_required": true,
+   "review_triggers": [
+    "source sentence contains an arithmetic inconsistency"
+   ],
+   "history": [
+    {
+     "from_status": "UNVERIFIED",
+     "to_status": "HUMAN_REVIEW_REQUIRED",
+     "actor": "system",
+     "reason": "Review required: source sentence contains an arithmetic inconsistency",
+     "at": "2026-10-12T14:44:07+00:00"
+    }
+   ]
+  },
+  {
+   "id": "A-000026",
+   "proposition_id": "P-000026",
+   "status": "INSUFFICIENT_EVIDENCE",
+   "confidence": 0.7,
+   "rationale": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
+   "belnap": "N",
+   "support_strength": 0,
+   "challenge_strength": 0,
+   "support_groups": [],
+   "challenge_groups": [],
+   "dependent_copies": 2,
+   "criteria": {
+    "independent_support_groups": 0,
+    "independent_challenge_groups": 0,
+    "dependent_copies": 2,
+    "support_strength": 0,
+    "challenge_strength": 0,
+    "stated_basis": null,
+    "extraction_confidence": 0.55,
+    "deterministic_extraction": true,
+    "tau": 0.8
+   },
+   "review_required": false,
+   "review_triggers": [],
+   "history": [
+    {
+     "from_status": "UNVERIFIED",
+     "to_status": "INSUFFICIENT_EVIDENCE",
+     "actor": "system",
+     "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
+     "at": "2026-10-12T14:44:07+00:00"
+    }
+   ]
+  },
+  {
+   "id": "A-000027",
+   "proposition_id": "P-000027",
    "status": "UNVERIFIED",
    "confidence": 0.7,
    "rationale": "No evidence in the corpus beyond the assertion itself.",
@@ -5104,8 +5302,8 @@
    "history": []
   },
   {
-   "id": "A-000026",
-   "proposition_id": "P-000026",
+   "id": "A-000028",
+   "proposition_id": "P-000028",
    "status": "HUMAN_REVIEW_REQUIRED",
    "confidence": null,
    "rationale": "Review required: translation may not preserve the original meaning",
@@ -5136,13 +5334,13 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: translation may not preserve the original meaning",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   },
   {
-   "id": "A-000027",
-   "proposition_id": "P-000027",
+   "id": "A-000029",
+   "proposition_id": "P-000029",
    "status": "HUMAN_REVIEW_REQUIRED",
    "confidence": null,
    "rationale": "Review required: translation may not preserve the original meaning",
@@ -5173,7 +5371,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: translation may not preserve the original meaning",
-     "at": "2026-10-12T14:18:12+00:00"
+     "at": "2026-10-12T14:44:07+00:00"
     }
    ]
   }
@@ -5187,13 +5385,13 @@
    "confidence": 0.62,
    "affected": [
     "P-000001",
-    "P-000017"
+    "P-000019"
    ],
    "conflicting": [
     "P-000001",
-    "P-000017"
+    "P-000019"
    ],
-   "reason": "P-000001 [decreases(lumora tablets, migraine frequency) = −30%] and P-000017 [¬decreases(lumora tablet, migraine frequency) | pop=children] conflict on polarity, but population is stated only for one of them. Claims conflict on polarity but population is specified for only one of them; contradiction depends on unstated scope.",
+   "reason": "P-000001 [decreases(lumora tablets, migraine frequency) = −30%] and P-000019 [¬decreases(lumora tablet, migraine frequency) | pop=children] conflict on polarity, but population is stated only for one of them. Claims conflict on polarity but population is specified for only one of them; contradiction depends on unstated scope.",
    "evidence": [
     "T-000001",
     "T-000012"
@@ -5221,17 +5419,17 @@
       "P-000001"
      ],
      [
-      "P-000017"
+      "P-000019"
      ]
     ],
     "side_classes": [
      "P-000001",
-     "P-000017"
+     "P-000019"
     ],
     "pairs": [
      [
       "P-000001",
-      "P-000017"
+      "P-000019"
      ]
     ]
    }
@@ -5243,16 +5441,16 @@
    "severity": "HIGH",
    "confidence": 0.78,
    "affected": [
-    "P-000004",
     "P-000006",
-    "P-000007"
+    "P-000008",
+    "P-000009"
    ],
    "conflicting": [
-    "P-000004",
     "P-000006",
-    "P-000007"
+    "P-000008",
+    "P-000009"
    ],
-   "reason": "P-000004 [has_value(population of norvik) = 1.2 million | t=2020] vs P-000006 [has_value(population of norvik) = 951,000 | t=2020]: Same entities, predicate and scope; incompatible on value. Independent evidence favours P-000006, P-000007 (S=0.90) over P-000004 (C=1.80); both are kept.",
+   "reason": "P-000006 [has_value(population of norvik) = 1.2 million | t=2020] vs P-000008 [has_value(population of norvik) = 951,000 | t=2020]: Same entities, predicate and scope; incompatible on value. Independent evidence favours P-000008, P-000009 (S=0.90) over P-000006 (C=1.80); both are kept.",
    "evidence": [
     "T-000004",
     "T-000005",
@@ -5274,33 +5472,33 @@
     "family": "value",
     "sides": [
      [
-      "P-000004"
-     ],
-     [
-      "P-000006",
-      "P-000007"
-     ]
-    ],
-    "side_classes": [
-     "P-000004",
-     "P-000006"
-    ],
-    "pairs": [
-     [
-      "P-000004",
       "P-000006"
      ],
      [
-      "P-000004",
-      "P-000007"
+      "P-000008",
+      "P-000009"
+     ]
+    ],
+    "side_classes": [
+     "P-000006",
+     "P-000008"
+    ],
+    "pairs": [
+     [
+      "P-000006",
+      "P-000008"
+     ],
+     [
+      "P-000006",
+      "P-000009"
      ]
     ],
     "probable_error_on": [
-     "P-000004"
+     "P-000006"
     ],
     "better_supported": [
-     "P-000006",
-     "P-000007"
+     "P-000008",
+     "P-000009"
     ]
    }
   },
@@ -5311,9 +5509,9 @@
    "severity": "HIGH",
    "confidence": 0.95,
    "affected": [
-    "P-000019",
     "P-000021",
-    "P-000023"
+    "P-000023",
+    "P-000025"
    ],
    "conflicting": [],
    "reason": "In “from 2.0 million to 2.6 million packs in 2023, a 40% increase”: stated 40% but (2.6 − 2) / 2 = +30.0%. Repeated in 3 passages sharing origin G-000013.",
@@ -5370,7 +5568,7 @@
    "severity": "HIGH",
    "confidence": 0.85,
    "affected": [
-    "P-000026"
+    "P-000028"
    ],
    "conflicting": [],
    "reason": "Translation S-000018 sentence “The unemployment rate in Norvik was 1.6 percent in 2023.” vs original S-000017 (de) “Die Arbeitslosenquote in Norvik lag 2023 bei 6,1 Prozent.”: numbers differ: ['6.1', '2023'] vs ['1.6', '2023'].",
@@ -5397,7 +5595,7 @@
    "severity": "HIGH",
    "confidence": 0.75,
    "affected": [
-    "P-000027"
+    "P-000029"
    ],
    "conflicting": [],
    "reason": "Translation S-000018 sentence “The programme can reduce costs.” vs original S-000017 (de) “Das Programm kann die Kosten nicht senken.”: negation present in first, absent in second.",
@@ -5424,12 +5622,12 @@
    "severity": "HIGH",
    "confidence": 0.75,
    "affected": [
-    "P-000013"
+    "P-000015"
    ],
    "conflicting": [
-    "P-000012"
+    "P-000014"
    ],
-   "reason": "Conclusion P-000013 [increases(oat milk, exam scores)] marked 'therefore': A causal conclusion is drawn from correlational/observational premises.",
+   "reason": "Conclusion P-000015 [increases(oat milk, exam scores)] marked 'therefore': A causal conclusion is drawn from correlational/observational premises.",
    "evidence": [
     "T-000009"
    ],
@@ -5450,12 +5648,12 @@
    "severity": "HIGH",
    "confidence": 0.7,
    "affected": [
-    "P-000013"
+    "P-000015"
    ],
    "conflicting": [
-    "P-000012"
+    "P-000014"
    ],
-   "reason": "Conclusion P-000013 [increases(oat milk, exam scores)] marked 'therefore': Conclusion drops scope restrictions of its premise: population=students.",
+   "reason": "Conclusion P-000015 [increases(oat milk, exam scores)] marked 'therefore': Conclusion drops scope restrictions of its premise: population=students.",
    "evidence": [
     "T-000009"
    ],
@@ -5476,7 +5674,7 @@
    "severity": "MEDIUM",
    "confidence": 0.6,
    "affected": [
-    "P-000009"
+    "P-000011"
    ],
    "conflicting": [],
    "reason": "Causal claim [decreases(congestion charging, traffic) = −18% | t=2019; loc=Norvik] is presented with a observational basis, which cannot by itself establish causation; no experimental evidence was found in the corpus.",
@@ -5498,12 +5696,12 @@
    "severity": "LOW",
    "confidence": 0.8,
    "affected": [
-    "P-000019",
-    "P-000020",
     "P-000021",
     "P-000022",
     "P-000023",
-    "P-000024"
+    "P-000024",
+    "P-000025",
+    "P-000026"
    ],
    "conflicting": [],
    "reason": "Sources S-000013, S-000014, S-000015 share origin G-000013; 2 claim(s) they repeat are counted once: [increased(sales of lumora) : from 2.0 million to 2.6 million | t=2023] ×3; [employs(lumora plant, 1,200 workers) = 1,200 | loc=Norvik] ×3. No independent origin states these claims.",
@@ -5522,9 +5720,9 @@
     "clusters": [
      {
       "props": [
-       "P-000019",
        "P-000021",
-       "P-000023"
+       "P-000023",
+       "P-000025"
       ],
       "sources": [
        "S-000013",
@@ -5536,9 +5734,9 @@
      },
      {
       "props": [
-       "P-000020",
        "P-000022",
-       "P-000024"
+       "P-000024",
+       "P-000026"
       ],
       "sources": [
        "S-000013",
@@ -5559,12 +5757,12 @@
    "severity": "HIGH",
    "confidence": 0.8,
    "affected": [
-    "P-000015"
+    "P-000017"
    ],
    "conflicting": [
     "S-000010"
    ],
-   "reason": "P-000015 [decreases(vitamin q, fracture risk) | pop=older adults] comes from S-000011, which relies on retracted source(s) S-000010.",
+   "reason": "P-000017 [decreases(vitamin q, fracture risk) | pop=older adults] comes from S-000011, which relies on retracted source(s) S-000010.",
    "evidence": [
     "S-000010"
    ],
@@ -5600,9 +5798,9 @@
  "derivations": [
   {
    "id": "D-000001",
-   "conclusion": "P-000013",
+   "conclusion": "P-000015",
    "premises": [
-    "P-000012"
+    "P-000014"
    ],
    "marker": "therefore",
    "validity": "invalid",
@@ -5615,51 +5813,51 @@
  ],
  "omissions": [
   {
-   "proposition_id": "P-000021",
-   "decision": "merged",
-   "reason": "duplicate of P-000019",
-   "into": "P-000019",
-   "score": null
-  },
-  {
    "proposition_id": "P-000023",
    "decision": "merged",
-   "reason": "duplicate of P-000019",
-   "into": "P-000019",
+   "reason": "duplicate of P-000021",
+   "into": "P-000021",
    "score": null
   },
   {
-   "proposition_id": "P-000007",
+   "proposition_id": "P-000025",
    "decision": "merged",
-   "reason": "duplicate of P-000006",
-   "into": "P-000006",
+   "reason": "duplicate of P-000021",
+   "into": "P-000021",
    "score": null
   },
   {
-   "proposition_id": "P-000020",
+   "proposition_id": "P-000009",
    "decision": "merged",
-   "reason": "superseded by correction P-000025",
-   "into": "P-000025",
+   "reason": "duplicate of P-000008",
+   "into": "P-000008",
    "score": null
   },
   {
    "proposition_id": "P-000022",
    "decision": "merged",
-   "reason": "superseded by correction P-000025",
-   "into": "P-000025",
+   "reason": "superseded by correction P-000027",
+   "into": "P-000027",
    "score": null
   },
   {
    "proposition_id": "P-000024",
    "decision": "merged",
-   "reason": "superseded by correction P-000025",
-   "into": "P-000025",
+   "reason": "superseded by correction P-000027",
+   "into": "P-000027",
+   "score": null
+  },
+  {
+   "proposition_id": "P-000026",
+   "decision": "merged",
+   "reason": "superseded by correction P-000027",
+   "into": "P-000027",
    "score": null
   }
  ],
  "ranking": [
   {
-   "id": "P-000019",
+   "id": "P-000021",
    "rank": 1,
    "score": 4.3,
    "features": {
@@ -5673,7 +5871,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000004",
+   "id": "P-000006",
    "rank": 2,
    "score": 4.1771,
    "features": {
@@ -5689,33 +5887,33 @@
   {
    "id": "P-000002",
    "rank": 3,
-   "score": 4.0625,
+   "score": 4.024,
    "features": {
     "relevance": 1.0,
     "evidence_quality": 0.5,
     "connectivity": 0.8,
     "contradiction": 0.75,
     "uncertainty_reduction": 0.45,
-    "novelty": 1.0
+    "novelty": 0.923
    },
    "decision": "core"
   },
   {
    "id": "P-000001",
    "rank": 4,
-   "score": 3.775,
+   "score": 3.7125,
    "features": {
     "relevance": 1.0,
     "evidence_quality": 0.5,
     "connectivity": 0.8,
     "contradiction": 0.5,
     "uncertainty_reduction": 0.9,
-    "novelty": 0.5
+    "novelty": 0.375
    },
    "decision": "core"
   },
   {
-   "id": "P-000015",
+   "id": "P-000017",
    "rank": 5,
    "score": 3.1417,
    "features": {
@@ -5729,7 +5927,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000017",
+   "id": "P-000019",
    "rank": 6,
    "score": 3.075,
    "features": {
@@ -5743,7 +5941,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000006",
+   "id": "P-000008",
    "rank": 7,
    "score": 3.0125,
    "features": {
@@ -5757,7 +5955,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000027",
+   "id": "P-000029",
    "rank": 8,
    "score": 2.9375,
    "features": {
@@ -5771,7 +5969,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000026",
+   "id": "P-000028",
    "rank": 9,
    "score": 2.9167,
    "features": {
@@ -5785,7 +5983,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000013",
+   "id": "P-000015",
    "rank": 10,
    "score": 2.775,
    "features": {
@@ -5799,7 +5997,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000008",
+   "id": "P-000010",
    "rank": 11,
    "score": 2.0036,
    "features": {
@@ -5813,7 +6011,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000009",
+   "id": "P-000011",
    "rank": 12,
    "score": 1.9536,
    "features": {
@@ -5827,7 +6025,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000025",
+   "id": "P-000027",
    "rank": 13,
    "score": 1.8731,
    "features": {
@@ -5841,7 +6039,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000016",
+   "id": "P-000018",
    "rank": 14,
    "score": 1.75,
    "features": {
@@ -5855,7 +6053,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000018",
+   "id": "P-000020",
    "rank": 15,
    "score": 1.65,
    "features": {
@@ -5869,7 +6067,7 @@
    "decision": "core"
   },
   {
-   "id": "P-000011",
+   "id": "P-000013",
    "rank": 16,
    "score": 1.4682,
    "features": {
@@ -5883,8 +6081,22 @@
    "decision": "core"
   },
   {
-   "id": "P-000012",
+   "id": "P-000004",
    "rank": 17,
+   "score": 1.4545,
+   "features": {
+    "relevance": 1.0,
+    "evidence_quality": 0.0,
+    "connectivity": 0.0,
+    "contradiction": 0.0,
+    "uncertainty_reduction": 0.0,
+    "novelty": 0.909
+   },
+   "decision": "core"
+  },
+  {
+   "id": "P-000014",
+   "rank": 18,
    "score": 1.45,
    "features": {
     "relevance": 1.0,
@@ -5897,8 +6109,8 @@
    "decision": "core"
   },
   {
-   "id": "P-000010",
-   "rank": 18,
+   "id": "P-000012",
+   "rank": 19,
    "score": 1.4091,
    "features": {
     "relevance": 1.0,
@@ -5912,7 +6124,7 @@
   },
   {
    "id": "P-000003",
-   "rank": 19,
+   "rank": 20,
    "score": 1.4,
    "features": {
     "relevance": 1.0,
@@ -5926,7 +6138,21 @@
   },
   {
    "id": "P-000005",
-   "rank": 20,
+   "rank": 21,
+   "score": 1.4,
+   "features": {
+    "relevance": 1.0,
+    "evidence_quality": 0.0,
+    "connectivity": 0.0,
+    "contradiction": 0.0,
+    "uncertainty_reduction": 0.0,
+    "novelty": 0.8
+   },
+   "decision": "core"
+  },
+  {
+   "id": "P-000007",
+   "rank": 22,
    "score": 1.35,
    "features": {
     "relevance": 1.0,
@@ -5939,8 +6165,8 @@
    "decision": "core"
   },
   {
-   "id": "P-000014",
-   "rank": 21,
+   "id": "P-000016",
+   "rank": 23,
    "score": 1.2125,
    "features": {
     "relevance": 1.0,
@@ -5954,8 +6180,7 @@
   }
  ],
  "limitations": [
-  "Source S-000001 ('archived_scan') not analysed: unavailable — pdf connector could not read the file: PdfStreamError: Stream has ended unexpectedly",
-  "Source S-000003: 1 passage(s) in 'ko' not extracted — no offline extractor for this language and no translation in corpus (enable a model provider)."
+  "Source S-000001 ('archived_scan') not analysed: unavailable — pdf connector could not read the file: PdfStreamError: Stream has ended unexpectedly"
  ],
  "model_calls": 0,
  "fingerprints": {
@@ -5981,32 +6206,34 @@
   "P-000001": "432eccfb4685f32c",
   "P-000002": "f62f6d3bf028aee0",
   "P-000003": "a0772cb93d0ceb48",
-  "P-000004": "bbe9bc5dbff68ddd",
-  "P-000005": "67d049ec510c6725",
-  "P-000006": "a17d6313df8f7fd6",
-  "P-000007": "7574eef3ac55797a",
-  "P-000008": "fb0c4cb4acb1aa08",
-  "P-000009": "af991f75ece4aed7",
-  "P-000010": "7325dcdedfdd2881",
-  "P-000011": "931589c622e54e7c",
-  "P-000012": "1ad1ab9f752872cb",
-  "P-000013": "b93ee57dc9c3ff41",
+  "P-000004": "f77109a012ebd0b5",
+  "P-000005": "39a138d174b8bd7b",
+  "P-000006": "bbe9bc5dbff68ddd",
+  "P-000007": "67d049ec510c6725",
+  "P-000008": "a17d6313df8f7fd6",
+  "P-000009": "7574eef3ac55797a",
+  "P-000010": "fb0c4cb4acb1aa08",
+  "P-000011": "af991f75ece4aed7",
+  "P-000012": "7325dcdedfdd2881",
+  "P-000013": "931589c622e54e7c",
+  "P-000014": "1ad1ab9f752872cb",
+  "P-000015": "b93ee57dc9c3ff41",
   "D-000001": "deriv|b93ee57dc9c3ff41",
   "R-000001": "DERIVED_FROM|b93ee57dc9c3ff41|1ad1ab9f752872cb",
-  "P-000014": "873888a85825c6ab",
-  "P-000015": "f0512312d786ba06",
-  "P-000016": "41f1fedf88efe88f",
-  "P-000017": "94ce7dfe1368f419",
-  "P-000018": "6f08a98864761f43",
-  "P-000019": "441a48aedf9da867",
-  "P-000020": "4fd349aff6fc8726",
-  "P-000021": "060ca9622e3c514f",
-  "P-000022": "40fc58c1ef43f41e",
-  "P-000023": "ec40e544be6d047c",
-  "P-000024": "f330062c58484e9d",
-  "P-000025": "4b915ce18fc1763b",
-  "P-000026": "29af082db7f93500",
-  "P-000027": "4403efd93d775035",
+  "P-000016": "873888a85825c6ab",
+  "P-000017": "f0512312d786ba06",
+  "P-000018": "41f1fedf88efe88f",
+  "P-000019": "94ce7dfe1368f419",
+  "P-000020": "6f08a98864761f43",
+  "P-000021": "441a48aedf9da867",
+  "P-000022": "4fd349aff6fc8726",
+  "P-000023": "060ca9622e3c514f",
+  "P-000024": "40fc58c1ef43f41e",
+  "P-000025": "ec40e544be6d047c",
+  "P-000026": "f330062c58484e9d",
+  "P-000027": "4b915ce18fc1763b",
+  "P-000028": "29af082db7f93500",
+  "P-000029": "4403efd93d775035",
   "R-000002": "ENTAILS|432eccfb4685f32c|f62f6d3bf028aee0",
   "R-000003": "REFINES|41f1fedf88efe88f|432eccfb4685f32c",
   "E-000001": "ev|432eccfb4685f32c|41f1fedf88efe88f|supports",
@@ -6142,30 +6369,32 @@
    "432eccfb4685f32c": "P-000001",
    "f62f6d3bf028aee0": "P-000002",
    "a0772cb93d0ceb48": "P-000003",
-   "bbe9bc5dbff68ddd": "P-000004",
-   "67d049ec510c6725": "P-000005",
-   "a17d6313df8f7fd6": "P-000006",
-   "7574eef3ac55797a": "P-000007",
-   "fb0c4cb4acb1aa08": "P-000008",
-   "af991f75ece4aed7": "P-000009",
-   "7325dcdedfdd2881": "P-000010",
-   "931589c622e54e7c": "P-000011",
-   "1ad1ab9f752872cb": "P-000012",
-   "b93ee57dc9c3ff41": "P-000013",
-   "873888a85825c6ab": "P-000014",
-   "f0512312d786ba06": "P-000015",
-   "41f1fedf88efe88f": "P-000016",
-   "94ce7dfe1368f419": "P-000017",
-   "6f08a98864761f43": "P-000018",
-   "441a48aedf9da867": "P-000019",
-   "4fd349aff6fc8726": "P-000020",
-   "060ca9622e3c514f": "P-000021",
-   "40fc58c1ef43f41e": "P-000022",
-   "ec40e544be6d047c": "P-000023",
-   "f330062c58484e9d": "P-000024",
-   "4b915ce18fc1763b": "P-000025",
-   "29af082db7f93500": "P-000026",
-   "4403efd93d775035": "P-000027"
+   "f77109a012ebd0b5": "P-000004",
+   "39a138d174b8bd7b": "P-000005",
+   "bbe9bc5dbff68ddd": "P-000006",
+   "67d049ec510c6725": "P-000007",
+   "a17d6313df8f7fd6": "P-000008",
+   "7574eef3ac55797a": "P-000009",
+   "fb0c4cb4acb1aa08": "P-000010",
+   "af991f75ece4aed7": "P-000011",
+   "7325dcdedfdd2881": "P-000012",
+   "931589c622e54e7c": "P-000013",
+   "1ad1ab9f752872cb": "P-000014",
+   "b93ee57dc9c3ff41": "P-000015",
+   "873888a85825c6ab": "P-000016",
+   "f0512312d786ba06": "P-000017",
+   "41f1fedf88efe88f": "P-000018",
+   "94ce7dfe1368f419": "P-000019",
+   "6f08a98864761f43": "P-000020",
+   "441a48aedf9da867": "P-000021",
+   "4fd349aff6fc8726": "P-000022",
+   "060ca9622e3c514f": "P-000023",
+   "40fc58c1ef43f41e": "P-000024",
+   "ec40e544be6d047c": "P-000025",
+   "f330062c58484e9d": "P-000026",
+   "4b915ce18fc1763b": "P-000027",
+   "29af082db7f93500": "P-000028",
+   "4403efd93d775035": "P-000029"
   },
   "derivation": {
    "deriv|b93ee57dc9c3ff41": "D-000001"
@@ -6247,12 +6476,12 @@
   }
  },
  "timings": {
-  "register": 0.0027,
-  "extract": 0.0189,
-  "compare": 0.0084,
-  "checks": 0.0032,
-  "assess": 0.0005,
-  "rank": 0.0016
+  "register": 0.0034,
+  "extract": 0.0434,
+  "compare": 0.0044,
+  "checks": 0.0036,
+  "assess": 0.0006,
+  "rank": 0.002
  },
  "changes": null
 }

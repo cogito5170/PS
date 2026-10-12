@@ -16,6 +16,7 @@ from . import checks as C
 from .contradiction import Comparison, compare_all, family, same_source
 from .evidence import assess, logical_evidence, make_evidence, upgrade_contradiction_findings
 from .extract import EXTRACTOR_ID, PRONOUNS, Draft, extract_passage_text
+from .extract_ko import IMPLICIT_SUBJECT, extract_passage_text_ko
 from .graph import IdAllocator, KnowledgeGraph
 from .models import (Attribution, ClaimType, Derivation, EvidenceBasis, Extraction, FindingClass,
                      Issue, IssueCategory, Modality, Polarity, Proposition, Quantity,
@@ -177,6 +178,9 @@ class Analysis:
                     self._materialise(src, pas, drafts, orig_map, model=False)
                 elif src.id in translated:
                     continue  # analysed through its translation
+                elif lang == "ko":
+                    self._materialise(src, pas, extract_passage_text_ko(pas.text, src.basis), orig_map,
+                                      model=False, language="ko")
                 else:
                     model_drafts = self.provider.extract(pas.text, lang)
                     if model_drafts is None:
@@ -217,7 +221,8 @@ class Analysis:
                              method="model-extract", notes=["model extraction: unverified"]))
         return out
 
-    def _materialise(self, src, pas, drafts: list[Draft], orig_map: dict, model: bool) -> None:
+    def _materialise(self, src, pas, drafts: list[Draft], orig_map: dict, model: bool,
+                     language: str = "en") -> None:
         g = self.g
         by_sentence: dict[int, list[Proposition]] = defaultdict(list)
         sentence_drafts: dict[int, list[Draft]] = defaultdict(list)
@@ -237,12 +242,13 @@ class Analysis:
             subj = d.subject
             conf = d.confidence
             head = (d.surface.get("subject") or "").strip()
-            bare_def = re.fullmatch(r"(?i:the)\s+([a-z][\w-]*)", head)
+            bare_def = re.fullmatch(r"(?i:the)\s+([a-z][\w-]*)|(?:이|그|해당|본)\s+([가-힣]+?)(?:은|는|이|가)?", head)
             if bare_def and d.sentence_index > 0:
-                # "The treaty ..." after "The Treaty of Kessmark ..." (bare definite description)
-                noun = bare_def.group(1).lower()
+                # "The treaty ..." after "The Treaty of Kessmark ...";  "이 조약은" after "케스마르크 조약은"
+                noun = (bare_def.group(1) or bare_def.group(2)).lower()
                 ante = next((q.subject for q in reversed(list(g.props_of_source(src.id)))
-                             if q.passage_id == pas.id and noun in q.subject.split() and q.subject != noun), None)
+                             if q.passage_id == pas.id and q.subject != noun
+                             and (noun in q.subject.split() or noun in content_set(q.subject))), None)
                 if ante:
                     notes.append(f"definite description '{head}' resolved to '{ante}' (heuristic)")
                     subj = ante
@@ -262,10 +268,11 @@ class Analysis:
                 claim_type=d.claim_type, surface=d.surface, modality=d.modality, polarity=d.polarity,
                 direction=d.direction, quantity=d.quantity, quantifier=d.quantifier, scope=d.scope,
                 attribution=d.attribution, source_refs=[src.id], passage_id=pas.id, quote=quote,
-                quote_span=span, language="en" if not model else pas.language,
+                quote_span=span, language=pas.language if model else language,
                 original_text=orig_map.get(norm_ws(quote)) if orig_map else None,
                 stated_basis=d.stated_basis,
                 extraction=Extraction(method=("model:" + self.provider.name) if model
+                                      else d.method if d.method.startswith("rule-")
                                       else f"{EXTRACTOR_ID}/{d.method}",
                                       confidence=conf, review_required=conf < 0.5 or model,
                                       notes=notes, deterministic=not model),
@@ -282,7 +289,7 @@ class Analysis:
             self.drafts[pid] = d
             by_sentence[d.sentence_index].append(prop)
             sentence_drafts[d.sentence_index].append(d)
-            if subj not in PRONOUNS:
+            if subj not in PRONOUNS and subj != IMPLICIT_SUBJECT:
                 last_subject = subj
                 current_subjects.add(subj)
         # intra-sentence structure: causes, qualifications, compounds, derivations
@@ -310,7 +317,7 @@ class Analysis:
                 cid = g.ids.allocate("proposition", fp)
                 comp = Proposition(
                     id=cid, fingerprint=fp, text="", subject="", predicate="and", object=None,
-                    claim_type=ClaimType.COMPOUND, components=[p.id for p in plain],
+                    claim_type=ClaimType.COMPOUND, components=[p.id for p in plain], language=plain[0].language,
                     source_refs=[src.id], passage_id=pas.id, quote=plain[0].quote,
                     quote_span=plain[0].quote_span,
                     extraction=Extraction(method=f"{EXTRACTOR_ID}/compound", confidence=min(p.extraction.confidence for p in plain)),

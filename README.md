@@ -4,7 +4,7 @@ UPAE turns documents into a numbered, typed, critically evaluated **proposition 
 
 > Preserve evidence. Compress knowledge. Connect propositions. Challenge every claim. Explain every judgment.
 
-**Status:** minimum viable prototype. Deterministic, English rule-based extraction, offline, standard library only.
+**Status:** minimum viable prototype. Deterministic rule-based extraction for **English and Korean**, offline, standard library only.
 On a blind held-out set it is precise but misses many problems: issue F1 0.55, **0 false alarms on 12 clean cases**, and 5 of 6 red warnings correct. See [docs/EVALUATION_REPORT.md](docs/EVALUATION_REPORT.md).
 
 ## Quick start (Python ≥ 3.10, no installation needed)
@@ -21,8 +21,9 @@ python -m upae search out/analysis.sqlite "population Norvik"     # FTS5 lexical
 # re-run with the previous snapshot: stable IDs plus a "changes since previous analysis" section
 python -m upae analyze examples/corpus --out out2 --previous out/analysis.json
 
-python -m unittest discover -s tests -t .                          # 65 tests, about 0.4 s
-python -m upae evaluate eval/dataset/dev.json eval/dataset/heldout.json --out eval_report.md
+python -m unittest discover -s tests -t .                          # 86 tests, about 0.5 s
+python -m upae evaluate eval/dataset/dev.json eval/dataset/heldout.json \
+    eval/dataset/dev_ko.json eval/dataset/heldout_ko.json --out eval_report.md
 ```
 
 Pre-generated outputs are in [`examples/output/`](examples/output/): `report.md`, `report.html`, `analysis.json` and `analysis.sqlite`.
@@ -41,7 +42,8 @@ Missing metadata stays missing. The engine never invents authors, dates, pages o
 
 ### Optional model provider
 
-`--provider anthropic[:model]` (needs `pip install anthropic` and credentials) enables extraction for non-English passages. Everything a model produces is labeled `model:<name>`, `deterministic=false`, and needs human review. The tests use a fake provider, and this adapter has **not** been exercised against the live API.
+English and Korean are extracted by deterministic rules. Other languages (German, French, Spanish and others) are detected, and their translations are checked for changed negation, modality and numbers, but they are not extracted.
+`--provider anthropic[:model]` (needs `pip install anthropic` and credentials) enables extraction for those other languages. Everything a model produces is labeled `model:<name>`, `deterministic=false`, and needs human review. The tests use a fake provider, and this adapter has **not** been exercised against the live API.
 
 ### Fonts (HTML report)
 

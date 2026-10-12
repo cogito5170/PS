@@ -56,7 +56,7 @@ Abridged example (field values are illustrative):
 Changes from the initial proposal in the specification, with the reason for each:
 
 1. `assessment` is a **separate object**, keyed by proposition. This keeps the claim, its evidence and the current judgment apart, as P6 requires.
-2. `surface` keeps the original wording; `subject` and `object` are normalized. Normalization never erases the original (C).
+2. `surface` keeps the original wording; `subject` and `object` are normalized. Normalization never erases the original (C). `language` is the language the proposition was extracted in (`en`, `ko`, or the passage language for model extraction). In Korean, an omitted subject is written `(화자)` (the speaker), since Korean routinely drops subjects.
 3. `polarity`, `direction`, `quantifier` and `modality` are separate fields. This separation lets "may reduce", "does not reduce", "reduces" and "increases" be compared deterministically.
 4. `quantity` holds both the raw and the normalized value, the dimension and the kind (`level`, `change`, `change_pp`, `from_to`, `year`).
 5. `scope.time_norm` gives a year range for comparison, and `scope.definitions` maps a term to the definition proposition the source uses.

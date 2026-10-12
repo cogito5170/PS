@@ -15,7 +15,7 @@ from .lang import (NECESSITY_CUES, NEGATION_CUES, POSSIBILITY_CUES, UNIVERSAL_CU
                    numbers_in)
 from .models import (ClaimType, EvidenceBasis, FindingClass, IssueCategory, Modality,
                      Polarity, Proposition, Severity)
-from .textutil import content_set, jaccard, norm_ws, split_sentences, tokens
+from .textutil import HANGUL, content_set, jaccard, norm_ws, split_sentences, tokens
 from .units import find_quantities, parse_number
 
 
@@ -46,6 +46,9 @@ _PCT_CHANGE = [
     re.compile(rf"(?P<w>increase|rise|growth|decrease|drop|decline|fall|reduction)\s+of\s+(?P<p>{_NUM})\s*(?:%|percent|per cent)\s*,?\s*from\s+(?P<a>{_NUM})\s*(?:\w+\s+){{0,2}}to\s+(?P<b>{_NUM})", re.I),
     re.compile(rf"from\s+(?P<a>{_NUM})\s*(?:\w+\s+){{0,2}}to\s+(?P<b>{_NUM})[^.;]*?(?:an?\s+)?(?P<w>increase|rise|growth|decrease|drop|decline|fall|reduction)\s+of\s+(?P<p>{_NUM})\s*(?:%|percent|per cent)", re.I),
 ]
+# Korean: "40에서 50으로 50% 증가", "1,000명에서 1,500명으로 25퍼센트 늘었다"
+_PCT_CHANGE.append(re.compile(rf"(?P<a>{_NUM})\s?(?:천|만|억|조)?\s?[가-힣]{{0,3}}에서\s+(?P<b>{_NUM})\s?(?:천|만|억|조)?\s?[가-힣]{{0,3}}(?:으로|로)\s+(?:약\s)?(?P<p>{_NUM})\s?(?:%|퍼센트)\s?(?P<w>증가|상승|늘|급증|감소|하락|줄|급감)"))
+_SHARE_KO = re.compile(rf"(?P<y>{_NUM})\s?명?\s?중\s?(?P<x>{_NUM})\s?명?\s?(?:\(|,|이|가|은|는)?\s?(?:약\s)?(?P<p>{_NUM})\s?(?:%|퍼센트)")
 _MULT = re.compile(rf"(?P<w>doubled|tripled|quadrupled|halved)\s*,?\s*(?:\w+\s+){{0,3}}?from\s+(?P<a>{_NUM})\s*(?:\w+\s+){{0,2}}to\s+(?P<b>{_NUM})", re.I)
 _SHARE = re.compile(rf"(?P<x>{_NUM})\s+(?:out\s+)?of\s+(?:the\s+)?(?P<y>{_NUM})\s+(?:[\w-]+\s*){{0,3}}?[,(—-]\s*(?:or\s+|that is\s+|i\.e\.\s+)?(?:about\s+|roughly\s+|approximately\s+|nearly\s+)?(?P<p>{_NUM})\s*(?:%|percent|per cent)", re.I)
 _SUM = re.compile(rf"(?P<items>(?:{_NUM}[^,.;]{{0,40}}?,\s*)*{_NUM}[^,.;]{{0,40}}?,?\s+and\s+{_NUM}[^.;]{{0,40}}?)[,;]?\s*(?:for\s+)?(?:a\s+(?:combined\s+)?total\s+of|totall?ing|in\s+total|making|adding\s+up\s+to|which\s+(?:sums?|adds?\s+up)\s+to|together\s+(?:making|totall?ing))\s+(?P<t>{_NUM})", re.I)
@@ -70,7 +73,7 @@ def check_arithmetic(sentence: str) -> list[dict]:
                 continue
             actual = (b - a) / a * 100
             word = m.group("w").lower()
-            up = not re.match(r"de|drop|fall|fell|decl|reduc|cut|loss|shr", word)
+            up = not re.match(r"de|drop|fall|fell|decl|reduc|cut|loss|shr|감소|하락|줄|급감", word)
             problems = []
             if up != (actual > 0) and actual != 0:
                 problems.append(f"described as {'an increase' if up else 'a decrease'} but {a:g}→{b:g} is a {'decrease' if up else 'increase'}")
@@ -88,7 +91,7 @@ def check_arithmetic(sentence: str) -> list[dict]:
             out.append({"kind": "multiplier", "span": m.group(0), "stated": factor,
                         "computed": round(b / a, 3),
                         "problems": [f"'{m.group('w')}' implies ×{factor:g} but {b:g}/{a:g} = ×{b / a:.2f}"]})
-    for m in _SHARE.finditer(sentence):
+    for m in list(_SHARE.finditer(sentence)) + list(_SHARE_KO.finditer(sentence)):
         x, y, p = _num(m.group("x")), _num(m.group("y")), _num(m.group("p"))
         if not y or x is None or p is None or x > y:
             continue
@@ -186,6 +189,9 @@ def speaker_matches(speaker: str, author: Optional[str], publisher: Optional[str
     return False
 
 
+QUALIFIER_KO = re.compile(r"(?:지만|다만|단\s|경우에만|에서만|에게만|않|못|수\s?있|일부|부분적|아직|예비|소규모|동물\s?실험|쥐)")
+
+
 def compare_quote(quote: str, original_sentences: list[str]) -> Optional[dict]:
     """Compare a quotation against candidate original sentences.  Returns a finding
     dict, or {"verbatim": True} if verbatim and context-preserving, or None if no
@@ -196,8 +202,9 @@ def compare_quote(quote: str, original_sentences: list[str]) -> Optional[dict]:
         ns = _norm(s)
         if nq and nq in ns:
             rest = ns.replace(nq, " ", 1)
-            dropped = sorted(set(m.lower() for m in QUALIFIER_RX.findall(rest))
-                             - set(m.lower() for m in QUALIFIER_RX.findall(nq)))
+            rx = QUALIFIER_KO if HANGUL.search(quote) else QUALIFIER_RX
+            dropped = sorted(set(m.lower() for m in rx.findall(rest))
+                             - set(m.lower() for m in rx.findall(nq)))
             if dropped and len(ns.split()) > len(nq.split()):
                 return {"verbatim": True, "truncated": True, "original": s, "dropped": dropped,
                         "similarity": 1.0}
@@ -207,7 +214,8 @@ def compare_quote(quote: str, original_sentences: list[str]) -> Optional[dict]:
             best, best_sim = s, sim
     if best is None or best_sim < 0.35:
         return None
-    changes = meaning_changes("en", quote, "en", best)
+    lang = "ko" if HANGUL.search(quote) else "en"
+    changes = meaning_changes(lang, quote, lang, best)
     return {"verbatim": False, "original": best, "similarity": round(best_sim, 2),
             "changes": changes}
 
@@ -310,10 +318,11 @@ def inference_problems(conclusion: Proposition, premises: list[Proposition]) -> 
 COUNT_ATTRIBUTE = re.compile(
     r"\b(population|number|count|total|headcount|membership|enrol\w*|attendance|turnout|votes|"
     r"residents|inhabitants|visitors|passengers|members|employees|workers|students|patients|"
-    r"cases|deaths|births|users|subscribers|index|score|ratio|rank|ranking|age)\b", re.I)
+    r"cases|deaths|births|users|subscribers|index|score|ratio|rank|ranking|age)\b"
+    r"|인구|인원|수$|명수|건수|점수|순위|나이|연령|지수|비율|회원|가입자|관객|방문객|사망자|확진자", re.I)
 
 VAGUE = re.compile(r"\b(many|some|several|a lot of|lots of|numerous|most|few|significant(?:ly)?|"
-                   r"substantial(?:ly)?)\b", re.I)
+                   r"substantial(?:ly)?)\b|많은|일부|여러|상당수|다수의|몇몇", re.I)
 
 
 def ambiguity_reasons(p: Proposition, has_pub_date: bool, unresolved_pronoun: bool) -> list[str]:
@@ -329,6 +338,6 @@ def ambiguity_reasons(p: Proposition, has_pub_date: bool, unresolved_pronoun: bo
         out.append(f"relative time '{p.scope.time}' with no publication date to anchor it")
     if p.claim_type in (ClaimType.STATISTICAL, ClaimType.CAUSAL, ClaimType.EMPIRICAL) \
             and p.quantity is None and VAGUE.search(norm_ws(p.surface.get("subject") or "")) \
-            and re.match(r"^(many|some|several|numerous|a lot|lots|few)\b", (p.surface.get("subject") or "").lower()):
+            and re.match(r"^(many|some|several|numerous|a lot|lots|few)\b|^(?:많은|일부|여러|상당수|다수의|몇몇)\s", (p.surface.get("subject") or "").lower()):
         out.append(f"vague quantifier in '{p.surface.get('subject')}' without a number or reference class")
     return out

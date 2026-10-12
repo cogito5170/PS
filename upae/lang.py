@@ -11,7 +11,8 @@ import re
 from .textutil import strip_accents
 
 PROFILES = {
-    "en": "the of and to in is that for it was on are with as be by this have from not or which were has been will",
+    "en": "the of and to in is that for it was on are with as be by this have from not or which were has been will "
+          "just no but all can its their than more about after into only also new big day news",
     "de": "der die und das ist nicht ein eine zu den von mit sich des auf für im dem wird wurde sind auch es an werden bei",
     "fr": "le la les et des est une un du que dans pour pas en au qui sur sont par ne plus avec ce été",
     "es": "el la los las y de que es en un una por con para no del se su al lo como más fue son está",
@@ -46,13 +47,24 @@ def detect_language(text: str) -> tuple[str, float]:
     if not words:
         return "und", 0.0
     scores = {lang: sum(1 for w in words if w in s) for lang, s in _PROFILE_SETS.items()}
-    best = max(scores, key=lambda k: scores[k])
+    best = max(scores, key=lambda k: (scores[k], k == "en"))
     ranked = sorted(scores.values(), reverse=True)
+    ascii_only = all(c.isascii() for c in letters)
+    if len(words) < 8:
+        # Short texts ("No Guts, Just Data.", "Day 2."): a single shared function word
+        # ("no", "data") is not evidence of a language.  Require two stop-word hits and a
+        # lead over English; otherwise plain-ASCII text is treated as low-confidence English.
+        if best != "en" and (scores[best] < 2 or scores[best] <= scores["en"]):
+            return ("en", 0.3) if ascii_only else ("und", 0.1)
+        if ranked[0] == 0:
+            return ("en", 0.2) if ascii_only else ("und", 0.0)
     if ranked[0] == 0:
         return "und", 0.0
     margin = (ranked[0] - ranked[1]) / ranked[0]
     coverage = ranked[0] / len(words)
     conf = round(min(1.0, 0.5 * margin + 1.5 * coverage), 2)
+    if len(words) < 8:
+        conf = min(conf, 0.6)  # few words: never claim high certainty
     if conf < 0.2:
         return "und", conf
     return best, conf
@@ -97,6 +109,12 @@ UNIVERSAL_CUES = {
     "pt": r"\b(todos|todas|cada|nenhum|ninguem)\b",
     "nl": r"\b(alle|elke|ieder|niemand)\b",
 }
+# Korean is agglutinative: cues are verb endings and adverbs, matched without \b.
+NEGATION_CUES["ko"] = r"(?:지\s?(?:않|못)|않는|않았|않습|않을|못한|못했|못하|아니다|아닌|아니었|없다|없었|없는|없습|결코|전혀)"
+POSSIBILITY_CUES["ko"] = r"(?:수\s?(?:도\s?)?있|가능성|아마|것\s?같|보인다|보입니다|추정|듯하|듯합|모른다)"
+NECESSITY_CUES["ko"] = r"(?:반드시|항상|언제나|해야|하여야|틀림없|확실히|증명|입증)"
+UNIVERSAL_CUES["ko"] = r"(?:모든|모두|전부|누구나|아무도|예외\s?없이)"
+
 # backwards-compatible aliases
 HEDGE_CUES = POSSIBILITY_CUES
 CERTAINTY_CUES = NECESSITY_CUES
@@ -109,6 +127,9 @@ def cue_count(kind: dict, lang: str, text: str) -> int:
     if lang == "en":
         from .extract import strip_month_may
         text = strip_month_may(text)
+    if lang in ("ko", "ja", "zh"):
+        # NFKD would decompose Hangul syllables into jamo; match the text as written
+        return len(re.findall(rx, text))
     return len(re.findall(rx, strip_accents(text.lower())))
 
 

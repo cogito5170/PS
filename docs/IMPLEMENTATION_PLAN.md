@@ -31,7 +31,8 @@ Each increment has an acceptance gate measured on a held-out set that has *not* 
 | 2.7 | Cross-sentence arithmetic (n × each = total, shares summing to 100 %) | H14 missed | new arithmetic cases |
 | 2.8 | PostgreSQL backend (same DDL, `jsonb` + `tsvector`), analysis-run history, reviewer actions (confirm or reject relations; human status transitions) | needed for multi-user review | migration test; round-trip equality |
 | 2.9 | Remote connectors (RSS/news, arXiv/Crossref metadata, Mastodon/Bluesky APIs) with robots, terms and rate-limit enforcement and licence capture | the ingestion layer is local-only | per-connector compliance checklist |
-| 2.10 | Native extraction for additional languages (start with de/fr/es, whose cue lexicons already exist; ko/ja/zh need segmentation) | non-English passages are currently a recorded limitation | per-language extraction recall |
+| 2.10 | Native extraction for more languages. Korean is done (rule-based, `extract_ko.py`). Next: de/fr/es, whose cue lexicons already exist; ja/zh need segmentation. | passages in other languages are a recorded limitation | per-language extraction recall on a blind set |
+| 2.11 | Cross-language alignment: compare a Korean claim with an English claim, via a bilingual entity and predicate lexicon or a model provider | the demo corpus has a Korean and an English unemployment figure for Norvik that are never compared | contradiction recall on cross-language pairs |
 
 ## 3. Unresolved design decisions
 

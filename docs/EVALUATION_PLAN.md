@@ -6,6 +6,8 @@
 |---|---|---|---|---|
 | `eval/dataset/dev.json` | 34 | the engine's developer, alongside the rules | development and regression guard; **optimistic by construction** | in repo |
 | `eval/dataset/heldout.json` | 24 | a separate agent told not to read the engine code or the dev set (it read only `eval/DATASET_FORMAT.md`) | estimate of generalization; run **once blind**, then used for failure analysis | in repo; no longer blind after run 1 |
+| `eval/dataset/dev_ko.json` | 18 | the engine's developer, alongside the Korean rules | Korean development and regression guard; optimistic by construction | in repo |
+| `eval/dataset/heldout_ko.json` | 16 | a separate agent that read only `eval/DATASET_FORMAT.md` and was told not to describe case contents in its report | blind estimate for Korean; run once | in repo |
 | future `test` set | ≥ 100 | humans who did not write the rules, with two independent annotators | headline numbers and inter-annotator agreement | not yet built |
 
 1.1 Both sets cover every required category:

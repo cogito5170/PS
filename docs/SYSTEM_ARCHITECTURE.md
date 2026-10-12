@@ -28,7 +28,7 @@ files ─► A Ingestion ─► B Source registry ─► C Language ID ─► D 
 | A | Ingestion connectors (JSON/JSONL, TXT/MD + front matter, HTML, EPUB, PDF via optional `pypdf`) | `ingest.py` | yes |
 | B | Source registry, archive, passages, duplicates, independence groups | `registry.py` | yes |
 | C | Language identification, multilingual cue lexicons, number formats | `lang.py` | yes |
-| D | Proposition extraction (English rules); model adapter for other languages | `extract.py`, `providers.py` | rules yes / model no |
+| D | Proposition extraction: English rules (`extract.py`), Korean rules (`extract_ko.py`), model adapter for other languages (`providers.py`) | `extract.py`, `extract_ko.py`, `providers.py` | rules yes / model no |
 | E | Typed graph, stable IDs, referential integrity, supersession | `graph.py`, `models.py` | yes |
 | F | Evidence items, strength formula, status rules | `evidence.py`, `status.py` | yes |
 | G | Staged comparison (retrieve → align → incompatibility → classify) | `contradiction.py` | yes |
@@ -49,7 +49,7 @@ Each decision lists its rationale (R), the alternatives considered (Alt), its li
 **D1. Deterministic rules first, model adapter optional.**
 R: the specification requires usefulness without an LLM, and it requires that model judgments not be treated as verified. Rules are inspectable and reproducible.
 Alt: LLM extraction for everything; NLI models for contradiction.
-Lim: the English-only rule extractor misses unusual phrasing. On the blind held-out set it reached proposition recall 0.61 and issue recall 0.44.
+Lim: the rule extractors (English, Korean) miss unusual phrasing. On the blind English held-out set they reached proposition recall 0.61 and issue recall 0.44. Each new language needs its own rule module or a model provider.
 M: zero model calls, under 15 ms per case, byte-identical output across runs (tested).
 
 **D2. SQLite + FTS5 now, PostgreSQL later.**
@@ -84,6 +84,19 @@ M: pairwise independence accuracy was 1.00 on both datasets (12 and 27 pairs).
 **D8. Ranking kept separate from truth.**
 R: a ranking score decides what is shown in the core report; it is never evidence. Red issues and counter-evidence are always retained.
 M: compression ratio of 0.60 on dev and 0.83 on held-out, measured as core-statement words over source words. Short test documents limit how much compression is possible.
+
+**D9. Korean as a second rule-based language.**
+R: Korean is the user's working language, and with no extractor every Korean passage could only be recorded as a limitation.
+Korean is agglutinative and drops subjects. The extractor therefore:
+- splits subject and predicate at the particles (은/는/이/가, 을/를);
+- matches predicates by verb stem;
+- attributes an omitted subject to the speaker (`(화자)`);
+- strips particles before comparing tokens ("실업률은" → "실업률").
+
+It emits the same canonical predicates as the English extractor (`increases`, `has_value`, `<event>_in` …), so comparison, evidence, status and every check are shared unchanged.
+Alt: a morphological analyzer such as Mecab or Kiwi (more accurate, but a native dependency); a model provider (non-deterministic).
+Lim: the rules cover common news and report structures only. There is no cross-language alignment, so a Korean claim and an English claim are never compared with each other.
+M: the Korean evaluation sets (EVALUATION_REPORT §7).
 
 ## 4. Data flow guarantees (checked by `KnowledgeGraph.validate()` and tests)
 

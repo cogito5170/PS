@@ -1,0 +1,705 @@
+{
+ "dataset": "dev_ko",
+ "version": "1",
+ "cases": [
+  {
+   "id": "KD01",
+   "category": "genuine_contradiction",
+   "description": "같은 다리의 주경간이 다르게 보도됨",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "할덴 다리의 주경간은 420미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2023-03-01"
+    },
+    {
+     "key": "b",
+     "kind": "web",
+     "text": "할덴 다리의 주경간은 380미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2023-05-01"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "NUMERICAL_INCONSISTENCY",
+      "affected": [
+       "420미터",
+       "380미터"
+      ],
+      "red": true
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "420미터",
+      "subject": "할덴 다리의 주경간",
+      "predicate": "has_value",
+      "object": "420미터"
+     }
+    ],
+    "relations": [
+     {
+      "type": "CONTRADICTS",
+      "between": [
+       "420미터",
+       "380미터"
+      ]
+     }
+    ],
+    "independent_groups": [
+     [
+      "a"
+     ],
+     [
+      "b"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "KD02",
+   "category": "genuine_contradiction",
+   "description": "같은 문서 안에서 개관 연도가 다름",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "web",
+     "text": "켈스 박물관은 1987년에 개관했다. 방문객은 처음에 적었다. 켈스 박물관은 1991년에 개관했다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "INTERNAL_INCONSISTENCY",
+      "affected": [
+       "1987년에 개관했다",
+       "1991년에 개관했다"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD03",
+   "category": "genuine_contradiction",
+   "description": "조약 체결 장소가 다름 (지시 표현 '이 조약')",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "textbook",
+     "text": "케스마르크 조약은 전쟁을 끝냈다. 이 조약은 1712년 오를라비에서 체결되었다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "b",
+     "kind": "paper",
+     "text": "케스마르크 조약은 1712년 브레닉에서 체결되었다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "CATEGORICAL_CONFLICT",
+      "affected": [
+       "오를라비에서",
+       "브레닉에서"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD04",
+   "category": "scope_difference",
+   "description": "실험 조건이 다른 상반된 효과",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "paper",
+     "text": "정책 X는 실험 조건 A에서 비용을 20% 줄였다.",
+     "language": "ko",
+     "synthetic": true,
+     "basis": "experimental"
+    },
+    {
+     "key": "b",
+     "kind": "paper",
+     "text": "정책 X는 실험 조건 B에서 비용을 5% 늘렸다.",
+     "language": "ko",
+     "synthetic": true,
+     "basis": "experimental"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "NUMERICAL_INCONSISTENCY",
+     "CATEGORICAL_CONFLICT"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "조건 A에서",
+       "조건 B에서"
+      ]
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "조건 A에서",
+      "subject": "정책 x",
+      "predicate": "decreases",
+      "object": "비용"
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD05",
+   "category": "scope_difference",
+   "description": "연도가 다른 실업률",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "타르비아의 실업률은 2019년에 7.2퍼센트였다.",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2020-01-10"
+    },
+    {
+     "key": "b",
+     "kind": "news",
+     "text": "타르비아의 실업률은 2022년에 4.1퍼센트였다.",
+     "language": "ko",
+     "synthetic": true,
+     "published": "2023-01-10"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "NUMERICAL_INCONSISTENCY"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "2019년에",
+       "2022년에"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD06",
+   "category": "scope_difference",
+   "description": "성인과 어린이에 대한 효과",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "paper",
+     "text": "이 약은 성인의 혈압을 낮춘다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "b",
+     "kind": "paper",
+     "text": "이 약은 어린이의 혈압을 낮추지 않는다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "CATEGORICAL_CONFLICT",
+     "MISSING_CONDITION"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "성인의 혈압",
+       "어린이의 혈압"
+      ]
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "낮추지 않는다",
+      "subject": "약",
+      "predicate": "decreases",
+      "object": "혈압",
+      "polarity": "negative"
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD07",
+   "category": "numerical_error",
+   "description": "증가율 계산 오류",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "news",
+     "text": "티켓 판매량은 2023년에 1,000장에서 1,500장으로 25% 증가했다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "ARITHMETIC_ERROR",
+      "affected": [
+       "25% 증가했다"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD08",
+   "category": "numerical_error",
+   "description": "비율 계산 오류",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "report",
+     "text": "응답자 120명 중 30명(40%)이 새 디자인을 선호했다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "ARITHMETIC_ERROR",
+      "affected": [
+       "새 디자인을 선호했다"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD09",
+   "category": "misleading_quotation",
+   "description": "부정이 빠진 인용",
+   "documents": [
+    {
+     "key": "orig",
+     "kind": "paper",
+     "text": "이 백신은 6개월 미만 영아에게 효과가 없다.",
+     "language": "ko",
+     "synthetic": true,
+     "author": "오르티즈"
+    },
+    {
+     "key": "news",
+     "kind": "news",
+     "text": "오르티즈 박사는 \"이 백신은 6개월 미만 영아에게 효과가 있다\"라고 말했다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "MISLEADING_QUOTATION",
+      "affected": [
+       "오르티즈 박사는"
+      ],
+      "red": true
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD10",
+   "category": "unsupported_causal",
+   "description": "상관관계에서 인과 결론",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "설문조사 결과 귀리우유 섭취는 학생들의 높은 성적과 관련이 있다. 따라서 귀리우유는 성적을 높인다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "UNSUPPORTED_CAUSAL_CLAIM",
+      "affected": [
+       "성적을 높인다"
+      ],
+      "red": true
+     },
+     {
+      "category": "INVALID_INFERENCE",
+      "affected": [
+       "성적을 높인다"
+      ],
+      "red": true
+     }
+    ],
+    "propositions": [
+     {
+      "sentence": "관련이 있다",
+      "subject": "귀리우유 섭취",
+      "predicate": "correlates_with",
+      "object": "높은 성적"
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD11",
+   "category": "dependent_sources",
+   "description": "같은 기사의 복제본",
+   "documents": [
+    {
+     "key": "wire",
+     "kind": "news",
+     "text": "코르바 댐 건설비는 2조 원에 달했다.",
+     "language": "ko",
+     "synthetic": true,
+     "publisher": "예시 통신"
+    },
+    {
+     "key": "copy1",
+     "kind": "news",
+     "text": "코르바 댐 건설비는 2조 원에 달했다.",
+     "language": "ko",
+     "synthetic": true,
+     "publisher": "예시 일보",
+     "reproduces": "wire"
+    },
+    {
+     "key": "copy2",
+     "kind": "news",
+     "text": "코르바 댐 건설비는 2조 원에 달했다.",
+     "language": "ko",
+     "synthetic": true,
+     "publisher": "예시 신문",
+     "reproduces": "wire"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "DEPENDENT_CORROBORATION",
+      "affected": [
+       "건설비는"
+      ],
+      "red": false
+     }
+    ],
+    "statuses": [
+     {
+      "sentence": "건설비는",
+      "status": "INSUFFICIENT_EVIDENCE"
+     }
+    ],
+    "independent_groups": [
+     [
+      "wire",
+      "copy1",
+      "copy2"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "KD12",
+   "category": "translation_error",
+   "description": "한국어 원문의 부정이 번역에서 사라짐",
+   "documents": [
+    {
+     "key": "ko",
+     "kind": "news",
+     "text": "이 프로그램은 비용을 줄이지 못한다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "en",
+     "kind": "news",
+     "text": "The programme can reduce costs.",
+     "language": "en",
+     "synthetic": true,
+     "translation_of": "ko"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "TRANSLATION_DISCREPANCY",
+      "affected": [
+       "programme can reduce"
+      ],
+      "red": true
+     }
+    ],
+    "independent_groups": [
+     [
+      "ko",
+      "en"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "KD13",
+   "category": "no_issue",
+   "description": "충실한 번역 (가능성 표현 유지)",
+   "documents": [
+    {
+     "key": "ko",
+     "kind": "news",
+     "text": "이 조치는 배출을 줄일 수 있다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "en",
+     "kind": "news",
+     "text": "This measure may reduce emissions.",
+     "language": "en",
+     "synthetic": true,
+     "translation_of": "ko"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "TRANSLATION_DISCREPANCY"
+    ]
+   }
+  },
+  {
+   "id": "KD14",
+   "category": "low_reputation_correct",
+   "description": "블로그 주장을 독립적인 1차 자료 두 개가 뒷받침",
+   "documents": [
+    {
+     "key": "blog",
+     "kind": "blog",
+     "text": "세나 터널의 길이는 4.2킬로미터이다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "s1",
+     "kind": "dataset",
+     "text": "세나 터널의 길이는 4.2킬로미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "basis": "dataset",
+     "publisher": "예시 측량원"
+    },
+    {
+     "key": "s2",
+     "kind": "report",
+     "text": "세나 터널의 길이는 4.2킬로미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "basis": "documentary",
+     "publisher": "예시 교통청"
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "statuses": [
+     {
+      "sentence": "세나 터널",
+      "status": "SUPPORTED"
+     }
+    ],
+    "independent_groups": [
+     [
+      "blog"
+     ],
+     [
+      "s1"
+     ],
+     [
+      "s2"
+     ]
+    ]
+   }
+  },
+  {
+   "id": "KD15",
+   "category": "high_reputation_incorrect",
+   "description": "교과서 수치를 독립 조사 두 개가 반박",
+   "documents": [
+    {
+     "key": "tb",
+     "kind": "textbook",
+     "text": "린드크비스트 빙하의 길이는 14킬로미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "publisher": "예시 대학출판부"
+    },
+    {
+     "key": "s1",
+     "kind": "dataset",
+     "text": "린드크비스트 빙하의 길이는 9킬로미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "basis": "dataset"
+    },
+    {
+     "key": "s2",
+     "kind": "report",
+     "text": "린드크비스트 빙하의 길이는 9킬로미터이다.",
+     "language": "ko",
+     "synthetic": true,
+     "basis": "dataset"
+    }
+   ],
+   "expected": {
+    "issues": [
+     {
+      "category": "NUMERICAL_INCONSISTENCY",
+      "affected": [
+       "14킬로미터"
+      ],
+      "red": true
+     }
+    ],
+    "statuses": [
+     {
+      "sentence": "14킬로미터",
+      "status": "CONTRADICTED"
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD16",
+   "category": "ambiguous",
+   "description": "상대적 시간과 지시대명사",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "social",
+     "text": "3달 후 퇴사한다. 그것은 40% 증가했다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "issues": [
+     {
+      "category": "AMBIGUOUS_PROPOSITION",
+      "affected": [
+       "3달 후 퇴사한다"
+      ],
+      "red": false
+     },
+     {
+      "category": "AMBIGUOUS_PROPOSITION",
+      "affected": [
+       "그것은 40%"
+      ],
+      "red": false
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD17",
+   "category": "no_issue",
+   "description": "가능성 주장과 부정 주장은 모순이 아님",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "커피는 두통을 줄일 수 있다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "b",
+     "kind": "web",
+     "text": "커피는 두통을 줄이지 않는다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "CATEGORICAL_CONFLICT"
+    ],
+    "relations": [
+     {
+      "type": "DIFFERS_IN_SCOPE",
+      "between": [
+       "줄일 수 있다",
+       "줄이지 않는다"
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "KD18",
+   "category": "no_issue",
+   "description": "의견 충돌은 사실 모순이 아님",
+   "documents": [
+    {
+     "key": "a",
+     "kind": "blog",
+     "text": "제 생각에 새 도서관은 최고의 건물이다.",
+     "language": "ko",
+     "synthetic": true
+    },
+    {
+     "key": "b",
+     "kind": "social",
+     "text": "제 생각에 새 도서관은 최악의 건물이다.",
+     "language": "ko",
+     "synthetic": true
+    }
+   ],
+   "expected": {
+    "no_red": true,
+    "forbidden_issue_categories": [
+     "CATEGORICAL_CONFLICT"
+    ],
+    "statuses": [
+     {
+      "sentence": "최고의 건물",
+      "status": "OUT_OF_SCOPE"
+     }
+    ]
+   }
+  }
+ ]
+}
