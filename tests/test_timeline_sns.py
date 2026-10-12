@@ -117,6 +117,33 @@ class Timelines(unittest.TestCase):
         self.assertEqual(g.predictions[0]["state"], "pending")
         self.assertEqual(g.predictions[0]["due"], "2026-10-31")
 
+    def test_activity_episode_without_place(self):
+        g = analyze([post("a", "2026-08-03", "어제 수술받고 입원함\n#입원일기"),
+                     post("b", "2026-08-05", "입원 열흘째\n#입원일기"),
+                     post("c", "2026-08-07", "내일 퇴원 예정\n입원 엿새 만에 집에 감\n#입원일기")])
+        issue = next(i for i in g.issues.values() if i.category.value == "TEMPORAL_DISAGREEMENT")
+        self.assertIn("열흘째", issue.reason)
+
+    def test_english_activity_start_and_finish(self):
+        g = analyze([post("a", "2026-07-10", "Starting the ridge trail hike tomorrow\n#ridgetrail", lang="en"),
+                     post("b", "2026-07-12", "Day 2 on the ridge trail\n#ridgetrail", lang="en"),
+                     post("c", "2026-07-25", "Finished the ridge trail today after two weeks of walking\n#ridgetrail", lang="en")])
+        ep = next(e for e in g.timeline if e["checked"])
+        self.assertTrue(ep["consistent"], ep)
+        self.assertFalse([i for i in g.issues.values() if i.red])
+
+    def test_cross_line_share(self):
+        g = analyze([post("a", "2026-09-30", "이번 달 결산\n목표 200km 중 150km 달성\n달성률 85%임")])
+        self.assertIn("ARITHMETIC_ERROR", {i.category.value for i in g.issues.values() if i.red})
+        g = analyze([post("a", "2026-09-30", "이번 달 결산\n목표 200km 중 150km 달성\n달성률 75%임")])
+        self.assertNotIn("ARITHMETIC_ERROR", {i.category.value for i in g.issues.values()})
+
+    def test_transition_timestamps_use_analysis_time(self):
+        g = analyze([post("a", "2026-09-30", "제 생각에 새 도서관은 최고의 건물이다.")], now="2026-01-02T03:04:05+00:00")
+        a = next(iter(g.assessments.values()))
+        self.assertEqual(a.status.value, "OUT_OF_SCOPE")
+        self.assertEqual({h["at"] for h in a.history}, {"2026-01-02T03:04:05+00:00"})
+
     def test_relative_time_without_date_stays_ambiguous(self):
         g = analyze([{"key": "bio", "kind": "social", "author": AUTHOR, "language": "ko", "synthetic": True,
                       "text": "3달 후 퇴사 → 디지털 노마드 전환 중"}])

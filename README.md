@@ -7,7 +7,8 @@ UPAE turns documents into a numbered, typed, critically evaluated **proposition 
 **Status:** minimum viable prototype. Deterministic rule-based extraction for **English and Korean**, offline, standard library only.
 On blind held-out sets it is precise but misses many problems:
 - English: issue F1 0.55, 0 false alarms on 12 clean cases;
-- Korean: issue F1 0.20, 0 false alarms on 6 clean cases.
+- Korean: issue F1 0.20, 0 false alarms on 6 clean cases;
+- SNS posts and timelines: issue F1 0.50, 0 false alarms on 8 clean cases.
 
 See [docs/EVALUATION_REPORT.md](docs/EVALUATION_REPORT.md).
 
@@ -25,9 +26,10 @@ python -m upae search out/analysis.sqlite "population Norvik"     # FTS5 lexical
 # re-run with the previous snapshot: stable IDs plus a "changes since previous analysis" section
 python -m upae analyze examples/corpus --out out2 --previous out/analysis.json
 
-python -m unittest discover -s tests -t .                          # 108 tests, about 0.6 s
+python -m unittest discover -s tests -t .                          # 112 tests, about 0.6 s
 python -m upae evaluate eval/dataset/dev.json eval/dataset/heldout.json \
-    eval/dataset/dev_ko.json eval/dataset/heldout_ko.json --out eval_report.md
+    eval/dataset/dev_ko.json eval/dataset/heldout_ko.json \
+    eval/dataset/dev_sns.json eval/dataset/heldout_sns.json --out eval_report.md
 ```
 
 Pre-generated outputs are in [`examples/output/`](examples/output/): `report.md`, `report.html`, `analysis.json` and `analysis.sqlite`.

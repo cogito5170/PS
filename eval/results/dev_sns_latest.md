@@ -18,7 +18,7 @@
 | Issue-confidence calibration (Brier / ECE, n) | 0.083 / 0.267 (n=6) |
 | Status-confidence calibration (Brier / ECE, n) | n/a / n/a (n=0) |
 | Report compression ratio (core words / source words) | 0.917 |
-| Latency: mean / max per case, per proposition | 6.05 ms / 37.7 ms, 3.027 ms |
+| Latency: mean / max per case, per proposition | 5.94 ms / 35.39 ms, 2.972 ms |
 | Model calls (processing cost) | 0 |
 
 Per issue category (gold found / gold; predicted matched / predicted):

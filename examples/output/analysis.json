@@ -4469,7 +4469,7 @@
      "to_status": "CONFLICTING_EVIDENCE",
      "actor": "system",
      "reason": "Support S=0.50 and challenge C=0.50; neither dominates.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4506,7 +4506,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Only weak independent evidence (S=0.50, C=0.00 < τ=0.8).",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4541,7 +4541,7 @@
      "to_status": "OUT_OF_SCOPE",
      "actor": "system",
      "reason": "opinion — recorded as attributed opinion, not assessed as fact.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4633,7 +4633,7 @@
      "to_status": "CONTRADICTED",
      "actor": "system",
      "reason": "2 independent challenging group(s), C=1.80 ≥ τ, S=0.00.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4699,7 +4699,7 @@
      "to_status": "SUPPORTED",
      "actor": "system",
      "reason": "1 independent supporting group(s), S=0.90 ≥ τ, C=0.40.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4738,7 +4738,7 @@
      "to_status": "SUPPORTED",
      "actor": "system",
      "reason": "1 independent supporting group(s), S=0.90 ≥ τ, C=0.40.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4775,7 +4775,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Only weak independent evidence (S=0.20, C=0.00 < τ=0.8).",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4837,7 +4837,7 @@
      "to_status": "OUT_OF_SCOPE",
      "actor": "system",
      "reason": "opinion — recorded as attributed opinion, not assessed as fact.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4953,7 +4953,7 @@
      "to_status": "RETRACTED",
      "actor": "system",
      "reason": "Source S-000010 is marked as retracted.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -4992,7 +4992,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: relies on retracted source S-000010",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5056,7 +5056,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Only weak independent evidence (S=0.00, C=0.20 < τ=0.8).",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5120,7 +5120,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: source sentence contains an arithmetic inconsistency",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5155,7 +5155,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5192,7 +5192,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: source sentence contains an arithmetic inconsistency",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5227,7 +5227,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5264,7 +5264,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: source sentence contains an arithmetic inconsistency",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5299,7 +5299,7 @@
      "to_status": "INSUFFICIENT_EVIDENCE",
      "actor": "system",
      "reason": "Repeated by 2 dependent source(s) sharing origin G-000013; no independent corroboration.",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5363,7 +5363,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: translation may not preserve the original meaning",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   },
@@ -5400,7 +5400,7 @@
      "to_status": "HUMAN_REVIEW_REQUIRED",
      "actor": "system",
      "reason": "Review required: translation may not preserve the original meaning",
-     "at": "2026-10-12T15:44:43+00:00"
+     "at": "2026-10-12T00:00:00+00:00"
     }
    ]
   }
@@ -6508,11 +6508,11 @@
  },
  "timings": {
   "register": 0.0031,
-  "extract": 0.0521,
-  "compare": 0.0046,
-  "checks": 0.0072,
-  "assess": 0.0006,
-  "rank": 0.0022
+  "extract": 0.057,
+  "compare": 0.0044,
+  "checks": 0.0089,
+  "assess": 0.0005,
+  "rank": 0.0018
  },
  "changes": null
 }

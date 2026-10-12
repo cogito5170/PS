@@ -200,6 +200,14 @@ _START_KO = re.compile(
 _START_EN = re.compile(
     rf"(?P<when>tomorrow|today|next week|next month)\b[^.\n]*?\b(?:fly|leave|move|head|go|start|begin|arrive|land)s?\b"
     rf"(?:[^.\n]*?\b(?:to|in)\s(?P<place>{EN_PLACE_RE}))?(?:[^.\n]*?\bfor\s(?P<dur>{DUR_EN}))?", re.I)
+ACTIVITY_KO = r"(?:입원|여행|출장|체류|캠핑|등산|한\s?달\s?살기|한달살기|어학연수|휴가|단식|금연|훈련|합숙|촬영|공사)"
+_ARRIVE_KO = re.compile(
+    rf"(?P<when>오늘|어제|그제|내일|모레)\s?(?:[^\n.]*?(?P<place>{PLACE_RE}))?[^\n.]*?(?:도착|입국|입원|입소|출발|시작|체크인)")
+_NTH_KO = re.compile(rf"(?P<act>{ACTIVITY_KO})\s?(?P<dur>{DUR_KO})\s?(?:째|차)")
+_SINCE_KO = re.compile(rf"(?P<act>{ACTIVITY_KO})?\s?(?P<dur>{DUR_KO})\s?만에")
+_START_EN2 = re.compile(r"\b(?:starting|beginning|start|begin|kick(?:ing)? off)\b[^.\n]*?\b(?P<when>tomorrow|today|next week)\b"
+                        r"|\b(?P<when2>tomorrow|today)\b[^.\n]*?\b(?:starts?|begins?|starting|beginning)\b", re.I)
+_FINISH_EN = re.compile(rf"\b(?:finished|completed|ended|wrapped up|done with)\b[^.\n]*?\bafter\s(?P<dur>{DUR_EN})", re.I)
 _ELAPSED_KO = re.compile(
     rf"(?:(?P<place>{PLACE_RE}|여기|이곳)(?:에|에서|로)?\s?)?(?:온|도착한|간|머문|지낸|산|살기\s?시작한|입국한)\s?지\s?(?P<dur>{DUR_KO})")
 _ELAPSED_EN = re.compile(
@@ -208,7 +216,7 @@ _ELAPSED_EN = re.compile(
 _DAYCOUNT = re.compile(r"(?:\bday\s?(?P<n>\d{1,3})\b|(?P<n2>\d{1,3})\s?일\s?(?:차|째))", re.I)
 _PAST_DUR_KO = re.compile(
     rf"(?:(?P<dur>{DUR_KO})\s?(?:동안|간)\s?(?:[^.\n]*?(?P<place>{PLACE_RE})(?:에서|에))?|(?P<place2>{PLACE_RE})에서\s?(?P<dur2>{DUR_KO})\s?(?:동안|간))"
-    rf"[^.\n]*?[{PAST_SYLLABLES}]")
+    rf"[^.\n]*?(?:[{PAST_SYLLABLES}]|(?:지낸|보낸|머문|산|여행한|머물던|머물렀던|지냈던)\s)")
 _PAST_DUR_EN = re.compile(
     rf"\b(?:spent|lived|stayed|worked|was|were|been|traveled|travelled|focused)\b[^.\n]*?\b(?:for\s)?(?P<dur>{DUR_EN})\s(?:in|at)\s(?P<place>{EN_PLACE_RE})"
     rf"|\b(?:after|for)\s(?P<dur2>{DUR_EN})\s(?:in|at)\s(?P<place2>{EN_PLACE_RE})", re.I)
@@ -240,6 +248,42 @@ def statements_for(text: str, pub: date, context_place: Optional[str]) -> list[d
                 out.append(dict(kind="start", place=place, implied=(r[0], r[1]), planned=dur,
                                 why=f"'{m.group('when')}' resolved to {r[0].isoformat()} ({r[2]})"))
                 break
+    if not out:
+        m = _ARRIVE_KO.search(text) or None
+        if m:
+            r = resolve(m.group("when"), pub)
+            if r:
+                out.append(dict(kind="start", place=m.group("place") or _place_in(text) or context_place,
+                                implied=(r[0], r[1]), planned=None,
+                                why=f"'{m.group(0).strip()}' → started {r[0].isoformat()}"))
+        m = _START_EN2.search(text)
+        if m and not out:
+            r = resolve(m.group("when") or m.group("when2"), pub)
+            if r:
+                out.append(dict(kind="start", place=_place_in(text) or context_place, implied=(r[0], r[1]),
+                                planned=None, why=f"'{m.group(0).strip()}' → starts {r[0].isoformat()}"))
+    m = _NTH_KO.search(text)
+    if m:
+        n = duration_days(m.group("dur"))
+        if n:
+            out.append(dict(kind="day_count", place=_place_in(text) or context_place,
+                            implied=(pub - timedelta(days=n), pub - timedelta(days=n - 1)),
+                            why=f"'{m.group(0).strip()}' on {pub.isoformat()} → day 1 was {n - 1}–{n} day(s) earlier"))
+    m = _SINCE_KO.search(text)
+    if m and not _NTH_KO.search(text):
+        n = duration_days(m.group("dur"))
+        if n:
+            out.append(dict(kind="elapsed", place=_place_in(text) or context_place,
+                            implied=(pub - timedelta(days=n + 1), pub - timedelta(days=max(0, n - 1))),
+                            why=f"'{m.group(0).strip()}' on {pub.isoformat()} → started about {n} day(s) earlier (±1)"))
+    m = _FINISH_EN.search(text)
+    if m:
+        n = duration_days(m.group("dur"))
+        if n:
+            tol = max(2, round(n * 0.15))
+            out.append(dict(kind="past_duration", place=_place_in(text) or context_place,
+                            implied=(pub - timedelta(days=n + tol), pub - timedelta(days=max(0, n - tol))),
+                            why=f"'{m.group(0).strip()}' by {pub.isoformat()} → start ≈ {(pub - timedelta(days=n)).isoformat()} ±{tol} day(s)"))
     for rx in (_ELAPSED_KO, _ELAPSED_EN):
         m = rx.search(text)
         if m:
@@ -333,8 +377,16 @@ def build_timelines(g) -> list[dict]:
     episodes = []
     for author, sts in sorted(by_author.items()):
         groups: dict[str, list[Statement]] = {}
+        unplaced = []
         for st in sts:
-            groups.setdefault(family(st.place) or "(unspecified place)", []).append(st)
+            if family(st.place):
+                groups.setdefault(family(st.place), []).append(st)
+            else:
+                unplaced.append(st)
+        # statements without a place form an episode by shared topic: a hashtag or two content words
+        for st in unplaced:
+            key = _topic_key(g, st, groups)
+            groups.setdefault(key, []).append(st)
         for fam, items in sorted(groups.items()):
             if len(items) < 2 or len({i.source_id for i in items}) < 2:
                 episodes.append(_episode(author, fam, items, None))
@@ -354,6 +406,30 @@ def build_timelines(g) -> list[dict]:
                 conflict = (worst, gap) if worst else None
             episodes.append(_episode(author, fam, items, conflict, (lo, hi) if lo <= hi else None))
     return episodes
+
+
+def _topics(g, st: Statement) -> set:
+    from .textutil import content_set
+    text = g.archive.get(st.source_id, "")
+    tags = {t.lower() for t in re.findall(r"#(\w+)", text)}
+    return {f"#{t}" for t in tags} | set(content_set(re.sub(r"#\w+", " ", st.quote)))
+
+
+def _topic_key(g, st: Statement, groups: dict) -> str:
+    mine = _topics(g, st)
+    best, score = None, 0
+    for key, items in groups.items():
+        for other in items:
+            theirs = _topics(g, other)
+            shared_tags = {t for t in mine & theirs if t.startswith("#")}
+            shared_words = {t for t in mine & theirs if not t.startswith("#") and not t.isdigit()}
+            s = 2 * len(shared_tags) + len(shared_words)
+            if (shared_tags or len(shared_words) >= 2) and s > score:
+                best, score = key, s
+    if best:
+        return best
+    tag = next((t for t in sorted(mine) if t.startswith("#")), None)
+    return f"(topic {tag})" if tag else f"(unspecified, {st.source_id})"
 
 
 def _episode(author, fam, items, conflict, window=None) -> dict:

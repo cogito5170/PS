@@ -70,7 +70,10 @@ def allowed(src: Status, dst: Status, actor: str = "system") -> bool:
     return need is not None and ACTOR_RANK[actor] >= ACTOR_RANK[need]
 
 
-def transition(a: Assessment, dst: Status, reason: str, actor: str = "system") -> None:
+def transition(a: Assessment, dst: Status, reason: str, actor: str = "system",
+               at: str | None = None) -> None:
+    """Record a status change.  ``at`` is the analysis timestamp (deterministic
+    output); the wall clock is used only when no timestamp is supplied."""
     if a.status == dst:
         return
     if not allowed(a.status, dst, actor):
@@ -78,5 +81,5 @@ def transition(a: Assessment, dst: Status, reason: str, actor: str = "system") -
     if a.status == Status.HUMAN_REVIEW_REQUIRED and actor == "system" and a.review_triggers:
         raise TransitionError("review triggers still present; system cannot leave HUMAN_REVIEW_REQUIRED")
     a.history.append(Transition(from_status=a.status, to_status=dst, actor=actor, reason=reason,
-                                at=datetime.now(timezone.utc).replace(microsecond=0).isoformat()).to_dict())
+                                at=at or datetime.now(timezone.utc).replace(microsecond=0).isoformat()).to_dict())
     a.status = dst

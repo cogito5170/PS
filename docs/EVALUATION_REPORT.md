@@ -95,7 +95,7 @@ The dev set stayed at F1 1.00 with 0 false alarms, and the unit tests stayed gre
 4. **Demo corpus** (`examples/corpus`, 18 sources in 6 formats including an unreadable PDF and a Korean document):
    - 27 propositions, 31 relations, 12 issues (9 red), all of them intended;
    - the unreadable PDF and the unextracted Korean passage are both reported as limitations.
-5. **Unit tests**: 93 tests pass (`python -m unittest discover -s tests -t .`, about 0.4 s).
+5. **Unit tests**: 112 tests pass (`python -m unittest discover -s tests -t .`, about 0.4 s).
 
 ## 6. What these results do *not* show
 
@@ -155,3 +155,44 @@ These are the same gaps as in English (IMPLEMENTATION_PLAN 2.2–2.3, 2.7), and 
 ### 7.4 Language detection fix
 
 "No Guts, Just Data." used to be detected as Spanish, from the single word "no". Short texts (under 8 words) now need two stop-word hits *and* a lead over English before a non-English language is chosen; otherwise plain-ASCII text is treated as low-confidence English. Confidence is capped at 0.6 for short texts. All English and Korean results are unchanged by this fix, and it is covered by tests.
+
+## 8. SNS style and cross-post timelines (added later in the same session)
+
+Same protocol as before:
+- the code was pushed (`0e1e9b9`) **before** the blind run;
+- the held-out author read only the format doc and did not describe case contents.
+
+| Metric | SNS dev (10, own cases) | **SNS held-out, blind** (14) | SNS held-out, post-hoc |
+|---|---|---|---|
+| Issue P / R / F1 (family) | 1.00 / 1.00 / 1.00 | **0.75 / 0.38 / 0.50** | 0.88 / 0.88 / 0.88 |
+| Timeline inconsistencies found | 3 of 3 | **1 of 4** | 4 of 4 |
+| False alarms on `no_red` cases (including 4 consistent timelines) | 0 of 5 | **0 of 8** | 0 of 8 |
+| Red warnings that match a gold issue | 5 of 5 | **1 of 1** | 5 of 5 |
+| Proposition recall | n/a | **0.08 (1 of 13)** | 0.08 (1 of 13) |
+| Status accuracy | n/a | **0.33 (1 of 3)** | 0.00 (0 of 3) |
+
+Raw files: `eval/results/heldout_sns_run1_blind.*`, `heldout_sns_run2_posthoc.*` and `dev_sns_latest.*`.
+
+### 8.1 Interpretation
+
+1. Timeline checking is precise: no consistent timeline was ever flagged. Blind, however, it found only 1 of the 4 inconsistencies. The other three were about episodes with no place name (a hospital stay, a hike), or used wording the rules did not know ("오늘 … 도착", "Starting … tomorrow", the past adnominal "지낸", "after two weeks of walking").
+2. Proposition extraction on SNS text is still very weak (recall 0.08). The timeline check works on whole sentences and does not depend on it.
+3. The post-hoc status drop (1 of 3 → 0 of 3) comes from a policy, not a bug. Once the cross-line arithmetic check flags the "A 중 B" line, that line's proposition goes to HUMAN_REVIEW_REQUIRED, as for every sentence in an inconsistent calculation, because the faulty number cannot be identified. The gold label expected UNVERIFIED.
+
+### 8.2 General fixes made after the blind run (post-hoc)
+
+- episodes without a place, grouped by shared hashtags or content words;
+- arrival and start forms (`오늘 제주 도착`, `Starting … tomorrow`);
+- day-count and elapsed forms for activities (`입원 열흘째`, `엿새 만에`);
+- the Korean past adnominal (`지낸`, `보낸`) and the English finish form (`Finished … after two weeks`);
+- Korean past tense recognized from any syllable with a ㅆ final consonant;
+- cross-line share arithmetic (`200km 중 150km` … `달성률 85%`);
+- a planned start counts as fulfilled when later posts report the episode, even if their dates disagree.
+
+### 8.3 Still missing
+
+The two-user summit elevation conflict (S09). Each post omits *which* mountain it means ("정상 해발 1,240m임"). Aligning such subject-less attribute values across users would also pair different mountains, so it is left to semantic matching (IMPLEMENTATION_PLAN 2.3).
+
+### 8.4 Determinism bug found and fixed
+
+While re-running the suite, `test_deterministic_output` failed once in about 20 runs. The cause: status-transition history recorded the wall-clock time, so two analyses that straddled a second boundary produced different output. Transitions now record the analysis timestamp. A regression test covers this, and the full suite passes under several hash seeds.

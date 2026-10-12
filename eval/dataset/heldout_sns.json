@@ -1,0 +1,744 @@
+{
+  "dataset": "heldout_sns",
+  "version": "1",
+  "cases": [
+    {
+      "id": "S01",
+      "category": "timeline_inconsistency",
+      "description": "Korean travel posts: a pre-departure post and a mid-trip day count agree, but a later 'arrived two days ago' post implies an arrival more than a week after the announced start.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_traveler",
+          "published": "2026-03-02",
+          "url": "https://social.example.com/example_traveler/posts/1101",
+          "language": "ko",
+          "text": "내일부터 치앙마이 여행 시작 ✈️\n짐 싸다가 새벽 2시 됨\n#치앙마이 #여행스타그램",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_traveler",
+          "published": "2026-03-06",
+          "url": "https://social.example.com/example_traveler/posts/1102",
+          "language": "ko",
+          "text": "치앙마이 여행 4일차\n올드타운 사원 투어함 🛕\n#치앙마이",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_traveler",
+          "published": "2026-03-13",
+          "url": "https://social.example.com/example_traveler/posts/1103",
+          "language": "ko",
+          "text": "치앙마이에 온 지 이틀째\n야시장 첫 방문 🍢\n#치앙마이 #여행",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "TEMPORAL_DISAGREEMENT",
+            "affected": [
+              "내일부터 치앙마이 여행 시작",
+              "치앙마이에 온 지 이틀째"
+            ],
+            "red": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "S02",
+      "category": "timeline_inconsistency",
+      "description": "Korean posts: the author claims to have spent a month on the island, but the arrival and departure posts are about a week apart.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_islandhopper",
+          "published": "2026-05-01",
+          "url": "https://social.example.com/example_islandhopper/posts/2201",
+          "language": "ko",
+          "text": "오늘 제주 도착 🌊\n제주 한 달 살기 시작함\n#제주한달살기",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_islandhopper",
+          "published": "2026-05-08",
+          "url": "https://social.example.com/example_islandhopper/posts/2202",
+          "language": "ko",
+          "text": "제주에서 한 달 동안 지낸 소감 정리\n오름 12곳 다녀옴 ⛰️\n내일 서울 복귀함\n#제주한달살기 #회고",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_islandhopper",
+          "published": "2026-05-09",
+          "url": "https://social.example.com/example_islandhopper/posts/2203",
+          "language": "ko",
+          "text": "서울 복귀 완료\n집에 오니 어색함\n#일상",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "TEMPORAL_DISAGREEMENT",
+            "affected": [
+              "오늘 제주 도착",
+              "제주에서 한 달 동안 지낸 소감"
+            ],
+            "red": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "S03",
+      "category": "timeline_inconsistency",
+      "description": "Korean hospital-stay posts: an admission-day post and a discharge post agree, but an in-between post claims a far longer stay so far.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_patient_diary",
+          "published": "2026-08-03",
+          "url": "https://social.example.com/example_patient_diary/posts/3301",
+          "language": "ko",
+          "text": "어제 맹장 수술받고 입원함 🏥\n당분간 금식임\n#입원일기",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_patient_diary",
+          "published": "2026-08-05",
+          "url": "https://social.example.com/example_patient_diary/posts/3302",
+          "language": "ko",
+          "text": "입원 열흘째\n병원밥 이제 질림\n#입원일기",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_patient_diary",
+          "published": "2026-08-07",
+          "url": "https://social.example.com/example_patient_diary/posts/3303",
+          "language": "ko",
+          "text": "내일 퇴원 예정\n입원 엿새 만에 집에 감 🙌\n#입원일기",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "TEMPORAL_DISAGREEMENT",
+            "affected": [
+              "어제 맹장 수술받고 입원함",
+              "입원 열흘째"
+            ],
+            "red": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "S04",
+      "category": "timeline_inconsistency",
+      "description": "English hiking posts: the start announcement and the finish post agree, but a 'day 2' post is dated well over a week after the announced start.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_hiker",
+          "published": "2026-07-10",
+          "url": "https://social.example.com/example_hiker/posts/4401",
+          "language": "en",
+          "text": "Starting the coast trail hike tomorrow morning 🥾\nBackpack packed, boots broken in\n#coasttrail",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_hiker",
+          "published": "2026-07-21",
+          "url": "https://social.example.com/example_hiker/posts/4402",
+          "language": "en",
+          "text": "Day 2 on the coast trail and my feet already hurt\nCamped by a creek tonight\n#coasttrail",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_hiker",
+          "published": "2026-07-24",
+          "url": "https://social.example.com/example_hiker/posts/4403",
+          "language": "en",
+          "text": "Finished the coast trail today after two weeks of walking 🎉\n#coasttrail #thruhike",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "Starting the coast trail hike tomorrow",
+            "subject": "author",
+            "predicate": "starts",
+            "object": "coast trail hike",
+            "polarity": "positive",
+            "claim_type": "prediction"
+          },
+          {
+            "sentence": "Day 2 on the coast trail",
+            "subject": "author",
+            "predicate": "is on day 2 of",
+            "object": "coast trail hike",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "issues": [
+          {
+            "category": "TEMPORAL_DISAGREEMENT",
+            "affected": [
+              "Starting the coast trail hike tomorrow",
+              "Day 2 on the coast trail"
+            ],
+            "red": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "S05",
+      "category": "timeline_consistent",
+      "description": "Korean travel posts whose start, day-count and trip-length expressions all agree with the post dates.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_wanderer",
+          "published": "2026-04-09",
+          "url": "https://social.example.com/example_wanderer/posts/5501",
+          "language": "ko",
+          "text": "내일부터 오사카 여행 시작 🎌\n#오사카",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_wanderer",
+          "published": "2026-04-11",
+          "url": "https://social.example.com/example_wanderer/posts/5502",
+          "language": "ko",
+          "text": "오사카에 온 지 이틀째\n도톤보리 다녀옴 🐙\n#오사카여행",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_wanderer",
+          "published": "2026-04-14",
+          "url": "https://social.example.com/example_wanderer/posts/5503",
+          "language": "ko",
+          "text": "오사카 여행 마지막 날\n저녁 비행기로 귀국함\n5일 동안 잘 먹고 감\n#오사카여행",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "forbidden_issue_categories": [
+          "TEMPORAL_DISAGREEMENT"
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "S06",
+      "category": "timeline_consistent",
+      "description": "Korean month-long-stay posts whose 'two weeks in' and 'stayed a month' statements match the post dates.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_nomad",
+          "published": "2026-01-05",
+          "url": "https://social.example.com/example_nomad/posts/6601",
+          "language": "ko",
+          "text": "오늘부터 다낭 한 달 살기 시작 🌴\n#다낭한달살기",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_nomad",
+          "published": "2026-01-19",
+          "url": "https://social.example.com/example_nomad/posts/6602",
+          "language": "ko",
+          "text": "다낭 온 지 2주 됨\n동네 카페 단골 생김 ☕\n#다낭한달살기",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_nomad",
+          "published": "2026-02-04",
+          "url": "https://social.example.com/example_nomad/posts/6603",
+          "language": "ko",
+          "text": "한 달 동안 지낸 다낭 오늘 떠남\n아쉬움 가득 🥲\n#다낭한달살기",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "forbidden_issue_categories": [
+          "TEMPORAL_DISAGREEMENT"
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "S07",
+      "category": "timeline_consistent",
+      "description": "Korean hospital-stay posts whose admission, day-count and discharge statements agree with the post dates.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_rehab_log",
+          "published": "2026-09-01",
+          "url": "https://social.example.com/example_rehab_log/posts/7701",
+          "language": "ko",
+          "text": "오늘 무릎 수술받고 입원함 🦵\n#재활일기",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_rehab_log",
+          "published": "2026-09-04",
+          "url": "https://social.example.com/example_rehab_log/posts/7702",
+          "language": "ko",
+          "text": "입원 나흘째\n휠체어 타고 복도 산책함\n#재활일기",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_rehab_log",
+          "published": "2026-09-08",
+          "url": "https://social.example.com/example_rehab_log/posts/7703",
+          "language": "ko",
+          "text": "일주일 입원 끝나고 오늘 퇴원함 🎉\n#재활일기",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "forbidden_issue_categories": [
+          "TEMPORAL_DISAGREEMENT"
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "S08",
+      "category": "timeline_consistent",
+      "description": "English trip posts whose dates agree once the usual off-by-one ambiguity of a 'day N' count is allowed for.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_conference_goer",
+          "published": "2026-08-14",
+          "url": "https://social.example.com/example_conference_goer/posts/8801",
+          "language": "en",
+          "text": "Flying to Lisbon tomorrow for a week-long conference trip ✈️\n#lisbon",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_conference_goer",
+          "published": "2026-08-17",
+          "url": "https://social.example.com/example_conference_goer/posts/8802",
+          "language": "en",
+          "text": "Day 2 in Lisbon and already obsessed with the custard tarts\n#lisbon #conference",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_conference_goer",
+          "published": "2026-08-22",
+          "url": "https://social.example.com/example_conference_goer/posts/8803",
+          "language": "en",
+          "text": "Back home after a week in Lisbon\nGreat talks, too many tarts\n#lisbon",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "Flying to Lisbon tomorrow",
+            "subject": "author",
+            "predicate": "flies to",
+            "object": "Lisbon",
+            "polarity": "positive",
+            "claim_type": "prediction"
+          },
+          {
+            "sentence": "Back home after a week in Lisbon",
+            "subject": "author",
+            "predicate": "returned home after",
+            "object": "a week in Lisbon",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "forbidden_issue_categories": [
+          "TEMPORAL_DISAGREEMENT"
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "S09",
+      "category": "genuine_contradiction",
+      "description": "Two SNS users state clearly different summit elevations for the same (invented) mountain.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_hiker_kim",
+          "published": "2026-06-07",
+          "url": "https://social.example.com/example_hiker_kim/posts/9901",
+          "language": "ko",
+          "text": "예시산 다녀옴 ⛰️\n정상 해발 1,240m임\n왕복 5시간 걸림\n#등산 #예시산",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_mountain_lee",
+          "published": "2026-06-08",
+          "url": "https://social.example.com/example_mountain_lee/posts/9902",
+          "language": "ko",
+          "text": "주말에 예시산 정상 찍음\n정상 해발 870m라서 초보도 가능함 👍\n#등산스타그램",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "정상 해발 1,240m임",
+            "subject": "예시산 정상",
+            "predicate": "has elevation",
+            "object": "1,240m",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "정상 해발 870m라서",
+            "subject": "예시산 정상",
+            "predicate": "has elevation",
+            "object": "870m",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "NUMERICAL_INCONSISTENCY",
+            "affected": [
+              "정상 해발 1,240m임",
+              "정상 해발 870m라서"
+            ],
+            "red": true
+          }
+        ],
+        "relations": [
+          {
+            "type": "CONTRADICTS",
+            "between": [
+              "정상 해발 1,240m임",
+              "정상 해발 870m라서"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "S10",
+      "category": "scope_difference",
+      "description": "Two SNS users give very different daytime temperatures for the same island, but one explicitly refers to August and the other to January.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_islandlife",
+          "published": "2026-08-10",
+          "url": "https://social.example.com/example_islandlife/posts/1001",
+          "language": "ko",
+          "text": "8월 예시섬 낮 기온 33도 🥵\n해변 그늘 자리 경쟁 치열함\n#예시섬",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_backpacker",
+          "published": "2026-01-15",
+          "url": "https://social.example.com/example_backpacker/posts/1002",
+          "language": "ko",
+          "text": "1월 예시섬 낮 기온 9도 🥶\n바닷바람 엄청 셈\n#예시섬 #겨울여행",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "8월 예시섬 낮 기온 33도",
+            "subject": "예시섬 낮 기온 (8월)",
+            "predicate": "is",
+            "object": "33도",
+            "polarity": "positive",
+            "claim_type": "observation"
+          },
+          {
+            "sentence": "1월 예시섬 낮 기온 9도",
+            "subject": "예시섬 낮 기온 (1월)",
+            "predicate": "is",
+            "object": "9도",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "relations": [
+          {
+            "type": "DIFFERS_IN_SCOPE",
+            "between": [
+              "8월 예시섬 낮 기온 33도",
+              "1월 예시섬 낮 기온 9도"
+            ]
+          }
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "S11",
+      "category": "numerical_error",
+      "description": "A single SNS running recap states a completion percentage that does not match its own distance figures.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_runner_park",
+          "published": "2026-09-30",
+          "url": "https://social.example.com/example_runner_park/posts/1101",
+          "language": "ko",
+          "text": "9월 러닝 결산 🏃\n목표 200km 중 150km 달성\n달성률 85%임\n다음 달엔 꼭 채운다 💪\n#러닝 #런스타그램",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "목표 200km 중 150km 달성",
+            "subject": "author",
+            "predicate": "ran",
+            "object": "150km of a 200km goal",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          },
+          {
+            "sentence": "달성률 85%임",
+            "subject": "goal completion rate",
+            "predicate": "is",
+            "object": "85%",
+            "polarity": "positive",
+            "claim_type": "statistical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "ARITHMETIC_ERROR",
+            "affected": [
+              "달성률 85%임",
+              "목표 200km 중 150km 달성"
+            ],
+            "red": true
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "목표 200km 중 150km 달성",
+            "status": "UNVERIFIED"
+          }
+        ]
+      }
+    },
+    {
+      "id": "S12",
+      "category": "ambiguous",
+      "description": "An undated SNS post uses a relative time expression and a figure without a unit, so neither the opening date nor the wait can be resolved.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_cafehopper",
+          "url": "https://social.example.com/example_cafehopper/posts/1201",
+          "language": "ko",
+          "text": "어제 예시역 2번 출구 앞에 카페 새로 오픈함 ☕\n웨이팅 30 정도 있었음\n라떼 맛있음 👍\n#카페투어",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "issues": [
+          {
+            "category": "AMBIGUOUS_PROPOSITION",
+            "affected": [
+              "카페 새로 오픈함",
+              "웨이팅 30 정도 있었음"
+            ],
+            "red": false
+          }
+        ],
+        "no_red": true
+      }
+    },
+    {
+      "id": "S13",
+      "category": "dependent_sources",
+      "description": "One SNS post about a bus fare increase is reposted with light edits by two other users; the copies are not independent corroboration.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_citylife",
+          "published": "2026-10-01",
+          "url": "https://social.example.com/example_citylife/posts/1301",
+          "language": "ko",
+          "text": "예시시 시내버스 기본요금 1,700원으로 인상 확정\n다음 달 1일부터 적용임\n예시시청 공지문 직접 확인함 🚌\n#예시시 #버스요금",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_reposter",
+          "published": "2026-10-01",
+          "url": "https://social.example.com/example_reposter/posts/1302",
+          "language": "ko",
+          "text": "퍼온 글\n예시시 버스 기본요금 1,700원으로 인상 확정이래요\n다음 달 1일부터 적용\n#버스요금",
+          "reproduces": "a",
+          "synthetic": true
+        },
+        {
+          "key": "c",
+          "kind": "social",
+          "author": "@example_sharebot",
+          "published": "2026-10-02",
+          "url": "https://social.example.com/example_sharebot/posts/1303",
+          "language": "ko",
+          "text": "공유함 📢\n시내버스 기본요금 1,700원 인상 확정이라고 함\n1일부터 적용된대요\n#예시시",
+          "reproduces": "a",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "시내버스 기본요금 1,700원으로 인상 확정",
+            "subject": "예시시 시내버스 기본요금",
+            "predicate": "increases to",
+            "object": "1,700원",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          }
+        ],
+        "issues": [
+          {
+            "category": "DEPENDENT_CORROBORATION",
+            "affected": [
+              "버스 기본요금 1,700원으로 인상 확정이래요",
+              "1,700원 인상 확정이라고 함"
+            ],
+            "red": false
+          }
+        ],
+        "no_red": true,
+        "statuses": [
+          {
+            "sentence": "시내버스 기본요금 1,700원으로 인상 확정",
+            "status": "INSUFFICIENT_EVIDENCE"
+          }
+        ],
+        "independent_groups": [
+          [
+            "a",
+            "b",
+            "c"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "S14",
+      "category": "no_issue",
+      "description": "A shop's anniversary-discount post and an independent customer post whose prices agree with the stated discount.",
+      "documents": [
+        {
+          "key": "a",
+          "kind": "social",
+          "author": "@example_bakery",
+          "published": "2026-10-10",
+          "url": "https://social.example.com/example_bakery/posts/1401",
+          "language": "ko",
+          "text": "예시베이커리 오픈 3주년 🎉\n오늘 전 메뉴 10% 할인함\n오후 6시까지만 진행\n#예시베이커리",
+          "synthetic": true
+        },
+        {
+          "key": "b",
+          "kind": "social",
+          "author": "@example_breadlover",
+          "published": "2026-10-10",
+          "url": "https://social.example.com/example_breadlover/posts/1402",
+          "language": "ko",
+          "text": "예시베이커리 3주년 할인 다녀옴\n4,000원짜리 크루아상 3,600원에 삼 🥐\n#빵스타그램",
+          "synthetic": true
+        }
+      ],
+      "expected": {
+        "propositions": [
+          {
+            "sentence": "오늘 전 메뉴 10% 할인함",
+            "subject": "예시베이커리",
+            "predicate": "discounts",
+            "object": "all menu items by 10%",
+            "polarity": "positive",
+            "claim_type": "empirical"
+          },
+          {
+            "sentence": "4,000원짜리 크루아상 3,600원에 삼",
+            "subject": "author",
+            "predicate": "bought",
+            "object": "4,000원 croissant for 3,600원",
+            "polarity": "positive",
+            "claim_type": "observation"
+          }
+        ],
+        "statuses": [
+          {
+            "sentence": "오늘 전 메뉴 10% 할인함",
+            "status": "SUPPORTED"
+          }
+        ],
+        "no_red": true
+      }
+    }
+  ]
+}

@@ -407,7 +407,7 @@ class Analysis:
         # a planned start ("내일부터 …") later reported by the same author as under way
         fulfilled = {}
         for ep in g.timeline:
-            if not (ep["consistent"] and ep["checked"]):
+            if not ep["checked"]:
                 continue
             starts = [s for s in ep["statements"] if s["kind"] == "start"]
             later = [s for s in ep["statements"] if s["kind"] != "start"]
@@ -683,6 +683,23 @@ class Analysis:
                 entry = found.setdefault(k, {"f": f, "affected": [], "evidence": []})
                 entry["affected"].extend(p.id for p in props)
                 entry["evidence"].append(pas_id)
+        # Korean posts: "A 중 B …" on one line and "…률 P%" on a following line
+        share_ko = re.compile(r"(?P<y>\d[\d,]*(?:\.\d+)?)\s?[가-힣a-zA-Z]{0,3}\s?중\s?(?P<x>\d[\d,]*(?:\.\d+)?)\s?[가-힣a-zA-Z]{0,3}"
+                              r"[^%]{0,60}?(?:률|율|비율)[은는이가]?\s?(?:약\s)?(?P<p>\d[\d,]*(?:\.\d+)?)\s?(?:%|퍼센트)", re.S)
+        for pas in g.passages.values():
+            for m in share_ko.finditer(pas.text):
+                if "\n" not in m.group(0):
+                    continue  # single-line cases are handled by the sentence-level check
+                y, x, pct = (float(v.replace(",", "")) for v in (m.group("y"), m.group("x"), m.group("p")))
+                if not y or x > y or abs(pct - x / y * 100) <= max(0.6, 0.02 * x / y * 100):
+                    continue
+                props = [p for p in g.propositions.values() if p.passage_id == pas.id and p.quote
+                         and p.quote_span and m.start() <= p.quote_span[1] and p.quote_span[0] <= m.end()]
+                grp = g.sources[pas.source_id].independence_group
+                found.setdefault((grp, norm_ws(m.group(0)).lower()), {
+                    "f": {"kind": "share", "span": norm_ws(m.group(0)), "stated": pct, "computed": round(x / y * 100, 2),
+                          "problems": [f"stated {pct:g}% but {x:g}/{y:g} = {x / y * 100:.1f}%"]},
+                    "affected": [p.id for p in props], "evidence": [pas.id]})
         for (grp, span), entry in found.items():
             f = entry["f"]
             for pid in entry["affected"]:
@@ -1157,7 +1174,8 @@ class Analysis:
                 triggers.append(f"low extraction confidence ({p.extraction.confidence}) on a "
                                 "proposition other findings depend on")
             g.assessments[p.id] = assess(g, p, triggers, p.id in self.confirmed_error,
-                                         prev_assess.get(p.fingerprint), self.dependent_extra.get(p.id, 0))
+                                         prev_assess.get(p.fingerprint), self.dependent_extra.get(p.id, 0),
+                                         at=self.now)
 
 
 def analyze(docs: list[dict], config: Optional[dict] = None, provider: Optional[Provider] = None,

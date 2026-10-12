@@ -152,7 +152,7 @@ def _cites_origin(g: KnowledgeGraph, p: Proposition, e: Evidence) -> bool:
 
 def assess(g: KnowledgeGraph, p: Proposition, review_triggers: list[str],
            confirmed_error: bool, previous: Optional[dict] = None,
-           extra_dependent: int = 0) -> Assessment:
+           extra_dependent: int = 0, at: Optional[str] = None) -> Assessment:
     a = Assessment(id="A-" + p.id.split("-")[1], proposition_id=p.id)
     if previous:
         a.status = Status(previous.get("status", "UNVERIFIED"))
@@ -220,7 +220,7 @@ def assess(g: KnowledgeGraph, p: Proposition, review_triggers: list[str],
     a.belnap = ("B" if S >= TAU and C >= TAU else "T" if S >= TAU else "F" if (C >= TAU or confirmed_error)
                 else "N")
     try:
-        transition(a, new, why, actor="system")
+        transition(a, new, why, actor="system", at=at)
     except TransitionError as exc:
         a.review_triggers.append(f"automatic transition blocked: {exc}")
         a.review_required = True
